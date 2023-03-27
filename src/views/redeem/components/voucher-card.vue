@@ -16,7 +16,7 @@
         ></v-img>
       </div>
       <div
-        v-if="cards.attributes.status == 'New'"
+        v-if="cards.attributes.tag == 'New'"
         class="mt-3 pa-1 px-3"
         :style="{
           background: '#FDDF59',
@@ -27,10 +27,10 @@
           'border-top-right-radius': '8px',
         }"
       >
-        {{ cards.attributes.status }}
+        {{ cards.attributes.tag }}
       </div>
       <div
-        v-else-if="cards.attributes.status == 'Hot'"
+        v-else-if="cards.attributes.tag == 'Hot'"
         class="mt-3 pa-1 px-3"
         :style="{
           background: '#f65970',
@@ -41,7 +41,7 @@
           'border-top-right-radius': '8px',
         }"
       >
-        {{ cards.attributes.status }}
+        {{ cards.attributes.tag }}
       </div>
       <div
         v-else
@@ -55,7 +55,7 @@
           'border-top-right-radius': '8px',
         }"
       >
-        {{ cards.attributes.status }}
+        {{ cards.attributes.tag }}
       </div>
     </div>
 
@@ -74,7 +74,7 @@
     </v-hover>
 
     <v-btn
-      v-if="cards.attributes.status == 'Expired'"
+      v-if="cards.attributes.tag == 'Expired'"
       class="d-flex column-gap-10 mx-auto mt-3 expired"
       elevation="2"
       rounded

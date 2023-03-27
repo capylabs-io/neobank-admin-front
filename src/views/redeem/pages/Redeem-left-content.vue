@@ -1,99 +1,127 @@
 <template>
   <div class="d-flex flex-column justify-space-between full-height">
     <div class="d-flex flex-column">
-    <div
-      v-if="!userStore.jwt"
-      class="d-flex flex-column align-center justify-center left-first pa-6"
-    >
-      <div>
-        <v-img
-          :style="{ 'border-radius': '10px' }"
-          class
-          :src="require(`@/assets/redeem/user-profile.webp`)"
-        />
-      </div>
-      <div class="mt-3">
-        <span class="font-weight-bold">Tung69 #291090</span>
-      </div>
-      <div class="subtitle-2">
-        <span>tung.bro.bro69@gmail.com</span>
-      </div>
-      <div
-        class="d-flex left-profile-section align-center font-weight-bold mt-3"
-      >
-        <span :style="{ 'font-size': '18px' }">1000</span>
+      <div class="d-flex align-center left-first pa-6">
         <div>
           <v-img
-            :style="{ 'border-radius': '40px' }"
-            :src="require(`@/assets/redeem/coin.webp`)"
+            :style="{ 'border-radius': '10px' }"
+            class
+            :src="require(`@/assets/logo-admin.webp`)"
           />
         </div>
+        <div class="d-flex flex-column text-left ml-2">
+          <span
+            :style="{
+              fontSize: '20px',
+              fontWeight: 700,
+              lineHeight: '20px',
+              letterSpacing: '0em',
+            }"
+            >NeoBank</span
+          >
+          <span
+            :style="{
+              fontSize: '14px',
+              fontWeight: 400,
+              lineHeight: '20px',
+              letterSpacing: '0em',
+            }"
+            >maintainer</span
+          >
+        </div>
+        <!-- <div>
+          <v-img
+            :style="{ 'border-radius': '10px' }"
+            class
+            :src="require(`@/assets/redeem/user-profile.webp`)"
+          />
+        </div>
+        <div class="mt-3">
+          <span class="font-weight-bold">Tung69 #291090</span>
+        </div>
+        <div class="subtitle-2">
+          <span>tung.bro.bro69@gmail.com</span>
+        </div> -->
+        <!-- <div
+          class="d-flex left-profile-section align-center font-weight-bold mt-3"
+        >
+          <span :style="{ 'font-size': '18px' }">1000</span>
+          <div>
+            <v-img
+              :style="{ 'border-radius': '40px' }"
+              :src="require(`@/assets/redeem/coin.webp`)"
+            />
+          </div>
+        </div> -->
       </div>
+
+      <v-divider></v-divider>
+      <div class="d-flex flex-column justify-center left-second pa-6">
+        <!-- TODO: Change to v-list -->
+        <div @click="dashBoardClick()">
+          <div class="pa-2 content d-flex dashBoard active cursor-pointer">
+            <v-icon class="mr-2"> mdi-view-dashboard</v-icon>
+            <span>Dashboard</span>
+          </div>
+        </div>
+        <div class="mt-2" @click="storeClick()">
+          <div class="pa-2 content d-flex store cursor-pointer">
+            <v-icon class="mr-2">mdi-ticket-percent </v-icon>
+            <span>Voucher management</span>
+          </div>
+        </div>
+        <div class="mt-2">
+          <div class="pa-2 content d-flex cursor-pointer">
+            <v-icon class="mr-2"> mdi-account-multiple</v-icon>
+            <span>User management</span>
+          </div>
+        </div>
+        <div class="mt-2" @click="accountClick()">
+          <div class="pa-2 content d-flex setting cursor-pointer">
+            <v-icon class="mr-2"> mdi-account-box</v-icon>
+            <span>Account setting</span>
+          </div>
+        </div>
+      </div>
+      <v-divider></v-divider>
     </div>
-    <div
-      v-else
-      class="d-flex flex-column align-center justify-center left-first pa-6"
-    >
-      <div>
+    <div class="d-flex align-center left-third pa-6">
+      <div class="admin-image">
         <v-img
           :style="{ 'border-radius': '10px' }"
           class
           :src="require(`@/assets/redeem/user-profile.webp`)"
         />
       </div>
-      <div class="mt-3  ">
-        <span class="font-weight-bold"
-          >{{ userStore.userData.username }} #291090</span
+      <div class="d-flex flex-column text-left ml-2">
+        <span
+          :style="{
+            fontSize: '17px',
+            fontWeight: 700,
+            lineHeight: '20px',
+            letterSpacing: '0em',
+          }"
+          >{{ userStore.userData.username }}</span
+        >
+        <span
+          :style="{
+            fontSize: '14px',
+            fontWeight: 400,
+            lineHeight: '20px',
+            letterSpacing: '0em',
+          }"
+          >{{ userStore.userData.email }}</span
         >
       </div>
-      <div class="subtitle-2">
-        <span>{{ userStore.userData.email }}</span>
+      <div class="ml-6">
+        <v-icon>mdi-chevron-right</v-icon>
       </div>
-      <div
-        class="d-flex left-profile-section align-center font-weight-bold mt-3 pa-2"
-      >
-        <span :style="{ 'font-size': '18px' }">{{
-          userStore.userData.token
-        }}</span>
-        <div>
-          <v-img
-            :style="{ 'border-radius': '40px' }"
-            :src="require(`@/assets/redeem/coin.webp`)"
-          />
-        </div>
-      </div>
-    </div>
-    <v-divider></v-divider>
-    <div class="d-flex flex-column justify-center left-second pa-6">
-      <!-- TODO: Change to v-list -->
-      <div @click="storeClick()">
-        <div class="pa-2 content d-flex store active cursor-pointer">
-            <v-icon class="mr-2">mdi-store </v-icon>
-          <span>Redeem store</span>
-        </div>
-      </div>
-      <div class="mt-2" @click="inventoryClick()">
-        <div class="pa-2 content d-flex inventory cursor-pointer">
-            <v-icon class="mr-2"> mdi-treasure-chest</v-icon>
-          <span>Inventory</span>
-        </div>
-      </div>
-      <div class="mt-2" @click="accountClick()">
-        <div class="pa-2 content d-flex setting cursor-pointer">
-            <v-icon class="mr-2"> mdi-account-box</v-icon>
-          <span>Account setting</span>
-        </div>
-      </div>
-    </div>
-    <v-divider></v-divider>
-  </div>
-    <div class="d-flex flex-column align-left justify-end left-third pa-6">
-      <v-btn class="" @click="signout()" text>
+      <!-- <v-btn class="" @click="signout()" text>
         <div class="mr-2">
           <v-icon color="red"> mdi-logout </v-icon>
         </div>
         <div class="text-capitalize" :style="{ color: 'red' }">Log-out</div>
-      </v-btn>
+      </v-btn> -->
     </div>
   </div>
 </template>
@@ -109,36 +137,37 @@ export default {
     this.carousel();
   },
   methods: {
-    inventoryClick() {
+    dashBoardClick() {
       const store = document.querySelector(".store");
-      const inventory = document.querySelector(".inventory");
+      const dashBoard = document.querySelector(".dashBoard");
       const setting = document.querySelector(".setting");
       this.userStore.index = 2;
+      this.userStore.adminDetail = false;
       store.classList.remove("active");
-      inventory.classList.add("active");
+      dashBoard.classList.add("active");
       setting.classList.remove("active");
     },
     storeClick() {
       const store = document.querySelector(".store");
-      const inventory = document.querySelector(".inventory");
+      const dashBoard = document.querySelector(".dashBoard");
       const setting = document.querySelector(".setting");
       this.userStore.index = 1;
       store.classList.add("active");
-      inventory.classList.remove("active");
+      dashBoard.classList.remove("active");
       setting.classList.remove("active");
     },
     accountClick() {
       const store = document.querySelector(".store");
-      const inventory = document.querySelector(".inventory");
+      const dashBoard = document.querySelector(".dashBoard");
       const setting = document.querySelector(".setting");
       this.userStore.index = 3;
       store.classList.remove("active");
-      inventory.classList.remove("active");
+      dashBoard.classList.remove("active");
       setting.classList.add("active");
     },
     signout() {
       this.userStore.logout();
-      this.$router.push("/vn/login");
+      this.$router.push("/vn");
     },
     carousel() {},
   },
@@ -146,7 +175,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 .column-gap-10 {
   column-gap: 10px;
 }
@@ -185,5 +213,9 @@ export default {
 }
 .card-icon {
   border-radius: 100px;
+}
+.admin-image {
+  width: 36px;
+  height: 42px;
 }
 </style>

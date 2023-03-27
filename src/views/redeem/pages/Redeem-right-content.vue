@@ -2,46 +2,22 @@
   <div class="d-flex flex-column justify-space-between">
     <div class="right-container mx-auto pa-6 full-height">
       <div class="d-flex justify-space-between button-filter">
-        <div class="d-flex column-gap-10">
-          <v-btn
-            class="clothes active"
-            elevation="3"
-            rounded
-            text
-            @click="clothesTab()"
-          >
+        <div class="d-flex column-gap-10 left-filter-group pa-1">
+          <v-btn class="clothes active" rounded text @click="clothesTab()">
             Clothes
           </v-btn>
-          <v-btn
-            class="voucher"
-            elevation="3"
-            rounded
-            text
-            @click="voucherTab()"
-          >
-            Voucher
+          <v-btn class="voucher" rounded text @click="voucherTab()">
+            Voucher 
           </v-btn>
         </div>
-        <div class="d-flex column-gap-10">
-          <v-btn elevation="3" rounded text @click="filterBy('asc')">
-            A-Z
-          </v-btn>
-          <v-btn elevation="3" rounded text @click="filterBy('desc')">
-            Z-A
-          </v-btn>
-          <v-btn
-            class="d-flex"
-            elevation="3"
-            rounded
-            text
-            @click="filterBy('priceUp')"
-          >
-            <span> Price </span>
-            <v-icon>mdi-arrow-up</v-icon>
-          </v-btn>
-          <v-btn elevation="3" text @click="filterBy('priceDown')">
-            <span> Price </span> <v-icon>mdi-arrow-down</v-icon>
-          </v-btn>
+        <div class="">
+          <v-select
+            class="button-filter"
+            :items="sort"
+            label="Sort By"
+            outlined
+            background-color="white"
+          ></v-select>
         </div>
       </div>
       <div v-if="index == 2" class="full-width mt-6 card-container">
@@ -72,7 +48,7 @@
           <!-- TODO: use vue-responsive-components to make right container responsive better -->
           <v-col
             cols="12"
-            xl="2"
+            xl="3"
             md="3"
             sm="6"
             xs="12"
@@ -195,10 +171,15 @@ export default {
 }
 
 .active {
-  background: #5752e3;
-  color: white;
+  background: #f5f8ff;
+  color: #2970ff;
 }
 .pagination {
   z-index: 97;
+}
+.left-filter-group {
+  background-color: white;
+  height: max-content;
+  border-radius: 12px;
 }
 </style>

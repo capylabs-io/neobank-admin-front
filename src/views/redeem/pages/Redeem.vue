@@ -14,7 +14,7 @@
           :voucher="userStore.slicedVoucherStore"
           :userVoucher="userStore.userVoucherList"
         />
-        <inventory-content v-else-if="userStore.index == 2" />
+        <dashboard v-else-if="userStore.index == 2" />
         <accountSetting v-else />
       </div>
     </div>
@@ -24,7 +24,7 @@
 <script>
 import leftContent from "@/views/redeem/pages/Redeem-left-content.vue";
 import rightContent from "@/views/redeem/pages/Redeem-right-content.vue";
-import inventoryContent from "@/views/redeem/pages/Redeem-inventory.vue";
+import dashboard from "@/views/redeem/pages/adminDashBoard.vue";
 import accountSettingVue from "@/views/redeem/pages/account-setting.vue";
 import detailDrawer from "@/views/redeem/components/card-detail-drawer.vue";
 import inventoryDrawer from "@/views/redeem/components/inventory-card-drawer.vue";
@@ -37,7 +37,7 @@ export default {
   components: {
     rightContent: rightContent,
     leftContent: leftContent,
-    inventoryContent: inventoryContent,
+    dashboard: dashboard,
     detail: detailDrawer,
     inventoryDrawer: inventoryDrawer,
     accountSetting: accountSettingVue,
@@ -48,7 +48,7 @@ export default {
   },
   mounted() {
     if (!this.userStore.jwt) {
-      this.$router.push("/vn/login");
+      this.$router.push("/vn");
     }
     this.change();
     this.userStore.fetchUserVoucher();
@@ -78,8 +78,7 @@ export default {
   overflow-x: hidden;
 }
 .redeem-content {
-  margin-top: 80px;
-  height: calc(100vh - 80px);
+  height: calc(100vh);
 }
 .left {
   width: 15%;

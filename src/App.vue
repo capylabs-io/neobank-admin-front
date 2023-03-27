@@ -1,8 +1,8 @@
 <template>
   <v-app>
-    <app-navbar v-if="userStore.pageIndex == 1" />
-    <page-navbar v-else-if="userStore.pageIndex == 2" />
-    <div v-else />
+    <!-- <app-navbar v-if="userStore.pageIndex == 1" />
+    <page-navbar v-else-if="userStore.pageIndex == 2" /> -->
+    <div />
     <v-main>
       <router-view :key="$route.fullPath" />
     </v-main>
@@ -18,8 +18,8 @@ import { userStore } from "../src/stores/userStore";
 
 export default {
   components: {
-    "app-navbar": HomeNavigationBar,
-    "page-navbar": PageNavigationBar,
+    // "app-navbar": HomeNavigationBar,
+    // "page-navbar": PageNavigationBar,
     "app-footer": FooterVue,
   },
   computed: {
@@ -61,13 +61,13 @@ nav {
   }
 }
 
-.full-width{
+.full-width {
   width: 100% !important;
 }
-.full-height{
+.full-height {
   height: 100% !important;
 }
-.cursor-pointer{
-  cursor: pointer !important;;
+.cursor-pointer {
+  cursor: pointer !important;
 }
 </style>

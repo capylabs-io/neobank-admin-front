@@ -1,6 +1,5 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "../views/home/pages/Home.vue";
 import i18n from "@/i18n";
 Vue.use(VueRouter);
 const routes = [
@@ -17,17 +16,12 @@ const routes = [
     },
     children: [
       {
-        path: "",
-        name: "home",
-        component: Home,
-      },
-      {
         path: "redeem",
         name: "Redeem",
         component: () => import("../views/redeem/pages/Redeem.vue"),
       },
       {
-        path: "login",
+        path: "",
         name: "Login",
         component: () => import("../views/login/pages/Login.vue"),
       },

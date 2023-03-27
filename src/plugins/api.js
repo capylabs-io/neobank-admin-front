@@ -33,7 +33,8 @@ export const Auth = {
         confirmation: confirmCode,
       },
     }),
-  signIn: (signInData) => axios.post("auth/local", signInData),
+  // signIn: (signInData) => axios.post("auth/local", signInData),
+  signIn: (signInData) => axios.post("/admin/auth", signInData),
   forgetPassword: (email) =>
     axios.post("auth/forgot-password", {
       email,
