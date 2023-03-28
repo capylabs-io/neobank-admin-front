@@ -26,7 +26,7 @@ export default new Vuetify({
         lightcyan: "#F5F9FF",
         blue1: "#1B379A",
         lightblue: "#516FFD",
-        blue: "#516FFD",
+        blue: "#2970FF",
         indigo: "#3E49BC",
         purple: "#7F4FC9",
         deeppurple: "#682CBF",

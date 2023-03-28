@@ -67,11 +67,11 @@
         <div class="mt-2" @click="storeClick()">
           <div class="pa-2 content d-flex store cursor-pointer">
             <v-icon class="mr-2">mdi-ticket-percent </v-icon>
-            <span>Voucher management</span>
+            <span>Campaign management</span>
           </div>
         </div>
-        <div class="mt-2">
-          <div class="pa-2 content d-flex cursor-pointer">
+        <div class="mt-2" @click="userClick()">
+          <div class="pa-2 content d-flex user cursor-pointer">
             <v-icon class="mr-2"> mdi-account-multiple</v-icon>
             <span>User management</span>
           </div>
@@ -85,6 +85,12 @@
       </div>
       <v-divider></v-divider>
     </div>
+    <v-btn class="" @click="signout()" text>
+      <div class="mr-2">
+        <v-icon color="red"> mdi-logout </v-icon>
+      </div>
+      <div class="text-capitalize" :style="{ color: 'red' }">Log-out</div>
+    </v-btn>
     <div class="d-flex align-center left-third pa-6">
       <div class="admin-image">
         <v-img
@@ -116,12 +122,6 @@
       <div class="ml-6">
         <v-icon>mdi-chevron-right</v-icon>
       </div>
-      <!-- <v-btn class="" @click="signout()" text>
-        <div class="mr-2">
-          <v-icon color="red"> mdi-logout </v-icon>
-        </div>
-        <div class="text-capitalize" :style="{ color: 'red' }">Log-out</div>
-      </v-btn> -->
     </div>
   </div>
 </template>
@@ -141,29 +141,46 @@ export default {
       const store = document.querySelector(".store");
       const dashBoard = document.querySelector(".dashBoard");
       const setting = document.querySelector(".setting");
+      const user = document.querySelector(".user");
       this.userStore.index = 2;
       this.userStore.adminDetail = false;
       store.classList.remove("active");
       dashBoard.classList.add("active");
       setting.classList.remove("active");
+      user.classList.remove("active");
     },
     storeClick() {
       const store = document.querySelector(".store");
       const dashBoard = document.querySelector(".dashBoard");
       const setting = document.querySelector(".setting");
+      const user = document.querySelector(".user");
       this.userStore.index = 1;
       store.classList.add("active");
       dashBoard.classList.remove("active");
       setting.classList.remove("active");
+      user.classList.remove("active");
     },
     accountClick() {
       const store = document.querySelector(".store");
       const dashBoard = document.querySelector(".dashBoard");
       const setting = document.querySelector(".setting");
-      this.userStore.index = 3;
+      const user = document.querySelector(".user");
+      this.userStore.index = 4;
       store.classList.remove("active");
       dashBoard.classList.remove("active");
       setting.classList.add("active");
+      user.classList.remove("active");
+    },
+    userClick() {
+      const store = document.querySelector(".store");
+      const dashBoard = document.querySelector(".dashBoard");
+      const setting = document.querySelector(".setting");
+      const user = document.querySelector(".user");
+      this.userStore.index = 3;
+      store.classList.remove("active");
+      dashBoard.classList.remove("active");
+      setting.classList.remove("active");
+      user.classList.add("active");
     },
     signout() {
       this.userStore.logout();

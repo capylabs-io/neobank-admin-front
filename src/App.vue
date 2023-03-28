@@ -6,7 +6,7 @@
     <v-main>
       <router-view :key="$route.fullPath" />
     </v-main>
-    <app-footer v-if="userStore.pageIndex == 1" />
+    <!-- <app-footer v-if="userStore.pageIndex == 1" /> -->
   </v-app>
 </template>
 <script>
@@ -20,7 +20,7 @@ export default {
   components: {
     // "app-navbar": HomeNavigationBar,
     // "page-navbar": PageNavigationBar,
-    "app-footer": FooterVue,
+    // "app-footer": FooterVue,
   },
   computed: {
     ...mapStores(userStore),

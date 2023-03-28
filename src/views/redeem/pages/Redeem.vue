@@ -15,6 +15,7 @@
           :userVoucher="userStore.userVoucherList"
         />
         <dashboard v-else-if="userStore.index == 2" />
+        <userManagementLayout v-else-if="userStore.index == 3" />
         <accountSetting v-else />
       </div>
     </div>
@@ -26,6 +27,8 @@ import leftContent from "@/views/redeem/pages/Redeem-left-content.vue";
 import rightContent from "@/views/redeem/pages/Redeem-right-content.vue";
 import dashboard from "@/views/redeem/pages/adminDashBoard.vue";
 import accountSettingVue from "@/views/redeem/pages/account-setting.vue";
+// import userManagement from "@/views/redeem/pages/user-management.vue";
+import userManagementLayout from "@/views/redeem/pages/user-management-layout.vue";
 import detailDrawer from "@/views/redeem/components/card-detail-drawer.vue";
 import inventoryDrawer from "@/views/redeem/components/inventory-card-drawer.vue";
 import confirmDialog from "@/components/dialog/confirm-dialog.vue";
@@ -42,6 +45,7 @@ export default {
     inventoryDrawer: inventoryDrawer,
     accountSetting: accountSettingVue,
     confirmDialog: confirmDialog,
+    userManagementLayout: userManagementLayout,
   },
   computed: {
     ...mapStores(userStore),

@@ -3,20 +3,24 @@ import { ref, computed } from "vue";
 import { Auth, Voucher } from "@/plugins/api.js";
 import { snackBarController } from "@/components/snack-bar/snack-bar-controller.js";
 import { loadingController } from "@/components/global-loading/global-loading-controller.js";
-export const userStore = defineStore(
+export const voucherStore = defineStore(
   "voucher",
   () => {
     const loading = loadingController(); //store
     const snackbar = snackBarController(); //store
     const drawer = ref(false);
     const drawerDetail = ref(false);
+    const cfDialog = ref(false);
+    const userDetail = ref(false);
+
     const pageIndex = ref(1);
     const index = ref(2);
-    const cfDialog = ref(false);
     const scrollY = ref(1);
+
     const jwt = ref("");
     const sortBy = ref("");
     const voucherId = ref("");
+
     const vouchersPerPage = ref(10);
     const voucherPage = ref(1);
 
@@ -163,6 +167,7 @@ export const userStore = defineStore(
       voucherPage,
       vouchersPerPage,
       sortBy,
+      userDetail,
       //action
       fetchVoucher,
       fetchUserVoucher,
