@@ -31,9 +31,17 @@
         >
       </div>
       <div class="d-flex align-center">
-        <span :style="{ fontSize: '15px', fontWeight: '500', color: '#C83E2E' }"
-          >Disable account</span
+        <v-btn
+          text
+          class="text-left d-flex align-center"
+          @click="userStore.cfDialog = true"
         >
+          <span
+            class="text-capitalize"
+            :style="{ fontSize: '15px', fontWeight: '500', color: '#C83E2E' }"
+            >Disable account</span
+          >
+        </v-btn>
       </div>
       <!-- <v-btn class="" @click="signout()" text>
           <div class="mr-2">

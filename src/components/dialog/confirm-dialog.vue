@@ -1,21 +1,46 @@
 <template>
-  <v-dialog v-model="userStore.cfDialog" width="600px">
-    <v-card>
+  <v-dialog v-model="userStore.cfDialog" width="400px">
+    <v-card class="pa-2 text-left" :style="{ 'border-radius': '12px' }">
+      <v-img
+        width="45px"
+        height="45px"
+        :style="{ 'border-radius': '10px' }"
+        class="ml-4"
+        :src="require(`@/assets/alert.webp`)"
+      />
       <v-card-title>
-        <span class="text-h5">Do you want to purchase this voucher?</span>
+        <span :style="{ fontSize: '19px', fontWeight: '700' }"
+          >Disable this Account</span
+        >
       </v-card-title>
-      <v-card-text />
-      <v-card-actions>
-        <v-spacer />
+      <v-card-text :style="{ fontSize: '14px', fontWeight: '400' }"
+        >Are you sure you want to disable this Account? Disabled account will
+        lose access to all functions in accordance with their role.
+      </v-card-text>
+      <v-card-text>
+        <!-- <v-spacer /> -->
         <v-btn
+          class="text-capitalize"
+          :style="{ border: '1px solid #E3E8EF' }"
           color="green-darken-1"
           variant="text"
           @click="userStore.cfDialog = false"
+          text
         >
-          No
+          Cancel
         </v-btn>
-        <v-btn color="green-darken-1" variant="text" @click="buy"> Yes </v-btn>
-      </v-card-actions>
+
+        <v-btn
+          class="ml-4 text-capitalize"
+          :style="{ backgroundColor: '#DE5242' }"
+          color="white"
+          variant="text"
+          @click="buy"
+          text
+        >
+          Disable
+        </v-btn>
+      </v-card-text>
     </v-card>
   </v-dialog>
 </template>
