@@ -11,11 +11,14 @@ export const voucherStore = defineStore(
     const drawer = ref(false);
     const drawerDetail = ref(false);
     const cfDialog = ref(false);
+    const partnerDialog = ref(false);
     const userDetail = ref(false);
+    const partnerDetail = ref(false);
 
     const pageIndex = ref(1);
     const index = ref(2);
     const scrollY = ref(1);
+    const step = ref(1);
 
     const jwt = ref("");
     const sortBy = ref("");
@@ -168,6 +171,9 @@ export const voucherStore = defineStore(
       vouchersPerPage,
       sortBy,
       userDetail,
+      partnerDetail,
+      partnerDialog,
+      step,
       //action
       fetchVoucher,
       fetchUserVoucher,

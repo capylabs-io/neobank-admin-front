@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="userStore.cfDialog" width="400px">
+  <v-dialog v-model="voucherStore.cfDialog" width="400px">
     <v-card class="pa-2 text-left" :style="{ 'border-radius': '12px' }">
       <v-img
         width="45px"
@@ -24,7 +24,7 @@
           :style="{ border: '1px solid #E3E8EF' }"
           color="green-darken-1"
           variant="text"
-          @click="userStore.cfDialog = false"
+          @click="voucherStore.cfDialog = false"
           text
         >
           Cancel
@@ -48,9 +48,11 @@
 <script>
 import { mapStores } from "pinia";
 import { userStore } from "../../stores/userStore";
+import { voucherStore } from "@/stores/voucherStore";
 export default {
   computed: {
     ...mapStores(userStore),
+    ...mapStores(voucherStore),
   },
   methods: {
     buy() {

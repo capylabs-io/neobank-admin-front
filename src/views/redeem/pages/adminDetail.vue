@@ -36,7 +36,7 @@
         </div>
       </div>
       <div class="full-width mt-4">
-        <voucherform></voucherform>
+        <informationform></informationform>
       </div>
       <div class="full-width mt-4">
         <v-card class="pa-3">
@@ -80,10 +80,10 @@
 <script>
 import { mapStores } from "pinia";
 import { userStore } from "@/stores/userStore";
-import voucherform from "@/views/redeem/components/voucher-form.vue";
+import informationform from "@/views/redeem/components/information-form.vue";
 export default {
   components: {
-    voucherform: voucherform,
+    informationform: informationform,
   },
 
   data() {

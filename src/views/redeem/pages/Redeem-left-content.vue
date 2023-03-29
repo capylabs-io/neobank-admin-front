@@ -70,18 +70,30 @@
             <span>Campaign management</span>
           </div>
         </div>
+        <div class="mt-2" @click="partnerClick()">
+          <div class="pa-2 content d-flex partner cursor-pointer">
+            <v-icon class="mr-2"> mdi-account-multiple</v-icon>
+            <span>Partner management</span>
+          </div>
+        </div>
         <div class="mt-2" @click="userClick()">
           <div class="pa-2 content d-flex user cursor-pointer">
             <v-icon class="mr-2"> mdi-account-multiple</v-icon>
             <span>User management</span>
           </div>
         </div>
-        <div class="mt-2" @click="accountClick()">
+        <div class="mt-2">
+          <div class="pa-2 content d-flex category cursor-pointer">
+            <v-icon class="mr-2"> mdi-account-multiple</v-icon>
+            <span>Category management</span>
+          </div>
+        </div>
+        <!-- <div class="mt-2" @click="accountClick()">
           <div class="pa-2 content d-flex setting cursor-pointer">
             <v-icon class="mr-2"> mdi-account-box</v-icon>
             <span>Account setting</span>
           </div>
-        </div>
+        </div> -->
       </div>
       <v-divider></v-divider>
     </div>
@@ -140,46 +152,57 @@ export default {
     dashBoardClick() {
       const store = document.querySelector(".store");
       const dashBoard = document.querySelector(".dashBoard");
-      const setting = document.querySelector(".setting");
+      const partner = document.querySelector(".partner");
       const user = document.querySelector(".user");
       this.userStore.index = 2;
       this.userStore.adminDetail = false;
       store.classList.remove("active");
       dashBoard.classList.add("active");
-      setting.classList.remove("active");
+      partner.classList.remove("active");
       user.classList.remove("active");
     },
     storeClick() {
       const store = document.querySelector(".store");
       const dashBoard = document.querySelector(".dashBoard");
-      const setting = document.querySelector(".setting");
+      const partner = document.querySelector(".partner");
       const user = document.querySelector(".user");
       this.userStore.index = 1;
       store.classList.add("active");
       dashBoard.classList.remove("active");
-      setting.classList.remove("active");
+      partner.classList.remove("active");
       user.classList.remove("active");
     },
-    accountClick() {
+    // accountClick() {
+    //   const store = document.querySelector(".store");
+    //   const dashBoard = document.querySelector(".dashBoard");
+    //   // const partner = document.querySelector(".partner");
+    //   const user = document.querySelector(".user");
+    //   this.userStore.index = 4;
+    //   store.classList.remove("active");
+    //   dashBoard.classList.remove("active");
+    //   // partner.classList.add("active");
+    //   user.classList.remove("active");
+    // },
+    partnerClick() {
       const store = document.querySelector(".store");
       const dashBoard = document.querySelector(".dashBoard");
-      const setting = document.querySelector(".setting");
+      const partner = document.querySelector(".partner");
       const user = document.querySelector(".user");
       this.userStore.index = 4;
       store.classList.remove("active");
       dashBoard.classList.remove("active");
-      setting.classList.add("active");
+      partner.classList.add("active");
       user.classList.remove("active");
     },
     userClick() {
       const store = document.querySelector(".store");
       const dashBoard = document.querySelector(".dashBoard");
-      const setting = document.querySelector(".setting");
+      const partner = document.querySelector(".partner");
       const user = document.querySelector(".user");
       this.userStore.index = 3;
       store.classList.remove("active");
       dashBoard.classList.remove("active");
-      setting.classList.remove("active");
+      partner.classList.remove("active");
       user.classList.add("active");
     },
     signout() {

@@ -4,20 +4,6 @@
       <div class="text-left" :style="{ fontWeight: '700' }">
         Voucher Metrics
       </div>
-      <!-- <div class="d-flex column-gap-10">
-        <v-btn
-          class="clothes active"
-          elevation="3"
-          rounded
-          text
-          @click="clothesTab()"
-        >
-          Create Voucher
-        </v-btn>
-        <v-btn class="voucher" elevation="3" rounded text @click="voucherTab()">
-          Export CVS
-        </v-btn>
-      </div> -->
       <div class="full-width mt-6 card-container">
         <v-row>
           <v-col cols="12" xl="3">
@@ -85,25 +71,6 @@
             </v-card></v-col
           >
         </v-row>
-        <!-- <div>
-          <v-select
-            class="button-filter"
-            backgroundColor="white"
-            color="white"
-            :items="status"
-            label="Status"
-            outlined
-          ></v-select>
-        </div>
-        <div>
-          <v-select
-            class="button-filter"
-            :items="sort"
-            label="Sort"
-            outlined
-            background-color="white"
-          ></v-select>
-        </div> -->
       </div>
       <div class="full-width mt-6 card-container">
         <v-row>

@@ -7,16 +7,22 @@
             Clothes
           </v-btn>
           <v-btn class="voucher" rounded text @click="voucherTab()">
-            Voucher 
+            Voucher
           </v-btn>
         </div>
         <div class="">
           <v-select
-            class="button-filter"
-            :items="sort"
+            class="btn-customize"
+            v-model="filterData"
+            :items="data"
+            :menu-props="{ maxHeight: '400' }"
             label="Sort By"
-            outlined
-            background-color="white"
+            solo
+            dense
+            multiple
+            flat
+            hide-details
+            persistent-hint
           ></v-select>
         </div>
       </div>
@@ -181,5 +187,10 @@ export default {
   background-color: white;
   height: max-content;
   border-radius: 12px;
+}
+.btn-customize {
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #e3e8ef;
 }
 </style>

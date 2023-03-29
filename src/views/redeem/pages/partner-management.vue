@@ -1,11 +1,35 @@
 <template>
   <!-- <div class="d-flex flex-column align-center"> -->
   <div class="right-container d-flex flex-column pa-6 full-height">
-    <div class="d-flex mt-2 justify-space-between">
+    <div class="d-flex mt-2 align-center justify-space-between">
       <div class="d-flex align-center">
-        <v-btn class="btn-customize text-capitalize" elevation="0" text>
+        <v-btn
+          text
+          :style="{ backgroundColor: 'var(--v-blue-base)' }"
+          class="text-left d-flex align-center white--text"
+          @click="voucherStore.partnerDialog = true"
+        >
+          <v-icon small>mdi-plus</v-icon>
+          <span class="ml-2 text-capitalize">New Partner</span>
+        </v-btn>
+        <v-btn class="btn-customize text-capitalize ml-3" elevation="0" text>
           Export CVS
         </v-btn>
+        <v-select
+          class="ml-3 btn-customize"
+          v-model="filterData"
+          :items="data"
+          :menu-props="{ maxHeight: '400' }"
+          label="Filter by Partner"
+          solo
+          dense
+          multiple
+          flat
+          hide-details
+          persistent-hint
+        ></v-select>
+      </div>
+      <div class="">
         <v-card
           rounded="7"
           class="btn-customize ml-3 search d-flex align-center px-2 py-1"
@@ -15,60 +39,6 @@
           <v-icon>mdi-magnify</v-icon>
           <input class="ml-2" placeholder="Search for Campaign" />
         </v-card>
-      </div>
-      <div class="d-flex">
-        <div class="d-flex btn-select px-2 mr-3 justify-space-between">
-          <div class="d-flex flex-column align-start justify-center">
-            <span
-              :style="{
-                fontSize: '11px',
-                fontWeight: 500,
-              }"
-              >CATEGORY</span
-            >
-            <v-select
-              class="ml-3"
-              :menu-props="{ maxHeight: '400' }"
-              solo
-              dense
-              flat
-              hide-details
-              persistent-hint
-            ></v-select>
-            <!-- <select
-              class=""
-              :style="{ fontSize: '15px', fontWeight: 400, width: '100%' }"
-            >
-              <option value="0">+3</option>
-              <option value="1">Audi</option>
-              <option value="2">BMW</option>
-            </select> -->
-          </div>
-          <!-- <v-icon>mdi-chevron-down</v-icon> -->
-        </div>
-        <div class="d-flex btn-select px-2 justify-space-between">
-          <div class="d-flex flex-column align-start justify-center">
-            <span :style="{ fontSize: '11px', fontWeight: 500 }">SORT BY</span>
-            <v-select
-              class="ml-3"
-              :menu-props="{ maxHeight: '400' }"
-              solo
-              dense
-              flat
-              hide-details
-              persistent-hint
-            ></v-select>
-            <!-- <select
-              class=""
-              :style="{ fontSize: '15px', fontWeight: 400, width: '100%' }"
-            >
-              <option value="0">Newest</option>
-              <option value="1">Latest</option>
-              <option value="2">Hottest</option>
-            </select> -->
-          </div>
-          <!-- <v-icon>mdi-chevron-down</v-icon> -->
-        </div>
       </div>
     </div>
 
@@ -111,6 +81,8 @@ export default {
 
   data() {
     return {
+      filterData: [],
+      data: [""],
       search: "",
       headers: [
         {
@@ -120,8 +92,13 @@ export default {
           align: "center",
         },
         {
-          text: "User",
+          text: "Partner",
           value: "name",
+          align: "center",
+        },
+        {
+          text: "User ID",
+          value: "user",
           align: "center",
         },
         {
@@ -130,12 +107,7 @@ export default {
           align: "center",
         },
         {
-          text: "Claimed voucher",
-          value: "voucher",
-          align: "center",
-        },
-        {
-          text: "Token owned",
+          text: "Program running",
           value: "token",
           align: "center",
         },
@@ -151,7 +123,7 @@ export default {
           id: "1",
           name: "Thomas Shelly",
           contact: "khoidan@gmail.com",
-          voucher: 20,
+          user: "FB.Admin",
           token: 20,
           date: "10:10 Dec 12 2023",
           status: true,
@@ -160,7 +132,7 @@ export default {
           id: "2",
           name: "Thomas Shelly",
           contact: "khoidan@gmail.com",
-          voucher: 20,
+          user: "FB.Admin",
           token: 20,
           date: "10:10 Dec 12 2023",
           status: false,
@@ -169,7 +141,7 @@ export default {
           id: "3",
           name: "Thomas Shelly",
           contact: "khoidan@gmail.com",
-          voucher: 20,
+          user: "FB.Admin",
           token: 20,
           date: "10:10 Dec 12 2023",
           status: true,
@@ -178,7 +150,7 @@ export default {
           id: "4",
           name: "Thomas Shelly",
           contact: "khoidan@gmail.com",
-          voucher: 20,
+          user: "FB.Admin",
           token: 20,
           date: "10:10 Dec 12 2023",
           status: false,
@@ -187,7 +159,7 @@ export default {
           id: "5",
           name: "Thomas Shelly",
           contact: "khoidan@gmail.com",
-          voucher: 20,
+          user: "FB.Admin",
           token: 20,
           date: "10:10 Dec 12 2023",
           status: true,
@@ -196,7 +168,7 @@ export default {
           id: "6",
           name: "Thomas Shelly",
           contact: "khoidan@gmail.com",
-          voucher: 20,
+          user: "FB.Admin",
           token: 20,
           date: "10:10 Dec 12 2023",
           status: true,
@@ -205,7 +177,7 @@ export default {
           id: "7",
           name: "Thomas Shelly",
           contact: "khoidan@gmail.com",
-          voucher: 20,
+          user: "FB.Admin",
           token: 20,
           date: "10:10 Dec 12 2023",
           status: true,
@@ -214,7 +186,7 @@ export default {
           id: "8",
           name: "Thomas Shelly",
           contact: "khoidan@gmail.com",
-          voucher: 20,
+          user: "FB.Admin",
           token: 20,
           date: "10:10 Dec 12 2023",
           status: true,
@@ -223,7 +195,7 @@ export default {
           id: "9",
           name: "Thomas Shelly",
           contact: "khoidan@gmail.com",
-          voucher: 20,
+          user: "FB.Admin",
           token: 20,
           date: "10:10 Dec 12 2023",
           status: true,
@@ -232,7 +204,7 @@ export default {
           id: "10",
           name: "Thomas Shelly",
           contact: "khoidan@gmail.com",
-          voucher: 20,
+          user: "FB.Admin",
           token: 20,
           date: "10:10 Dec 12 2023",
           status: true,
@@ -246,7 +218,7 @@ export default {
   },
   methods: {
     handleClick(value) {
-      this.voucherStore.userDetail = true;
+      this.voucherStore.partnerDetail = true;
     },
   },
 };
@@ -285,7 +257,7 @@ input:focus {
   outline: none;
 }
 .search {
-  width: 400px;
+  width: 300px;
 }
 .btn-select {
   background: white;
@@ -309,5 +281,8 @@ input:focus {
   100% {
     opacity: 1;
   }
+}
+.sort-box {
+  max-width: 170px;
 }
 </style>

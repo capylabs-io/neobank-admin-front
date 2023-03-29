@@ -4,32 +4,38 @@
       <v-btn
         text
         class="text-left active d-flex align-center"
-        @click="voucherStore.userDetail = false"
+        @click="voucherStore.partnerDetail = false"
       >
         <v-icon small>mdi-chevron-double-left</v-icon>
         <span class="ml-2 text-capitalize">Get Back</span>
       </v-btn>
     </div>
+    <div class="d-flex align-center mt-2">
+      <div class="user-image">
+        <v-img
+          :style="{ 'border-radius': '10px' }"
+          class
+          :src="require(`@/assets/metaAva.webp`)"
+        />
+      </div>
+      <span
+        class="ml-2"
+        :style="{
+          fontSize: '24px',
+          fontWeight: 700,
+          lineHeight: '36px',
+          letterSpacing: '0em',
+        }"
+        >Meta Inc.</span
+      >
+    </div>
     <div class="d-flex justify-space-between mt-2">
       <div class="d-flex align-center">
-        <div class="user-image">
-          <v-img
-            :style="{ 'border-radius': '10px' }"
-            class
-            :src="require(`@/assets/redeem/user-profile.webp`)"
-          />
-        </div>
-        <span
-          class="ml-2"
-          :style="{
-            fontSize: '24px',
-            fontWeight: 700,
-            lineHeight: '36px',
-            letterSpacing: '0em',
-          }"
-          >User name’s Detail</span
+        <span :style="{ fontSize: '18px', fontWeight: 700 }"
+          >Brand Information</span
         >
       </div>
+
       <div class="d-flex align-center">
         <v-btn
           text
@@ -51,64 +57,17 @@
         </v-btn> -->
     </div>
     <div class="full-width mt-2">
-      <informationform></informationform>
+      <informationform :layout="2"></informationform>
     </div>
     <div class="d-flex mt-2 justify-space-between">
       <div class="d-flex align-center">
         <span :style="{ fontSize: '18px', fontWeight: 700 }"
-          >Transaction History</span
+          >Representative Information</span
         >
       </div>
-      <div class="d-flex">
-        <v-btn class="btn-customize text-capitalize" elevation="0" text>
-          Export CVS
-        </v-btn>
-      </div>
     </div>
-
-    <div class="full-width mt-4">
-      <v-card class="pa-3" outlined>
-        <v-data-table
-          :headers="headers"
-          :items="users"
-          :search="search"
-          hide-default-footer
-          @click:row="handleClick"
-        >
-          <template v-slot:[`item.category`]="{ item }">
-            <div class="" v-if="item.category == 'food'">
-              <v-img
-                class="mx-auto"
-                width="23px"
-                height="23px"
-                :style="{ 'border-radius': '40px' }"
-                :src="require(`@/assets/redeem/card/baemin-icon.webp`)"
-              />
-            </div>
-            <div class="" v-else-if="item.category == 'movie'">
-              <v-img
-                class="mx-auto"
-                width="23px"
-                height="23px"
-                :style="{ 'border-radius': '40px' }"
-                :src="require(`@/assets/redeem/card/cgv-icon.webp`)"
-              />
-            </div>
-            <div class="" v-else>
-              <v-img
-                class="mx-auto"
-                width="23px"
-                height="23px"
-                :style="{ 'border-radius': '40px' }"
-                :src="require(`@/assets/redeem/card/viettel-icon.webp`)"
-              />
-            </div>
-          </template>
-        </v-data-table>
-      </v-card>
-    </div>
-    <div class="pagination align-self-end">
-      <v-pagination :length="3" light color="#5752e3" />
+    <div class="full-width mt-2">
+      <informationform :layout="3"></informationform>
     </div>
   </div>
 </template>
