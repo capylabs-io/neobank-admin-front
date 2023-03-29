@@ -51,7 +51,7 @@
         </v-btn> -->
     </div>
     <div class="full-width mt-2">
-      <informationform></informationform>
+      <informationform :layout="1"></informationform>
     </div>
     <div class="d-flex mt-2 justify-space-between">
       <div class="d-flex align-center">

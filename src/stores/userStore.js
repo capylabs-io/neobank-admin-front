@@ -18,11 +18,9 @@ export const userStore = defineStore(
     const sortBy = ref("");
     const username = ref("");
     const password = ref("");
-   
 
     const userData = ref({});
     const adminDetail = ref(false);
-
     async function signIn() {
       try {
         loading.increaseRequest();
@@ -49,6 +47,7 @@ export const userStore = defineStore(
         snackbar.commonError(error);
       }
     }
+
     function logout() {
       jwt.value = "";
       userData.value = "";

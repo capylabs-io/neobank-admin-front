@@ -18,7 +18,7 @@
               height="36px"
               type="text"
               class="pa-0 input-field"
-              placeholder=""
+              placeholder="Highlands"
               background-color="secondary"
               solo
               dense
@@ -36,7 +36,7 @@
               height="36px"
               type="text"
               class="pa-0 input-field"
-              placeholder=""
+              placeholder="Nguyễn"
               background-color="secondary"
               solo
               dense
@@ -54,7 +54,7 @@
               height="36px"
               type="text"
               class="pa-0 input-field"
-              placeholder=""
+              placeholder="lenhainguyen@highland.com"
               background-color="secondary"
               solo
               dense
@@ -72,7 +72,7 @@
               height="36px"
               type="text"
               class="pa-0 input-field"
-              placeholder=""
+              placeholder="090123321987"
               background-color="secondary"
               solo
               dense
@@ -90,7 +90,7 @@
               height="36px"
               type="text"
               class="pa-0 input-field"
-              placeholder=""
+              placeholder="Trưởng phòng CSKH"
               background-color="secondary"
               solo
               dense
@@ -108,7 +108,7 @@
               height="36px"
               type="text"
               class="pa-0 input-field"
-              placeholder=""
+              placeholder="123456"
               background-color="secondary"
               solo
               dense

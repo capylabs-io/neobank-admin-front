@@ -1,6 +1,6 @@
 <template>
   <v-form>
-    <div class="text-xl text-left" :style="{ fontWeight: 'bold' }">
+    <div class="text-xl mt-sm-3 text-left" :style="{ fontWeight: 'bold' }">
       Brand Name<span class="ml-1" :style="{ color: 'red' }">*</span>
     </div>
     <v-text-field

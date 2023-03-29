@@ -4,12 +4,14 @@
     <page-navbar v-else-if="userStore.pageIndex == 2" /> -->
     <div />
     <v-main>
+      <SnackBar />
       <router-view :key="$route.fullPath" />
     </v-main>
     <!-- <app-footer v-if="userStore.pageIndex == 1" /> -->
   </v-app>
 </template>
 <script>
+import SnackBar from "@/components/snack-bar/snack-bar.vue";
 import FooterVue from "./components/Footer.vue";
 import HomeNavigationBar from "./components/NavigationBar.vue";
 import PageNavigationBar from "./components/NavigationBarPage.vue";
@@ -21,6 +23,7 @@ export default {
     // "app-navbar": HomeNavigationBar,
     // "page-navbar": PageNavigationBar,
     // "app-footer": FooterVue,
+    SnackBar: SnackBar,
   },
   computed: {
     ...mapStores(userStore),
