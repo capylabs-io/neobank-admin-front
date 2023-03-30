@@ -17,58 +17,30 @@
         </v-card>
       </div>
       <div class="d-flex">
-        <div class="d-flex btn-select px-2 mr-3 justify-space-between">
-          <div class="d-flex flex-column align-start justify-center">
-            <span
-              :style="{
-                fontSize: '11px',
-                fontWeight: 500,
-              }"
-              >CATEGORY</span
-            >
-            <v-select
-              class="ml-3"
-              :menu-props="{ maxHeight: '400' }"
-              solo
-              dense
-              flat
-              hide-details
-              persistent-hint
-            ></v-select>
-            <!-- <select
-              class=""
-              :style="{ fontSize: '15px', fontWeight: 400, width: '100%' }"
-            >
-              <option value="0">+3</option>
-              <option value="1">Audi</option>
-              <option value="2">BMW</option>
-            </select> -->
-          </div>
-          <!-- <v-icon>mdi-chevron-down</v-icon> -->
-        </div>
-        <div class="d-flex btn-select px-2 justify-space-between">
-          <div class="d-flex flex-column align-start justify-center">
-            <span :style="{ fontSize: '11px', fontWeight: 500 }">SORT BY</span>
-            <v-select
-              class="ml-3"
-              :menu-props="{ maxHeight: '400' }"
-              solo
-              dense
-              flat
-              hide-details
-              persistent-hint
-            ></v-select>
-            <!-- <select
-              class=""
-              :style="{ fontSize: '15px', fontWeight: 400, width: '100%' }"
-            >
-              <option value="0">Newest</option>
-              <option value="1">Latest</option>
-              <option value="2">Hottest</option>
-            </select> -->
-          </div>
-          <!-- <v-icon>mdi-chevron-down</v-icon> -->
-        </div>
+        <v-select
+          class="btn-customize"
+          v-model="filterData"
+          :items="data"
+          :menu-props="{ maxHeight: '400' }"
+          label="Category"
+          solo
+          dense
+          flat
+          hide-details
+          persistent-hint
+        ></v-select>
+        <v-select
+          class="btn-customize ml-3"
+          v-model="filterData"
+          :items="data"
+          :menu-props="{ maxHeight: '400' }"
+          label="Sort By"
+          solo
+          dense
+          flat
+          hide-details
+          persistent-hint
+        ></v-select>
       </div>
     </div>
 
@@ -297,6 +269,7 @@ input:focus {
   background: white;
   border-radius: 8px;
   border: 1px solid #e3e8ef;
+  height: max-content;
 }
 .v-card {
   border-radius: 12px;
