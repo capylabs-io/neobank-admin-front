@@ -1,6 +1,6 @@
 <template>
   <v-navigation-drawer
-    v-model="userStore.drawerDetail"
+    v-model="voucherStore.drawerDetail"
     absolute
     temporary
     right
@@ -14,144 +14,130 @@
         <div class="full-width">
           <v-img
             class="drawer-image"
-            :src="userStore.detailCard.imageUrl"
+            :src="require('@/assets/redeem/card/viettel-card.webp')"
           ></v-img>
-        </div>
-        <div
-          v-if="userStore.detailCard.status == 'Expired'"
-          class="mt-3 pa-1 px-3 status"
-          :style="{
-            background: '#FDDF59',
-            width: 'max-content',
-            height: 'max-content',
-            position: 'absolute',
-            'border-bottom-right-radius': '8px',
-            'border-top-right-radius': '8px',
-          }"
-        >
-          {{ userStore.detailCard.status }}
-        </div>
-        <div
-          v-else-if="userStore.detailCard.status == 'Hot'"
-          class="mt-3 pa-1 px-3 status"
-          :style="{
-            background: '#f65970',
-            width: 'max-content',
-            height: 'max-content',
-            position: 'absolute',
-            'border-bottom-right-radius': '8px',
-            'border-top-right-radius': '8px',
-          }"
-        >
-          {{ userStore.detailCard.status }}
-        </div>
-        <div
-          v-else
-          class="mt-3 pa-1 px-3 status"
-          :style="{
-            background: '#FDDF59',
-            width: 'max-content',
-            height: 'max-content',
-            position: 'absolute',
-            'border-bottom-right-radius': '8px',
-            'border-top-right-radius': '8px',
-          }"
-        >
-          {{ userStore.detailCard.status }}
         </div>
       </div>
       <div
-        class="d-flex flex-column mt-3 font-weight-bold align-center justify-center"
+        class="d-flex flex-column mt-4 font-weight-bold align-center justify-center"
       >
         <div>
-          <v-img class="drawer-icon" :src="userStore.detailCard.iconUrl" />
+          <v-img
+            class="drawer-icon"
+            :src="require('@/assets/redeem/card/viettel-icon.webp')"
+          />
         </div>
-        <span class="mt-3"> {{ userStore.detailCard.title }} </span>
-      </div>
-      <div class="mt-3 text-left draw-text">
-        {{ userStore.detailCard.shortDescription }}
-        {{ userStore.detailCard.fullDescription }}
-      </div>
-    </v-card>
-    <!-- <div class="d-flex col-gap-10 align-center amount-container">
-      <v-btn v-if="userStore.detailCard.attributes.quantity == 0" icon disabled>
-        <v-icon>mdi-minus</v-icon>
-      </v-btn>
-      <v-btn v-else icon @click="decrease">
-        <v-icon>mdi-minus</v-icon>
-      </v-btn>
-      <div class="">
-        <v-input class="number">
-          {{ userStore.detailCard.attributes.quantity }}
-        </v-input>
-      </div>
-      <v-btn
-        v-if="userStore.detailCard.attributes.quantity == 10"
-        disabled
-        icon
-        @click="increase"
-      >
-        <v-icon>mdi-plus</v-icon>
-      </v-btn>
-      <v-btn v-else icon @click="increase">
-        <v-icon>mdi-plus</v-icon>
-      </v-btn>
-    </div> -->
-    <div>id: {{ userStore.voucherId }}</div>
-    <v-btn
-      class="d-flex mx-auto unpurchased drawer-btn"
-      elevation="2"
-      rounded
-      text
-      @click="buy"
-    >
-      <div>
-        <span class="white--text font-weight-bold pr-2 text-capitalize"
-          >Buy Now
+        <span class="mt-4" :style="{ fontSize: '17px', fontWeight: 700 }">
+          Phi khong dung - giam 10% toi da 10k thanh toan dich vu phi khong dung
+          tu 50k tren VParadise
         </span>
       </div>
-    </v-btn>
+      <div
+        class="mt-4 text-left draw-text"
+        :style="{ fontSize: '14px', fontWeight: 400, color: 'GrayText' }"
+      >
+        Sit pellentesque montes eu habitant mattis libero sed interdum at. Vel
+        porttitor malesuada amet velit vestibulum parturient habitasse.
+      </div>
+      <div>
+        <v-btn
+          text
+          class="text-left active d-flex align-center mx-auto mt-2"
+          @click="voucherStore.userDetail = false"
+        >
+          <span class="ml-2 text-capitalize">Campaign detail</span>
+          <v-icon small>mdi-chevron-double-right</v-icon>
+        </v-btn>
+      </div>
+      <div>
+        <div class="text-xl text-left">Name</div>
+        <v-text-field
+          height="36px"
+          type="text"
+          background-color="secondary"
+          class="mt- pa-0"
+          placeholder="Raise Awareness"
+          solo
+          readonly
+          dense
+          hide-details
+          flat
+        />
+      </div>
+      <div class="text-xl mt-sm-3 text-left">Gmail</div>
+      <v-text-field
+        height="36px"
+        type="text"
+        background-color="secondary"
+        class="mt- pa-0"
+        placeholder="New Deal"
+        solo
+        readonly
+        dense
+        hide-details
+        flat
+      />
+      <div class="text-xl mt-sm-3 text-left">Status</div>
+      <v-text-field
+        height="36px"
+        type="text"
+        background-color="secondary"
+        class="mt- pa-0"
+        placeholder="Active"
+        solo
+        readonly
+        dense
+        hide-details
+        flat
+      />
+      <div class="text-xl mt-sm-3 text-left">Token owned</div>
+      <v-text-field
+        height="36px"
+        type="text"
+        background-color="secondary"
+        class="mt- pa-0"
+        placeholder="1000"
+        solo
+        readonly
+        dense
+        hide-details
+        flat
+      >
+        <template #prepend-inner>
+          <div class="mr-2 pt-1">
+            <v-img
+              width="15px"
+              height="15px"
+              :style="{ 'border-radius': '40px', border: '1px solid black' }"
+              :src="require(`@/assets/redeem/coin.webp`)"
+            /></div></template
+      ></v-text-field>
+    </v-card>
   </v-navigation-drawer>
 </template>
 
 <script>
 import { mapStores } from "pinia";
 import { userStore } from "../../../stores/userStore";
+import { voucherStore } from "../../../stores/voucherStore";
 export default {
   computed: {
     ...mapStores(userStore),
+    ...mapStores(voucherStore),
   },
   data() {
     return {
       index: 0,
     };
   },
-  methods: {
-    increase() {
-      var number = this.userStore.detailCard.attributes.quantity;
-      number++;
-      this.userStore.detailCard.attributes.quantity = number + "";
-    },
-    decrease() {
-      var number = this.userStore.detailCard.attributes.quantity;
-      number--;
-      this.userStore.detailCard.attributes.quantity = number + "";
-    },
-    buy() {
-      this.userStore.drawerDetail = !this.userStore.drawerDetail;
-      this.userStore.cfDialog = true;
-    },
-  },
+  methods: {},
 };
 </script>
 
 <style lang="scss" scoped>
 .drawer-image {
-  position: sticky;
-  left: 0;
-  top: 0;
   border-radius: 8px;
-  height: 240px;
+  height: 260px;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -162,13 +148,11 @@ export default {
 }
 .drawer-icon {
   border-radius: 100px;
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
 }
 
 .draw-text {
-  height: 400px;
-  overflow-y: auto;
 }
 .col-gap-10 {
   column-gap: 10px;
@@ -186,7 +170,7 @@ export default {
 .drawer {
   background: white !important;
   height: 100vh;
-  padding: 85px 20px;
+  padding: 10px 20px;
   z-index: 99;
 }
 .amount-container {
@@ -204,6 +188,12 @@ export default {
 .unpurchased {
   background: #5752e3;
   padding: 4px, 16px, 4px, 16px;
+}
+.active {
+  color: #2970ff;
+  .v-icon {
+    color: #2970ff;
+  }
 }
 .disable {
 }
