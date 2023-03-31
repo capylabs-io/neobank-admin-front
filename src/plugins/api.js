@@ -34,7 +34,7 @@ export const Auth = {
       },
     }),
   // signIn: (signInData) => axios.post("auth/local", signInData),
-  signIn: (signInData) => axios.post("/admin/auth", signInData),
+  signIn: (signInData) => axios.post("/maintainer/auth", signInData),
   forgetPassword: (email) =>
     axios.post("auth/forgot-password", {
       email,

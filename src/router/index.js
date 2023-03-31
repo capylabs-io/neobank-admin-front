@@ -1,36 +1,21 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import i18n from "@/i18n";
+// import i18n from "@/i18n";
 Vue.use(VueRouter);
 const routes = [
   {
     path: "",
-    redirect: `/${i18n.locale}`,
+    redirect: `/login`,
   },
   {
-    path: "/:lang",
-    component: {
-      render(c) {
-        return c("router-view");
-      },
-    },
-    children: [
-      {
-        path: "redeem",
-        name: "Redeem",
-        component: () => import("../views/redeem/pages/Redeem.vue"),
-      },
-      {
-        path: "",
-        name: "Login",
-        component: () => import("../views/login/pages/login-admin.vue"),
-      },
-      // {
-      //   path: "",
-      //   name: "Login",
-      //   component: () => import("../views/login/pages/Login.vue"),
-      // },
-    ],
+    path: "/redeem",
+    name: "Redeem",
+    component: () => import("../views/redeem/pages/Redeem.vue"),
+  },
+  {
+    path: "/login",
+    name: "Login",
+    component: () => import("../views/login/pages/login-admin.vue"),
   },
 ];
 
@@ -41,15 +26,15 @@ const router = new VueRouter({
     return { x: 0, y: 0 };
   },
 });
-router.beforeEach((to, from, next) => {
-  // use the language from the routing param or default language
-  let language = to.params.lang;
-  if (!language) {
-    language = "en";
-  }
-  // set the current language for i18n.
-  i18n.locale = language;
-  next();
-});
+// router.beforeEach((to, from, next) => {
+//   // use the language from the routing param or default language
+//   let language = to.params.lang;
+//   if (!language) {
+//     language = "en";
+//   }
+//   // set the current language for i18n.
+//   i18n.locale = language;
+//   next();
+// });
 
 export default router;

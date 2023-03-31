@@ -7,10 +7,10 @@
           height="36px"
           type="text"
           background-color="secondary"
+          readonly
           class="pa-0"
           placeholder="New Deal"
           solo
-          readonly
           dense
           hide-details
           flat
