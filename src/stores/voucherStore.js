@@ -55,10 +55,7 @@ export const voucherStore = defineStore(
     async function purchaseVoucher() {
       try {
         loading.increaseRequest();
-        const res = await Voucher.purchaseVouchers(
-          this.voucherId,
-          this.bearerToken
-        );
+        const res = await Voucher.purchaseVouchers(this.voucherId, this.bearerToken);
         if (!res) {
           snackbar.commonError(`Error occurred! Please try again later!`);
           return;
@@ -97,9 +94,7 @@ export const voucherStore = defineStore(
     }
     function checkIncludes() {
       if (this.voucherDataId && this.userVoucherId) {
-        this.voucherPurchased = this.voucherDataId.filter((data) =>
-          this.userVoucherId.includes(data)
-        );
+        this.voucherPurchased = this.voucherDataId.filter((data) => this.userVoucherId.includes(data));
       }
       console.log("Purchased voucher", voucherPurchased);
     }
@@ -113,35 +108,22 @@ export const voucherStore = defineStore(
     });
 
     const totalVoucherPage = computed(() => {
-      if (!filterVoucherStore.value || filterVoucherStore.value.length == 0)
-        return 1;
+      if (!filterVoucherStore.value || filterVoucherStore.value.length == 0) return 1;
       if (filterVoucherStore.value.length % vouchersPerPage.value == 0)
         return filterVoucherStore.value.length / vouchersPerPage.value;
-      else
-        return (
-          Math.floor(filterVoucherStore.value.length / vouchersPerPage.value) +
-          1
-        );
+      else return Math.floor(filterVoucherStore.value.length / vouchersPerPage.value) + 1;
     });
 
     const filterVoucherStore = computed(() => {
       let filterVoucherStore = [];
       if ((sortBy.value = "asc")) {
-        filterVoucherStore = voucherData.value.sort(
-          (a, b) => b.attributes.title - a.attributes.title
-        );
+        filterVoucherStore = voucherData.value.sort((a, b) => b.attributes.title - a.attributes.title);
       } else if ((sortBy.value = "desc")) {
-        filterVoucherStore = voucherData.value.sort(
-          (a, b) => a.attributes.title - b.attributes.title
-        );
+        filterVoucherStore = voucherData.value.sort((a, b) => a.attributes.title - b.attributes.title);
       } else if ((sortBy.value = "priceUp")) {
-        filterVoucherStore = voucherData.value.sort(
-          (a, b) => a.attributes.price - b.attributes.price
-        );
+        filterVoucherStore = voucherData.value.sort((a, b) => a.attributes.price - b.attributes.price);
       } else if ((sortBy.value = "priceDown")) {
-        filterVoucherStore = voucherData.value.sort(
-          (a, b) => b.attributes.price - a.attributes.price
-        );
+        filterVoucherStore = voucherData.value.sort((a, b) => b.attributes.price - a.attributes.price);
       } else {
         filterVoucherStore = voucherData.value.sort((a, b) => b.id - a.id);
       }
