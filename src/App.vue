@@ -101,6 +101,12 @@ body {
 .overflow-hidden {
   overflow: hidden;
 }
+.text-btn {
+  font-style: normal;
+  font-weight: 500 !important;
+  font-size: 14px;
+  line-height: 20px;
+}
 .text-overline-1 {
   font-size: 10px !important;
   line-height: 12px !important;
@@ -199,6 +205,11 @@ body {
 .v-dialog {
   border-radius: 16px !important;
 }
+.v-text-field.v-text-field--enclosed:not(.v-text-field--rounded)
+  > .v-input__control
+  > .v-input__slot {
+  height: 100%;
+}
 
 //Other
 .picture-inner {
@@ -208,5 +219,9 @@ body {
   background-color: transparent !important;
   border: 1px solid var(--v-neutral30-base) !important;
   border-radius: 8px;
+}
+.category-icon {
+  max-width: 24px !important;
+  max-height: 24px !important;
 }
 </style>

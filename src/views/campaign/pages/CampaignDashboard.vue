@@ -45,7 +45,7 @@
       </div>
     </div>
 
-    <div>
+    <div class="mt-4">
       <div class="text-sm font-weight-bold">Applied Filter:</div>
       <div class="d-flex mt-1">
         <v-chip color="primary" label close>Test</v-chip>

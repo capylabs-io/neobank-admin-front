@@ -5,6 +5,7 @@
       :class="{ 'campaign-card-hover': isHovering }"
       elevation="0"
       v-bind="props"
+      @click.stop="onCampaignCardClick"
     >
       <div>
         <v-img
@@ -40,14 +41,14 @@
             <v-icon small> mdi-account-outline</v-icon>
             <span class="neutral70--text text-sm ml-1">Publisher</span>
           </div>
-          <div class="text-md font-weight-bold">CGV</div>
+          <div class="text-sm font-weight-bold">CGV</div>
         </v-col>
         <v-col cols="12" md="6" xs="12">
           <div class="d-flex align-center">
             <v-icon small> mdi-folder-outline</v-icon>
             <span class="neutral70--text text-sm ml-1">Status</span>
           </div>
-          <div class="text-md font-weight-bold d-flex align-center">
+          <div class="text-sm font-weight-bold d-flex align-center">
             <v-icon class="mr-1" color="primary50" x-small> mdi-circle</v-icon>
             New Deal
           </div>
@@ -59,19 +60,33 @@
             <v-icon small> mdi-folder-outline</v-icon>
             <span class="neutral70--text text-sm ml-1">Category</span>
           </div>
-          <div class="text-md font-weight-bold">Movie</div>
+          <div class="text-sm font-weight-bold">Movie</div>
         </v-col>
         <v-col cols="12" md="6" xs="12">
           <div class="d-flex align-center">
             <v-icon small> mdi-calendar-outline</v-icon>
             <span class="neutral70--text text-sm ml-1">End date</span>
           </div>
-          <div class="text-md font-weight-bold">12 Aug - 23 Oct</div>
+          <div class="text-sm font-weight-bold">12 Aug - 23 Oct</div>
         </v-col>
       </v-row>
     </v-card>
   </v-hover>
 </template>
+
+<script>
+export default {
+  props: {
+    campaign: Object,
+  },
+  methods: {
+    onCampaignCardClick() {
+      if (this.campaign && this.campaign.id)
+        this.$router.push(`/campaign/${this.campaign.id}`);
+    },
+  },
+};
+</script>
 
 <style scoped>
 .campaign-card {

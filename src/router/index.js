@@ -27,6 +27,11 @@ const routes = [
           import("../views/campaign/pages/CampaignDashboard.vue"),
       },
       {
+        path: "/campaign/:id",
+        name: "Campaign Detail",
+        component: () => import("../views/campaign/pages/CampaignDetail.vue"),
+      },
+      {
         path: "/category",
         name: "Category Management",
         component: () =>
