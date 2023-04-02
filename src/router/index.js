@@ -23,7 +23,14 @@ const routes = [
       {
         path: "/campaign",
         name: "Campaign Management",
-        component: () => import("../views/campaign/pages/CampaignDashboard.vue"),
+        component: () =>
+          import("../views/campaign/pages/CampaignDashboard.vue"),
+      },
+      {
+        path: "/category",
+        name: "Category Management",
+        component: () =>
+          import("../views/category/pages/CategoryDashboard.vue"),
       },
     ],
   },

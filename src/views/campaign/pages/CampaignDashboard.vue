@@ -9,6 +9,7 @@
           solo
           dense
           outlined
+          hide-details
         ></v-select>
         <v-select
           class="select border-radius-6"
@@ -17,6 +18,7 @@
           solo
           dense
           outlined
+          hide-details
         ></v-select>
         <v-select
           class="select border-radius-6"
@@ -25,6 +27,7 @@
           solo
           dense
           outlined
+          hide-details
         ></v-select>
       </div>
       <v-spacer></v-spacer>
@@ -37,6 +40,7 @@
           solo
           outlined
           dense
+          hide-details
         ></v-text-field>
       </div>
     </div>

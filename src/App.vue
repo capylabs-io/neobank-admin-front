@@ -59,6 +59,9 @@ body {
   font-weight: 400;
   color: var(--v-neutral100-base) !important;
 }
+.neutral30-border {
+  border: 1px solid var(--v-neutral30-base) !important;
+}
 .border-radius-24 {
   border-radius: 24px !important;
 }
@@ -175,5 +178,35 @@ body {
 }
 .v-text-field--outlined fieldset {
   border-color: var(--v-neutral30-base) !important;
+}
+.v-data-table > .v-data-table__wrapper > table > thead > tr > th {
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  line-height: 20px !important;
+  color: var(--v-neutral70-base) !important;
+}
+.v-data-table > .v-data-table__wrapper > table > tbody > tr:nth-of-type(even) {
+  background: var(--v-neutral10-base) !important;
+}
+.theme--light.v-data-table
+  > .v-data-table__wrapper
+  > table
+  > tbody
+  > tr:not(:last-child)
+  > td:not(.v-data-table__mobile-row) {
+  border: none !important;
+}
+.v-dialog {
+  border-radius: 16px !important;
+}
+
+//Other
+.picture-inner {
+  border: none !important;
+}
+.picture-preview {
+  background-color: transparent !important;
+  border: 1px solid var(--v-neutral30-base) !important;
+  border-radius: 8px;
 }
 </style>

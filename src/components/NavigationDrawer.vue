@@ -58,6 +58,20 @@
           </v-list-item>
           <v-list-item
             class="border-radius-8 py-0 px-2 mt-2"
+            to="/category"
+            active-class="active-item"
+            dense
+            link
+          >
+            <v-list-item-icon class="mr-2">
+              <v-icon>mdi-book </v-icon>
+            </v-list-item-icon>
+            <v-list-item-title class="text-md"
+              >Category Management</v-list-item-title
+            >
+          </v-list-item>
+          <v-list-item
+            class="border-radius-8 py-0 px-2 mt-2"
             to="/account-setting"
             active-class="active-item"
             dense
@@ -98,7 +112,7 @@ export default {
   },
 };
 </script>
-  
+
 <style lang="scss" scoped>
 .avatar-img {
   width: 36px;
