@@ -32,7 +32,7 @@
               v-model="campaignStore.campaign.title"
               class="border-radius-6 mt-1 flex-grow-1 d-flex flex-column"
               placeholder="Description"
-              background-color="primary10"
+              background-color="neutral10"
               flat
               solo
               filled
@@ -46,7 +46,7 @@
             <v-select
               v-model="campaignStore.campaign.campaignCategory"
               :items="campaignStore.categories"
-              background-color="primary10"
+              background-color="neutral10"
               item-text="name"
               item-value="id"
               class="border-radius-6 mt-1"
@@ -79,7 +79,7 @@
               v-model="campaignStore.campaign.price"
               class="border-radius-6 mt-1"
               placeholder="Description"
-              background-color="primary10"
+              background-color="neutral10"
               flat
               solo
               filled
@@ -101,7 +101,7 @@
             <v-select
               v-model="campaignStore.campaign.status"
               :items="campaignStore.statusSelection"
-              background-color="primary10"
+              background-color="neutral10"
               item-text="title"
               item-value="value"
               class="border-radius-6 mt-1"
@@ -118,7 +118,7 @@
               v-model="campaignStore.campaign.totalQuantity"
               class="border-radius-6 mt-1"
               placeholder="Quantity"
-              background-color="primary10"
+              background-color="neutral10"
               flat
               solo
               filled
@@ -152,7 +152,7 @@
               v-model="campaignStore.campaign.shortDescription"
               class="border-radius-6 mt-1"
               placeholder="Short Description"
-              background-color="primary10"
+              background-color="neutral10"
               hide-details
               no-resize
               flat
@@ -169,7 +169,7 @@
               v-model="campaignStore.campaign.fullDescription"
               class="border-radius-6 mt-1 flex-grow-1 d-flex flex-column"
               placeholder="Description"
-              background-color="primary10"
+              background-color="neutral10"
               hide-details
               no-resize
               flat

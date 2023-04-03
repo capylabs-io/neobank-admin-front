@@ -57,6 +57,9 @@ body {
   font-weight: 400;
   color: var(--v-neutral100-base) !important;
 }
+.neutral10-bg {
+  background: var(--v-neutral10-base) !important;
+}
 .neutral30-border {
   border: 1px solid var(--v-neutral30-base) !important;
 }

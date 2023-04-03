@@ -37,6 +37,12 @@ const routes = [
         component: () =>
           import("../views/category/pages/CategoryDashboard.vue"),
       },
+      {
+        path: "/account-setting",
+        name: "Account Setting",
+        component: () =>
+          import("../views/partner-account/pages/account-settings.vue"),
+      },
     ],
   },
 ];

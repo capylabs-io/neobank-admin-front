@@ -22,7 +22,7 @@ export default {
 
 <style scoped>
 .wrapper {
-  background: var(--v-primary5-base) !important;
+  background: var(--v-neutral10-base) !important;
 }
 .container {
   max-width: 1400px;
