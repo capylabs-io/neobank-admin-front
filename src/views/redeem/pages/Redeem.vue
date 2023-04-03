@@ -2,7 +2,6 @@
 <template>
   <div class="redeem DMSans">
     <createForm></createForm>
-    <confirmDialog></confirmDialog>
     <inventoryDrawer />
     <detail />
     <div class="redeem-content d-flex">
@@ -35,7 +34,6 @@ import partnerManagementLayout from "@/views/redeem/pages/partner-management-lay
 import detailDrawer from "@/views/redeem/components/card-detail-drawer.vue";
 import inventoryDrawer from "@/views/redeem/components/inventory-card-drawer.vue";
 import createForm from "@/views/redeem/components/partner-create-form.vue";
-import confirmDialog from "@/components/dialog/confirm-dialog.vue";
 
 import { mapStores } from "pinia";
 import { userStore } from "../../../stores/userStore";
@@ -48,7 +46,6 @@ export default {
     detail: detailDrawer,
     inventoryDrawer: inventoryDrawer,
     accountSetting: accountSettingVue,
-    confirmDialog: confirmDialog,
     userManagementLayout: userManagementLayout,
     partnerManagementLayout: partnerManagementLayout,
     createForm: createForm,

@@ -25,7 +25,7 @@
             upload: '<h1>Bummer!</h1>',
             drag: '',
           }"
-          @change="onIconSelect"
+          @change="onIconSelect($event)"
           hideChangeButton
           :crop="false"
         >
@@ -49,8 +49,10 @@
           Category name
         </div>
         <v-text-field
+          v-model="categoryStore.categoryName"
           class="border-radius-6 mt-2"
           placeholder="Ex: Shopping, Gaming,..."
+          :rules="[$rules.required]"
           flat
           solo
           outlined
@@ -72,6 +74,8 @@
           class="text-none border-radius-8 px-2"
           color="primary"
           elevation="0"
+          @click="onCreateClicked"
+          :disabled="!categoryStore.isValidCategoryInput"
           dense
         >
           Create
@@ -117,8 +121,8 @@ export default {
   methods: {
     onIconSelect(image) {
       if (image) {
-        console.log("Picture loaded!");
-        this.image = image;
+        const imageFile = this.$refs.pictureInput.file;
+        this.categoryStore.changeCategoryIcon(imageFile);
         this.isIconSelected = true;
       } else {
         this.isIconSelected = false;
@@ -127,6 +131,9 @@ export default {
     },
     onCancelClicked() {
       this.categoryStore.toggleCreateDialog(false);
+    },
+    async onCreateClicked() {
+      await this.categoryStore.createNewCategory();
     },
   },
 };

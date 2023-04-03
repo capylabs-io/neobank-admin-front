@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/no-deprecated-filter -->
 <template>
   <div>
     <CreateCategoryDialog />
@@ -6,9 +7,11 @@
       <v-spacer></v-spacer>
       <div class="d-flex align-center">
         <v-text-field
+          v-model="categoryStore.searchKey"
           class="border-radius-6"
           placeholder="Search By Name"
           prepend-inner-icon="mdi-magnify"
+          clearable
           flat
           solo
           outlined
@@ -32,18 +35,22 @@
       <v-data-table
         class="px-3 pb-3"
         :headers="headers"
-        :items="categories"
+        :items="categoryStore.slicedCategories"
         hide-default-footer
-        @click:row="handleClick()"
       >
-        <template v-slot:[`item.id`]="{ index }">
+        <template v-slot:[`item.id`]="{ item }">
           <div class="text-center neutral50--text">
-            {{ index + 1 }}
+            {{ item.id }}
           </div>
         </template>
         <template v-slot:[`item.icon`]="{ item }">
           <div class="category-icon">
             <v-img :src="item.icon"></v-img>
+          </div>
+        </template>
+        <template v-slot:[`item.createdAt`]="{ item }">
+          <div>
+            {{ item.createdAt | ddmmyyyyhhmmss }}
           </div>
         </template>
         <template v-slot:[`item.action`]="{}">
@@ -56,11 +63,13 @@
 
     <div class="d-flex align-center justify-space-between mt-4">
       <div class="neutral70--text text-sm font-weight-bold">
-        Total category: 12
+        Total category: {{ categoryStore.categories.length }}
       </div>
       <v-pagination
         class="pa-0 mr-n2"
-        :length="1"
+        v-model="categoryStore.categoryPage"
+        :length="categoryStore.totalCategoryPage"
+        total-visible="7"
         color="primary"
       ></v-pagination>
     </div>
@@ -78,35 +87,17 @@ export default {
   computed: {
     ...mapStores(categoryStore),
   },
+  async created() {
+    await this.categoryStore.fetchCategories();
+  },
   data() {
     return {
-      categories: [
-        {
-          name: "Cinema",
-          createdAt: "10:10 Dec 12 2023",
-          icon: require("@/assets/views/category/category-icon-example.png"),
-        },
-        {
-          name: "Cinema",
-          createdAt: "10:10 Dec 12 2023",
-          icon: require("@/assets/views/category/category-icon-example.png"),
-        },
-        {
-          name: "Cinema",
-          createdAt: "10:10 Dec 12 2023",
-          icon: require("@/assets/views/category/category-icon-example.png"),
-        },
-        {
-          name: "Cinema",
-          createdAt: "10:10 Dec 12 2023",
-          icon: require("@/assets/views/category/category-icon-example.png"),
-        },
-      ],
       headers: [
         {
           text: "No.",
           value: "id",
           align: "center",
+          sortable: false,
         },
         {
           text: "Category",
@@ -117,6 +108,7 @@ export default {
           text: "Icon",
           value: "icon",
           align: "left",
+          sortable: false,
         },
         {
           text: "Date Created",
@@ -132,9 +124,6 @@ export default {
     };
   },
   methods: {
-    handleClick(categoryId) {
-      this.$router.push(`/category/${categoryId || 0}`);
-    },
     onCreateClicked() {
       this.categoryStore.toggleCreateDialog(true);
     },

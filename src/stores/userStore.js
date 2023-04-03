@@ -1,13 +1,9 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
 import { Auth, Voucher } from "@/plugins/api.js";
-import { snackBarController } from "@/components/snack-bar/snack-bar-controller.js";
-import { loadingController } from "@/components/global-loading/global-loading-controller.js";
 export const userStore = defineStore(
   "user",
   () => {
-    const loading = loadingController(); //store
-    const snackbar = snackBarController(); //store
     const pageIndex = ref(1);
     const index = ref(2);
     const cfDialog = ref(false);

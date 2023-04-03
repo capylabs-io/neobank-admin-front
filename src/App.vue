@@ -9,8 +9,6 @@
   </v-app>
 </template>
 <script>
-import SnackBar from "@/components/snack-bar/snack-bar.vue";
-
 import { mapStores } from "pinia";
 import { userStore } from "../src/stores/userStore";
 import PluginConfirmDialog from "@/components/plugin/PluginConfirmDialog";
@@ -192,7 +190,7 @@ body {
   color: var(--v-neutral70-base) !important;
 }
 .v-data-table > .v-data-table__wrapper > table > tbody > tr:nth-of-type(even) {
-  background: var(--v-neutral10-base) !important;
+  background: var(--v-neutral10-base);
 }
 .theme--light.v-data-table
   > .v-data-table__wrapper
@@ -209,6 +207,9 @@ body {
   > .v-input__control
   > .v-input__slot {
   height: 100%;
+}
+.v-sheet.v-snack__wrapper {
+  border-radius: 12px;
 }
 
 //Other
