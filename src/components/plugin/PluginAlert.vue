@@ -8,15 +8,19 @@
     top
     light
   >
-    <div class="d-flex">
+    <div class="d-flex align-center">
       <div class="alert-icon">
         <v-img :src="icon"></v-img>
       </div>
       <div class="ml-6 flex-grow-1">
         <div class="font-weight-bold text-md">{{ alert.title }}</div>
-        <div class="text-md neutral70--text" v-html="alert.message"></div>
+        <div
+          class="text-md neutral70--text"
+          v-html="alert.message"
+          v-if="alert.message"
+        ></div>
       </div>
-      <div>
+      <div class="align-self-start">
         <v-btn icon @click="close">
           <v-icon>mdi-close</v-icon>
         </v-btn>

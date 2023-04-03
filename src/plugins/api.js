@@ -1,11 +1,13 @@
 import axios from "axios";
 import utils from "@/plugins/utils";
+import { userStore } from "@/stores/userStore";
 
 // axios.defaults.baseURL = process.env.VUE_APP_API_ENDPOINT;
 axios.defaults.baseURL = "https://neobank-dev-api.capylabs.io/api/";
 
 const USER_API = "/users/";
 const CATEGORY_API = "/campaign-categories";
+const CAMPAIGN_API = "/campaigns";
 
 const APIHelper = (api) => ({
   search: (params, option) => axios.get(api, { params: utils.filterObject(params) }, option),
@@ -88,4 +90,29 @@ export const Common = {
         "Content-Type": "multipart/form-data",
       },
     }),
+};
+
+export const Maintainer = {
+  fetchCampaignsByMaintainer: () => {
+    const user = userStore();
+    if (!user.isConnected) return;
+    return axios.get("maintainer/campaigns", {
+      headers: {
+        Authorization: "Bearer " + user.jwt,
+      },
+    });
+  },
+  fetchPartnerList: () => {
+    const user = userStore();
+    if (!user.isConnected) return;
+    return axios.get("maintainer/partners", {
+      headers: {
+        Authorization: "Bearer " + user.jwt,
+      },
+    });
+  },
+};
+
+export const Campaign = {
+  ...APIHelper(CAMPAIGN_API),
 };

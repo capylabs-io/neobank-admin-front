@@ -90,7 +90,11 @@
       <v-spacer></v-spacer>
 
       <div class="px-6 pb-6">
-        <v-btn class="d-flex red60--text px-0 text-none mb-2" text>
+        <v-btn
+          class="d-flex red60--text px-0 text-none mb-2"
+          @click="onLogoutClicked"
+          text
+        >
           <v-icon class="mr-2" color="red60"> mdi-power </v-icon>
           <div>Log Out</div>
         </v-btn>
@@ -109,6 +113,12 @@ import { userStore } from "@/stores/userStore";
 export default {
   computed: {
     ...mapStores(userStore),
+  },
+  methods: {
+    onLogoutClicked() {
+      this.userStore.logout();
+      this.$router.push("/login");
+    },
   },
 };
 </script>

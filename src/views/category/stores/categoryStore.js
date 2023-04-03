@@ -30,15 +30,15 @@ export const categoryStore = defineStore("category", {
         this.categoryPage * this.categoriesPerPage
       );
     },
-    isValidCategoryInput() {
-      if (!this.categoryIcon || !this.categoryName) return false;
-      return true;
-    },
     totalCategoryPage() {
       if (!this.categories || this.categories.length == 0) return 1;
       if (this.filteredCategories.length % this.categoriesPerPage == 0)
         return this.filteredCategories.length / this.categoriesPerPage;
       else return Math.floor(this.filteredCategories.length / this.categoriesPerPage) + 1;
+    },
+    isValidCategoryInput() {
+      if (!this.categoryIcon || !this.categoryName) return false;
+      return true;
     },
   },
   actions: {
@@ -53,7 +53,11 @@ export const categoryStore = defineStore("category", {
       try {
         loading.show();
         const res = await Category.fetch();
-        const categories = get(res, "data.data", null);
+        if (!res) {
+          alert.error("Error occurred when fetching categories!", "Please try again later!");
+          return;
+        }
+        const categories = get(res, "data.data", []);
         if (!categories && categories.length == 0) return;
         const mappedCategories = categories.map((category) => {
           return {
@@ -100,7 +104,6 @@ export const categoryStore = defineStore("category", {
       try {
         loading.show();
         const uploadedIconUrl = await this.uploadFile();
-        console.log("uploadedIconUrl", uploadedIconUrl);
         if (!uploadedIconUrl) {
           alert.error("Error occurred when uploading icon!", "Please try again later!");
           return;
