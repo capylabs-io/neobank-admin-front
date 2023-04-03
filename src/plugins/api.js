@@ -34,7 +34,8 @@ export const Auth = {
       },
     }),
   // signIn: (signInData) => axios.post("auth/local", signInData),
-  signIn: (signInData) => axios.post("/maintainer/auth", signInData),
+  signIn: (signInData) => axios.post("maintainer/auth", signInData),
+  signInPartner: (signInData) => axios.post("partner/auth", signInData),
   forgetPassword: (email) =>
     axios.post("auth/forgot-password", {
       email,
@@ -56,6 +57,12 @@ export const User = {
     axios.post("users/edit-email", {
       newEmail: email,
       password,
+    }),
+  fetchUser: (token) =>
+    axios.get("maintainer/users", {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
     }),
 };
 export const Voucher = {

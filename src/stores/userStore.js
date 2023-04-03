@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
-import { Auth, Voucher } from "@/plugins/api.js";
+import { Auth, User } from "@/plugins/api.js";
 import { snackBarController } from "@/components/snack-bar/snack-bar-controller.js";
 import { loadingController } from "@/components/global-loading/global-loading-controller.js";
 export const userStore = defineStore(
@@ -21,6 +21,7 @@ export const userStore = defineStore(
 
     const userData = ref({});
     const adminDetail = ref(false);
+
     async function signIn() {
       try {
         loading.increaseRequest();
@@ -47,7 +48,6 @@ export const userStore = defineStore(
         snackbar.commonError(error);
       }
     }
-
     function logout() {
       jwt.value = "";
       userData.value = "";

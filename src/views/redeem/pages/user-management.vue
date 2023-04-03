@@ -48,13 +48,25 @@
       <v-card class="pa-3" outlined>
         <v-data-table
           :headers="headers"
-          :items="users"
+          :items="managementStore.userList"
           :search="search"
           hide-default-footer
           @click:row="handleClick"
         >
-          <template v-slot:[`item.status`]="{ item }">
-            <span v-if="item.status" :style="{ color: 'var(--v-success-base)' }"
+          <template v-slot:[`item.confirmed`]="{ item }">
+            <span
+              v-if="!item.status"
+              :style="{ color: 'var(--v-success-base)' }"
+              >Active
+            </span>
+            <span v-else :style="{ color: 'var(--v-error-base)' }"
+              >Disable
+            </span>
+          </template>
+          <template v-slot:[`item.userMetadata.token`]="{ item }">
+            <span
+              v-if="!item.status"
+              :style="{ color: 'var(--v-success-base)' }"
               >Active
             </span>
             <span v-else :style="{ color: 'var(--v-error-base)' }"
@@ -65,7 +77,9 @@
       </v-card>
     </div>
     <div class="d-flex justify-space-between align-center">
-      <div><span>Total current users: 12</span></div>
+      <div>
+        <span>Total current users: {{ managementStore.userList.length }}</span>
+      </div>
       <div class="pagination">
         <v-pagination :length="3" light color="#5752e3" />
       </div>
@@ -78,9 +92,16 @@
 import { mapStores } from "pinia";
 import { userStore } from "@/stores/userStore";
 import { voucherStore } from "@/stores/voucherStore";
+import { managementStore } from "@/stores/managementStore";
 export default {
   components: {},
-
+  mounted() {
+    this.managementStore.bearerToken = JSON.parse(
+      sessionStorage.getItem("user")
+    );
+    this.managementStore.fetchUser();
+    setTimeout(() => {}, 1500);
+  },
   data() {
     return {
       search: "",
@@ -93,128 +114,129 @@ export default {
         },
         {
           text: "User",
-          value: "name",
+          value: "username",
           align: "center",
         },
         {
           text: "Contact info",
-          value: "contact",
+          value: "email",
           align: "center",
         },
         {
           text: "Claimed voucher",
-          value: "voucher",
+          value: "vouchers.count",
           align: "center",
         },
         {
           text: "Token owned",
-          value: "token",
+          value: "userMetadata.token",
           align: "center",
         },
-        { text: "Date", value: "date", align: "center" },
+        { text: "Date", value: "createdAt", align: "center" },
         {
           text: "Status",
-          value: "status",
+          value: "confirmed",
           align: "center",
         },
       ],
-      users: [
-        {
-          id: "1",
-          name: "Thomas Shelly",
-          contact: "khoidan@gmail.com",
-          voucher: 20,
-          token: 20,
-          date: "10:10 Dec 12 2023",
-          status: true,
-        },
-        {
-          id: "2",
-          name: "Thomas Shelly",
-          contact: "khoidan@gmail.com",
-          voucher: 20,
-          token: 20,
-          date: "10:10 Dec 12 2023",
-          status: false,
-        },
-        {
-          id: "3",
-          name: "Thomas Shelly",
-          contact: "khoidan@gmail.com",
-          voucher: 20,
-          token: 20,
-          date: "10:10 Dec 12 2023",
-          status: true,
-        },
-        {
-          id: "4",
-          name: "Thomas Shelly",
-          contact: "khoidan@gmail.com",
-          voucher: 20,
-          token: 20,
-          date: "10:10 Dec 12 2023",
-          status: false,
-        },
-        {
-          id: "5",
-          name: "Thomas Shelly",
-          contact: "khoidan@gmail.com",
-          voucher: 20,
-          token: 20,
-          date: "10:10 Dec 12 2023",
-          status: true,
-        },
-        {
-          id: "6",
-          name: "Thomas Shelly",
-          contact: "khoidan@gmail.com",
-          voucher: 20,
-          token: 20,
-          date: "10:10 Dec 12 2023",
-          status: true,
-        },
-        {
-          id: "7",
-          name: "Thomas Shelly",
-          contact: "khoidan@gmail.com",
-          voucher: 20,
-          token: 20,
-          date: "10:10 Dec 12 2023",
-          status: true,
-        },
-        {
-          id: "8",
-          name: "Thomas Shelly",
-          contact: "khoidan@gmail.com",
-          voucher: 20,
-          token: 20,
-          date: "10:10 Dec 12 2023",
-          status: true,
-        },
-        {
-          id: "9",
-          name: "Thomas Shelly",
-          contact: "khoidan@gmail.com",
-          voucher: 20,
-          token: 20,
-          date: "10:10 Dec 12 2023",
-          status: true,
-        },
-        {
-          id: "10",
-          name: "Thomas Shelly",
-          contact: "khoidan@gmail.com",
-          voucher: 20,
-          token: 20,
-          date: "10:10 Dec 12 2023",
-          status: true,
-        },
-      ],
+      // users: [
+      //   {
+      //     id: "1",
+      //     name: "Thomas Shelly",
+      //     contact: "khoidan@gmail.com",
+      //     voucher: 20,
+      //     token: 20,
+      //     date: "10:10 Dec 12 2023",
+      //     status: true,
+      //   },
+      //   {
+      //     id: "2",
+      //     name: "Thomas Shelly",
+      //     contact: "khoidan@gmail.com",
+      //     voucher: 20,
+      //     token: 20,
+      //     date: "10:10 Dec 12 2023",
+      //     status: false,
+      //   },
+      //   {
+      //     id: "3",
+      //     name: "Thomas Shelly",
+      //     contact: "khoidan@gmail.com",
+      //     voucher: 20,
+      //     token: 20,
+      //     date: "10:10 Dec 12 2023",
+      //     status: true,
+      //   },
+      //   {
+      //     id: "4",
+      //     name: "Thomas Shelly",
+      //     contact: "khoidan@gmail.com",
+      //     voucher: 20,
+      //     token: 20,
+      //     date: "10:10 Dec 12 2023",
+      //     status: false,
+      //   },
+      //   {
+      //     id: "5",
+      //     name: "Thomas Shelly",
+      //     contact: "khoidan@gmail.com",
+      //     voucher: 20,
+      //     token: 20,
+      //     date: "10:10 Dec 12 2023",
+      //     status: true,
+      //   },
+      //   {
+      //     id: "6",
+      //     name: "Thomas Shelly",
+      //     contact: "khoidan@gmail.com",
+      //     voucher: 20,
+      //     token: 20,
+      //     date: "10:10 Dec 12 2023",
+      //     status: true,
+      //   },
+      //   {
+      //     id: "7",
+      //     name: "Thomas Shelly",
+      //     contact: "khoidan@gmail.com",
+      //     voucher: 20,
+      //     token: 20,
+      //     date: "10:10 Dec 12 2023",
+      //     status: true,
+      //   },
+      //   {
+      //     id: "8",
+      //     name: "Thomas Shelly",
+      //     contact: "khoidan@gmail.com",
+      //     voucher: 20,
+      //     token: 20,
+      //     date: "10:10 Dec 12 2023",
+      //     status: true,
+      //   },
+      //   {
+      //     id: "9",
+      //     name: "Thomas Shelly",
+      //     contact: "khoidan@gmail.com",
+      //     voucher: 20,
+      //     token: 20,
+      //     date: "10:10 Dec 12 2023",
+      //     status: true,
+      //   },
+      //   {
+      //     id: "10",
+      //     name: "Thomas Shelly",
+      //     contact: "khoidan@gmail.com",
+      //     voucher: 20,
+      //     token: 20,
+      //     date: "10:10 Dec 12 2023",
+      //     status: true,
+      //   },
+      // ],
     };
   },
   computed: {
     ...mapStores(userStore),
     ...mapStores(voucherStore),
+    ...mapStores(managementStore),
   },
   methods: {
     handleClick(value) {
