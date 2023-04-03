@@ -211,6 +211,17 @@ body {
 .v-sheet.v-snack__wrapper {
   border-radius: 12px;
 }
+.v-text-field.v-text-field--enclosed .v-text-field__details {
+  margin-bottom: 0px !important;
+}
+.v-input--dense > .v-input__control > .v-input__slot {
+  margin-bottom: 0px !important;
+}
+.v-text-field__details,
+.v-messages {
+  min-height: 10px !important;
+  min-width: 1px;
+}
 
 //Other
 .picture-inner {

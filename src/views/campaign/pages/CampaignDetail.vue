@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/no-deprecated-filter -->
 <template>
   <div>
     <div>
@@ -18,61 +19,112 @@
       <v-row>
         <v-col cols="12" md="5">
           <v-img
-            height="100px"
+            height="120px"
             class="border-radius-6"
-            :src="campaignStore.campaign.thumbnailUrl"
+            :src="categoryThumbnail"
             :position="'center 70%'"
           ></v-img>
           <div class="mt-2">
             <div class="text-md neutral70--text font-weight-bold">
               Campaign name
             </div>
-            <div
-              class="info-field border-radius-6 pa-2 mt-1 d-flex align-center"
+            <v-text-field
+              v-model="campaignStore.campaign.title"
+              class="border-radius-6 mt-1 flex-grow-1 d-flex flex-column"
+              placeholder="Description"
+              background-color="primary10"
+              flat
+              solo
+              filled
+              dense
+              disabled
             >
-              {{ campaignStore.campaign.title }}
-            </div>
+            </v-text-field>
           </div>
-          <div class="mt-2">
+          <div>
             <div class="text-md neutral70--text font-weight-bold">Category</div>
-            <div
-              class="info-field border-radius-6 pa-2 mt-1 d-flex align-center"
+            <v-select
+              v-model="campaignStore.campaign.campaignCategory"
+              :items="campaignStore.categories"
+              background-color="primary10"
+              item-text="name"
+              item-value="id"
+              class="border-radius-6 mt-1"
+              placeholder="Filter by Category"
+              return-object
+              disabled
+              flat
+              solo
+              dense
             >
-              <v-img class="category-icon mr-2" :src="categoryIcon"></v-img>
-              <div>{{ categoryName }}</div>
-            </div>
+              <template v-slot:item="{ item }">
+                <div class="d-flex align-center">
+                  <v-img class="category-icon mr-2" :src="item.icon" />
+                  <div>{{ item.name }}</div>
+                </div>
+              </template>
+              <template v-slot:selection="{ item }">
+                <div class="d-flex align-center">
+                  <v-img class="category-icon mr-2" :src="item.icon" />
+                  <div>{{ item.name }}</div>
+                </div>
+              </template>
+            </v-select>
           </div>
-          <div class="mt-2">
+          <div>
             <div class="text-md neutral70--text font-weight-bold">
               Market Price
             </div>
-            <div
-              class="info-field border-radius-6 pa-2 mt-1 d-flex align-center"
+            <v-text-field
+              v-model="campaignStore.campaign.price"
+              class="border-radius-6 mt-1"
+              placeholder="Description"
+              background-color="primary10"
+              flat
+              solo
+              filled
+              dense
+              disabled
             >
-              <v-img
-                class="category-icon mr-2"
-                :src="require('@/assets/redeem/coin.webp')"
-              ></v-img>
-              <div>{{ campaignStore.campaign.price }}</div>
-            </div>
+              <template v-slot:prepend-inner>
+                <v-img
+                  class="category-icon mr-1"
+                  :src="require('@/assets/redeem/coin.webp')"
+                ></v-img>
+              </template>
+            </v-text-field>
           </div>
-          <div class="mt-2">
+          <div>
             <div class="text-md neutral70--text font-weight-bold">
               Voucher Status
             </div>
-            <div
-              class="info-field border-radius-6 pa-2 mt-1 d-flex align-center"
-            >
-              <div>New Deal</div>
-            </div>
+            <v-select
+              v-model="campaignStore.campaign.status"
+              :items="campaignStore.statusSelection"
+              background-color="primary10"
+              item-text="title"
+              item-value="value"
+              class="border-radius-6 mt-1"
+              placeholder="Status"
+              disabled
+              flat
+              solo
+              dense
+            ></v-select>
           </div>
-          <div class="mt-2">
+          <div>
             <div class="text-md neutral70--text font-weight-bold">Quantity</div>
-            <div
-              class="info-field border-radius-6 pa-2 mt-1 d-flex align-center"
-            >
-              <div>1000</div>
-            </div>
+            <v-text-field
+              v-model="campaignStore.campaign.totalQuantity"
+              class="border-radius-6 mt-1"
+              placeholder="Quantity"
+              background-color="primary10"
+              flat
+              solo
+              filled
+              dense
+              disabled
+            ></v-text-field>
           </div>
           <div class="mt-2">
             <div class="text-md neutral70--text font-weight-bold">
@@ -81,7 +133,13 @@
             <div
               class="info-field border-radius-6 pa-2 mt-1 d-flex align-center"
             >
-              <div>1000</div>
+              <div>
+                {{
+                  campaignStore.campaign.startDate || $moment.now() | ddmmyyyy
+                }}
+                -
+                {{ campaignStore.campaign.endDate || $moment.now() | ddmmyyyy }}
+              </div>
             </div>
           </div>
         </v-col>
@@ -91,6 +149,7 @@
               Short Description
             </div>
             <v-textarea
+              v-model="campaignStore.campaign.shortDescription"
               class="border-radius-6 mt-1"
               placeholder="Short Description"
               background-color="primary10"
@@ -107,6 +166,7 @@
               Description
             </div>
             <v-textarea
+              v-model="campaignStore.campaign.fullDescription"
               class="border-radius-6 mt-1 flex-grow-1 d-flex flex-column"
               placeholder="Description"
               background-color="primary10"
@@ -125,6 +185,7 @@
     <div class="d-flex align-center justify-space-between mt-6">
       <div class="text-lg font-weight-bold">Transaction History</div>
       <v-text-field
+        v-model="campaignStore.transactionSearchKey"
         class="search-field border-radius-6"
         placeholder="Search"
         prepend-inner-icon="mdi-magnify"
@@ -139,34 +200,35 @@
       <v-data-table
         class="px-3 pb-3"
         :headers="headers"
-        :items="categories"
+        :items="campaignStore.slicedTransactions"
         hide-default-footer
       >
-        <template v-slot:[`item.id`]="{ index }">
+        <template v-slot:[`item.id`]="{ item }">
           <div class="text-center neutral50--text">
-            {{ index + 1 }}
+            {{ item.id }}
           </div>
         </template>
-        <template v-slot:[`item.icon`]="{ item }">
-          <div class="category-icon">
-            <v-img :src="item.icon"></v-img>
+        <template v-slot:[`item.user`]="{ item }">
+          <div class="text-capitalize">
+            {{ item.user.data.attributes.username }}
           </div>
         </template>
-        <template v-slot:[`item.action`]="{}">
-          <v-btn icon>
-            <v-icon color="neutral40">mdi-trash-can-outline</v-icon>
-          </v-btn>
+        <template v-slot:[`item.createdAt`]="{ item }">
+          <div class="text-capitalize">
+            {{ item.createdAt | ddmmyyyyhhmmss }}
+          </div>
         </template>
       </v-data-table>
     </div>
 
     <div class="d-flex align-center justify-space-between mt-3">
       <div class="neutral70--text text-sm font-weight-bold">
-        Total transaction: 12
+        Total transaction: {{ campaignStore.transactions.length }}
       </div>
       <v-pagination
         class="pa-0 mr-n2"
-        :length="1"
+        v-model="campaignStore.transactionPage"
+        :length="campaignStore.totalTransactionPage"
         color="primary"
       ></v-pagination>
     </div>
@@ -177,41 +239,19 @@
 import { campaignStore } from "../stores/campaignStore";
 import { mapStores } from "pinia";
 import { get } from "lodash";
+import CampaignHelper from "@/helpers/campaign-helper";
+
 export default {
   data() {
     return {
+      campaignHelper: CampaignHelper,
       campaignId: 0,
-      categories: [
-        {
-          user: "Tung",
-          createdAt: "10:10 Dec 12 2023",
-          quantity: 1,
-          code: "67869fdfsdj20lkbv",
-        },
-        {
-          user: "Tung",
-          createdAt: "10:10 Dec 12 2023",
-          quantity: 1,
-          code: "67869fdfsdj20lkbv",
-        },
-        {
-          user: "Tung",
-          createdAt: "10:10 Dec 12 2023",
-          quantity: 1,
-          code: "67869fdfsdj20lkbv",
-        },
-        {
-          user: "Tung",
-          createdAt: "10:10 Dec 12 2023",
-          quantity: 1,
-          code: "67869fdfsdj20lkbv",
-        },
-      ],
       headers: [
         {
           text: "No.",
           value: "id",
           align: "center",
+          sortable: false,
         },
         {
           text: "User",
@@ -219,12 +259,7 @@ export default {
           align: "center",
         },
         {
-          text: "Quantity",
-          value: "quantity",
-          align: "center",
-        },
-        {
-          text: "Date Created",
+          text: "Date",
           value: "createdAt",
           align: "center",
         },
@@ -232,6 +267,7 @@ export default {
           text: "Code",
           value: "code",
           align: "center",
+          sortable: false,
         },
       ],
     };
@@ -252,12 +288,40 @@ export default {
         "Category Name"
       );
     },
+    categoryThumbnail() {
+      return get(
+        this.campaignStore.campaign,
+        "thumbnailUrl",
+        require("@/assets/home/image1.webp")
+      );
+    },
+    campaignTitle() {
+      return get(this.campaignStore, "campaign.title", "Campaign Name");
+    },
+    campaignPrice() {
+      return get(this.campaignStore, "campaign.price", 0);
+    },
+    campaignQuantity() {
+      return get(this.campaignStore, "campaign.totalQuantity", 0);
+    },
+    campaignStartDate() {
+      return get(this.campaignStore, "campaign.startDate", this.$moment.now());
+    },
+    campaignEndDate() {
+      return get(this.campaignStore, "campaign.endDate", this.$moment.now());
+    },
+    campaignStatus() {
+      return get(this.campaignStore, "campaign.status", "active");
+    },
   },
+  methods: {},
   async created() {
     this.campaignId = this.$route.params.id;
     if (!this.campaignId) this.$router.push("/");
     await this.campaignStore.fetchCampaign(this.campaignId);
     if (!this.campaignStore.campaign) this.$router.push("/");
+    await this.campaignStore.fetchCategories();
+    await this.campaignStore.fetchCampaignTransactions();
   },
 };
 </script>
@@ -268,5 +332,8 @@ export default {
 }
 .search-field {
   max-width: 240px;
+}
+.category-icon {
+  width: 16px !important;
 }
 </style>
