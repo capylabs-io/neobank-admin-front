@@ -32,7 +32,7 @@
         <v-list class="py-0">
           <v-list-item
             class="border-radius-8 py-0 px-2"
-            to="/"
+            to="/dash-board-maintainer"
             active-class="active-item"
             dense
             link

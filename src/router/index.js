@@ -37,6 +37,18 @@ const routes = [
         component: () =>
           import("../views/category/pages/CategoryDashboard.vue"),
       },
+      {
+        path: "/dash-board-maintainer",
+        name: "Dashboard Maintainer",
+        component: () =>
+          import("../views/dashboard/pages/maintainer-dashboard.vue"),
+      },
+      {
+        path: "/dash-board-partner",
+        name: "Dashboard Partner",
+        component: () =>
+          import("../views/dashboard/pages/partner-dashboard.vue"),
+      },
     ],
   },
 ];
