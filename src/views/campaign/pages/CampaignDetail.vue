@@ -20,7 +20,7 @@
           <v-img
             height="100px"
             class="border-radius-6"
-            :src="require('@/assets/home/image1.webp')"
+            :src="campaignStore.campaign.thumbnailUrl"
             :position="'center 70%'"
           ></v-img>
           <div class="mt-2">
@@ -30,13 +30,16 @@
             <div
               class="info-field border-radius-6 pa-2 mt-1 d-flex align-center"
             >
-              <v-img
-                class="category-icon mr-2"
-                :src="
-                  require('@/assets/views/category/category-icon-example.png')
-                "
-              ></v-img>
-              <div>Movie</div>
+              {{ campaignStore.campaign.title }}
+            </div>
+          </div>
+          <div class="mt-2">
+            <div class="text-md neutral70--text font-weight-bold">Category</div>
+            <div
+              class="info-field border-radius-6 pa-2 mt-1 d-flex align-center"
+            >
+              <v-img class="category-icon mr-2" :src="categoryIcon"></v-img>
+              <div>{{ categoryName }}</div>
             </div>
           </div>
           <div class="mt-2">
@@ -50,7 +53,7 @@
                 class="category-icon mr-2"
                 :src="require('@/assets/redeem/coin.webp')"
               ></v-img>
-              <div>1000</div>
+              <div>{{ campaignStore.campaign.price }}</div>
             </div>
           </div>
           <div class="mt-2">
@@ -171,9 +174,13 @@
 </template>
 
 <script>
+import { campaignStore } from "../stores/campaignStore";
+import { mapStores } from "pinia";
+import { get } from "lodash";
 export default {
   data() {
     return {
+      campaignId: 0,
       categories: [
         {
           user: "Tung",
@@ -228,6 +235,29 @@ export default {
         },
       ],
     };
+  },
+  computed: {
+    ...mapStores(campaignStore),
+    categoryIcon() {
+      return get(
+        this.campaignStore,
+        "campaign.campaignCategory.iconUrl",
+        require("@/assets/views/category/category-icon-example.png")
+      );
+    },
+    categoryName() {
+      return get(
+        this.campaignStore,
+        "campaign.campaignCategory.name",
+        "Category Name"
+      );
+    },
+  },
+  async created() {
+    this.campaignId = this.$route.params.id;
+    if (!this.campaignId) this.$router.push("/");
+    await this.campaignStore.fetchCampaign(this.campaignId);
+    if (!this.campaignStore.campaign) this.$router.push("/");
   },
 };
 </script>

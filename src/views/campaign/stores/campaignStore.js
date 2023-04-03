@@ -6,6 +6,7 @@ import { Campaign, Maintainer, Category } from "@/plugins/api";
 
 export const campaignStore = defineStore("campaign", {
   state: () => ({
+    campaign: null,
     campaigns: [],
     campaignsPerPage: 6,
     campaignPage: 1,
@@ -72,6 +73,10 @@ export const campaignStore = defineStore("campaign", {
       {
         title: "Active",
         value: "active",
+      },
+      {
+        title: "Out of Stock",
+        value: "outOfStock",
       },
     ],
     filterPartner: [],
@@ -178,6 +183,30 @@ export const campaignStore = defineStore("campaign", {
           return removedFilter.id == filter.id;
         });
         this.filterCategory.splice(indexOfObject, 1);
+      }
+    },
+    async fetchCampaign(campaignId) {
+      try {
+        loading.show();
+        const res = await Campaign.fetchCampaignDetail(campaignId);
+        if (!res) {
+          alert.error("Error occurred!", "Please try again later!");
+          return;
+        }
+        const campaign = get(res, "data.data", null);
+        this.campaign = {
+          id: campaign.id,
+          ...campaign.attributes,
+        };
+        if (this.campaign.campaignCategory)
+          this.campaign.campaignCategory = {
+            id: this.campaign.campaignCategory.data.id,
+            ...this.campaign.campaignCategory.data.attributes,
+          };
+        console.log("this.campaign", this.campaign);
+      } catch (error) {
+      } finally {
+        loading.hide();
       }
     },
     async fetchCampaigns() {

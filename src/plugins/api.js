@@ -13,7 +13,7 @@ const APIHelper = (api) => ({
   search: (params, option) => axios.get(api, { params: utils.filterObject(params) }, option),
   count: (params, option) => axios.get(api + "count", { params: utils.filterObject(params) }, option),
   fetch: (params, option) => axios.get(api, { params: utils.filterObject(params) }, option),
-  fetchOne: (id, option) => axios.get(api + id, option),
+  fetchOne: (id, option) => axios.get(api + "/" + id, option),
   create: (params, options) => axios.post(api, utils.filterObject(params), options),
   update: (id, params, option) => axios.put(api + id, utils.filterObject(params), option),
   remove: (id, option) => axios.delete(api + id, option),
@@ -115,4 +115,7 @@ export const Maintainer = {
 
 export const Campaign = {
   ...APIHelper(CAMPAIGN_API),
+  fetchCampaignDetail: (campaignId) => {
+    return axios.get(`campaigns/${campaignId}?populate[0]=campaignCategory`);
+  },
 };
