@@ -26,5 +26,6 @@ export default {
 }
 .container {
   max-width: 1400px;
+  animation: fadeleft 1s ease-in-out;
 }
 </style>
