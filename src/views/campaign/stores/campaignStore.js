@@ -3,6 +3,7 @@ import { get } from "lodash-es";
 import loading from "@/plugins/loading";
 import alert from "@/plugins/alert";
 import { Campaign, Maintainer, Category, Common } from "@/plugins/api";
+import router from "@/router";
 
 export const campaignStore = defineStore("campaign", {
   state: () => ({
@@ -432,6 +433,42 @@ export const campaignStore = defineStore("campaign", {
           ...updatedCampaign.attributes,
         };
         alert.success("Disable campaign successfully!");
+      } catch (error) {
+      } finally {
+        loading.hide();
+      }
+    },
+    async createCampaign() {
+      try {
+        loading.show();
+        let uploadedThumbnailUrl = "";
+        if (this.campaignInputAvatar) {
+          const res = await this.uploadFile();
+          if (!res) {
+            alert.error("Error occurred when uploading icon!", "Please try again later!");
+            return;
+          }
+          uploadedThumbnailUrl = res;
+        }
+        const res = await Campaign.create({
+          data: {
+            ...this.campaign,
+            thumbnailUrl: uploadedThumbnailUrl,
+            status: "active",
+            isActive: true,
+          },
+        });
+        if (!res) {
+          alert.error("Error occurred!", "Please try again later!");
+          return;
+        }
+        const updatedCampaign = get(res, "data.data", {});
+        this.campaign = {
+          id: updatedCampaign.id,
+          ...updatedCampaign.attributes,
+        };
+        alert.success("Create campaign successfully!");
+        router.push("/campaign");
       } catch (error) {
       } finally {
         loading.hide();

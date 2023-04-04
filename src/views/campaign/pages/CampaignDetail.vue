@@ -169,6 +169,7 @@ export default {
     if (!this.campaignStore.campaign) this.$router.push("/");
     await this.campaignStore.fetchCategories();
     await this.campaignStore.fetchCampaignTransactions();
+    this.campaignStore.isEditing = false;
   },
 };
 </script>

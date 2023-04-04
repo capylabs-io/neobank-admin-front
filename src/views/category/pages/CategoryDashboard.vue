@@ -19,7 +19,7 @@
           hide-details
         ></v-text-field>
         <v-btn
-          class="text-none border-radius-6 ml-4"
+          class="text-none text-btn border-radius-6 ml-4"
           color="primary"
           elevation="0"
           @click="onCreateClicked"

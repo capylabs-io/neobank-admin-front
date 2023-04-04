@@ -66,7 +66,7 @@
                 :disabled="!campaignStore.isEditing"
                 v-model="campaignStore.campaign.title"
                 class="border-radius-6 mt-1 flex-grow-1 d-flex flex-column"
-                placeholder="Description"
+                placeholder="Campaign Name"
                 flat
                 solo
                 filled
@@ -117,7 +117,7 @@
                 :disabled="!campaignStore.isEditing"
                 v-model="campaignStore.campaign.price"
                 class="border-radius-6 mt-1"
-                placeholder="Description"
+                placeholder="Ex: 1000"
                 flat
                 solo
                 filled
@@ -141,7 +141,7 @@
                 :disabled="!campaignStore.isEditing"
                 v-model="campaignStore.campaign.totalQuantity"
                 class="border-radius-6 mt-1"
-                placeholder="Quantity"
+                placeholder="Ex: 100"
                 flat
                 solo
                 filled
@@ -176,7 +176,7 @@
                 </div>
               </div>
             </div>
-            <div class="mt-4">
+            <div class="mt-4" v-if="!isCreate">
               <div class="text-sm neutral70--text font-weight-bold">
                 Voucher Status
               </div>
@@ -246,6 +246,12 @@ import { get } from "lodash";
 import PictureInput from "vue-picture-input";
 
 export default {
+  props: {
+    isCreate: {
+      type: Boolean,
+      default: false,
+    },
+  },
   components: {
     PictureInput,
     RangeDatePicker: () => import("@/components/RangeDatePicker.vue"),
@@ -263,12 +269,17 @@ export default {
   computed: {
     ...mapStores(campaignStore),
     campaignThumbnail() {
-      const image = get(
+      if (
+        !this.campaignStore ||
+        !this.campaignStore.campaign ||
+        !this.campaignStore.campaign.id
+      )
+        return null;
+      return get(
         this.campaignStore,
         "campaign.thumbnailUrl",
-        require("@/assets/home/intro-background.webp")
+        require("@/assets/components/upload-icon.png")
       );
-      return image ?? require("@/assets/home/intro-background.webp");
     },
     categoryIcon() {
       return get(

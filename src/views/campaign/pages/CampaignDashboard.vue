@@ -98,7 +98,7 @@
           <v-chip color="primary" label>All </v-chip>
         </div>
       </div>
-      <div>
+      <div class="d-flex align-center">
         <v-text-field
           v-model="campaignStore.searchKey"
           class="border-radius-6"
@@ -111,6 +111,15 @@
           hide-details
           clearable
         ></v-text-field>
+        <v-btn
+          class="text-none text-btn ml-4"
+          color="primary"
+          @click="goToCreateCampaign"
+          depressed
+        >
+          <v-icon class="mr-1" small>mdi-plus</v-icon>
+          Create
+        </v-btn>
       </div>
     </div>
 
@@ -148,6 +157,11 @@ import { campaignStore } from "../stores/campaignStore";
 export default {
   computed: {
     ...mapStores(campaignStore),
+  },
+  methods: {
+    goToCreateCampaign() {
+      this.$router.push("/create-campaign");
+    },
   },
   components: {
     CampaignCard: () => import("../components/campaign-card.vue"),
