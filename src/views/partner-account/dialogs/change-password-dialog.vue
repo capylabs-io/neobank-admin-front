@@ -1,5 +1,10 @@
 <template>
-  <v-dialog v-model="ChangeDialog" max-width="432px" persistent absolute>
+  <v-dialog
+    v-model="partnerStore.changePasswordDialog"
+    max-width="432px"
+    persistent
+    absolute
+  >
     <v-card class="pa-4">
       <div class="text-lg font-weight-bold text-center">Change Password</div>
       <div class="mt-4">
@@ -80,19 +85,21 @@
 </template>
 
 <script>
+import { mapStores } from "pinia";
+import { partnerStore } from "../stores/partnerStore";
 export default {
   data() {
     return {
       isShowPass1: false,
       isShowPass2: false,
       isShowPass3: false,
-      ChangeDialog: false,
     };
   },
+  computed: {
+    ...mapStores(partnerStore),
+  },
   methods: {
-    onCancelClicked() {
-      this.ChangeDialog = false;
-    },
+    onCancelClicked() {},
   },
 };
 </script>

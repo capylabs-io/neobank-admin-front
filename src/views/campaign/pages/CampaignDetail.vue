@@ -25,7 +25,7 @@
             :position="'center 70%'"
           ></v-img>
           <div class="mt-2">
-            <div class="text-md neutral70--text font-weight-bold">
+            <div class="text-sm neutral70--text font-weight-bold">
               Campaign name
             </div>
             <v-text-field
@@ -42,7 +42,7 @@
             </v-text-field>
           </div>
           <div>
-            <div class="text-md neutral70--text font-weight-bold">Category</div>
+            <div class="text-sm neutral70--text font-weight-bold">Category</div>
             <v-select
               v-model="campaignStore.campaign.campaignCategory"
               :items="campaignStore.categories"
@@ -72,7 +72,7 @@
             </v-select>
           </div>
           <div>
-            <div class="text-md neutral70--text font-weight-bold">
+            <div class="text-sm neutral70--text font-weight-bold">
               Market Price
             </div>
             <v-text-field
@@ -95,7 +95,7 @@
             </v-text-field>
           </div>
           <div>
-            <div class="text-md neutral70--text font-weight-bold">
+            <div class="text-sm neutral70--text font-weight-bold">
               Voucher Status
             </div>
             <v-select
@@ -113,7 +113,7 @@
             ></v-select>
           </div>
           <div>
-            <div class="text-md neutral70--text font-weight-bold">Quantity</div>
+            <div class="text-sm neutral70--text font-weight-bold">Quantity</div>
             <v-text-field
               v-model="campaignStore.campaign.totalQuantity"
               class="border-radius-6 mt-1"
@@ -127,7 +127,7 @@
             ></v-text-field>
           </div>
           <div class="mt-2">
-            <div class="text-md neutral70--text font-weight-bold">
+            <div class="text-sm neutral70--text font-weight-bold">
               Voucher Duration
             </div>
             <div
@@ -145,7 +145,7 @@
         </v-col>
         <v-col class="d-flex flex-column" cols="12" md="7">
           <div>
-            <div class="text-md neutral70--text font-weight-bold">
+            <div class="text-sm neutral70--text font-weight-bold">
               Short Description
             </div>
             <v-textarea
@@ -162,7 +162,7 @@
             ></v-textarea>
           </div>
           <div class="flex-grow-1 mt-2 d-flex flex-column">
-            <div class="text-md neutral70--text font-weight-bold">
+            <div class="text-sm neutral70--text font-weight-bold">
               Description
             </div>
             <v-textarea
