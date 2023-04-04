@@ -11,12 +11,17 @@ const CAMPAIGN_API = "/campaigns/";
 const PARTNER_API = "/partners/";
 
 const APIHelper = (api) => ({
-  search: (params, option) => axios.get(api, { params: utils.filterObject(params) }, option),
-  count: (params, option) => axios.get(api + "count", { params: utils.filterObject(params) }, option),
-  fetch: (params, option) => axios.get(api, { params: utils.filterObject(params) }, option),
+  search: (params, option) =>
+    axios.get(api, { params: utils.filterObject(params) }, option),
+  count: (params, option) =>
+    axios.get(api + "count", { params: utils.filterObject(params) }, option),
+  fetch: (params, option) =>
+    axios.get(api, { params: utils.filterObject(params) }, option),
   fetchOne: (id, option) => axios.get(api + "/" + id, option),
-  create: (params, options) => axios.post(api, utils.filterObject(params), options),
-  update: (id, params, option) => axios.put(api + id, utils.filterObject(params), option),
+  create: (params, options) =>
+    axios.post(api, utils.filterObject(params), options),
+  update: (id, params, option) =>
+    axios.put(api + id, utils.filterObject(params), option),
   remove: (id, option) => axios.delete(api + id, option),
 });
 export const APIRespository = APIHelper;
@@ -38,7 +43,8 @@ export const Auth = {
     axios.post("auth/forgot-password", {
       email,
     }),
-  resetPassword: (resetPasswordData) => axios.post("auth/reset-password", resetPasswordData),
+  resetPassword: (resetPasswordData) =>
+    axios.post("auth/reset-password", resetPasswordData),
 };
 
 export const User = {
@@ -120,10 +126,19 @@ export const Common = {
 };
 
 export const Maintainer = {
-  fetchCampaignsByMaintainer: () => {
+  fetchCampaigns: () => {
     const user = userStore();
     if (!user.isConnected) return;
     return axios.get("maintainer/campaigns", {
+      headers: {
+        Authorization: "Bearer " + user.jwt,
+      },
+    });
+  },
+  fetchPartners() {
+    const user = userStore();
+    if (!user.isConnected) return;
+    return axios.get("maintainer/partners", {
       headers: {
         Authorization: "Bearer " + user.jwt,
       },
@@ -138,6 +153,15 @@ export const Maintainer = {
       },
     });
   },
+  createPartner: (params) => {
+    const user = userStore();
+    if (!user.isConnected) return;
+    return axios.post("maintainer/partners", params, {
+      headers: {
+        Authorization: "Bearer " + user.jwt,
+      },
+    });
+  },
 };
 
 export const Campaign = {
@@ -146,6 +170,8 @@ export const Campaign = {
     return axios.get(`campaigns/${campaignId}?populate[0]=campaignCategory`);
   },
   fetchCampaignTransactions: (campaignId) => {
-    return axios.get(`vouchers?populate[0]=user&filters[campaign][id]=${campaignId}`);
+    return axios.get(
+      `vouchers?populate[0]=user&filters[campaign][id]=${campaignId}`
+    );
   },
 };

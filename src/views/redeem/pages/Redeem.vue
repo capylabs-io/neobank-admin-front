@@ -1,7 +1,7 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <div class="redeem DMSans">
-    <createForm></createForm>
+    <!-- <createForm></createForm>
     <inventoryDrawer />
     <detail />
     <div class="redeem-content d-flex">
@@ -19,36 +19,36 @@
         <partnerManagementLayout v-else-if="userStore.index == 4" />
         <accountSetting v-else />
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
 <script>
-import leftContent from "@/views/redeem/pages/Redeem-left-content.vue";
-import rightContent from "@/views/redeem/pages/Redeem-right-content.vue";
-import dashboard from "@/views/redeem/pages/adminDashBoard.vue";
-import accountSettingVue from "@/views/redeem/pages/account-setting.vue";
+// import leftContent from "@/views/redeem/pages/Redeem-left-content.vue";
+// import rightContent from "@/views/redeem/pages/Redeem-right-content.vue";
+// import dashboard from "@/views/redeem/pages/adminDashBoard.vue";
+// import accountSettingVue from "@/views/redeem/pages/account-setting.vue";
 // import userManagement from "@/views/redeem/pages/user-management.vue";
-import userManagementLayout from "@/views/redeem/pages/user-management-layout.vue";
-import partnerManagementLayout from "@/views/redeem/pages/partner-management-layout.vue";
-import detailDrawer from "@/views/redeem/components/card-detail-drawer.vue";
-import inventoryDrawer from "@/views/redeem/components/inventory-card-drawer.vue";
-import createForm from "@/views/redeem/components/partner-create-form.vue";
+// import userManagementLayout from "@/views/redeem/pages/user-management-layout.vue";
+// import partnerManagementLayout from "@/views/redeem/pages/partner-management-layout.vue";
+// import detailDrawer from "@/views/redeem/components/card-detail-drawer.vue";
+// import inventoryDrawer from "@/views/redeem/components/inventory-card-drawer.vue";
+// import createForm from "@/views/redeem/components/partner-create-form.vue";
 
 import { mapStores } from "pinia";
 import { userStore } from "../../../stores/userStore";
 
 export default {
   components: {
-    rightContent: rightContent,
-    leftContent: leftContent,
-    dashboard: dashboard,
-    detail: detailDrawer,
-    inventoryDrawer: inventoryDrawer,
-    accountSetting: accountSettingVue,
-    userManagementLayout: userManagementLayout,
-    partnerManagementLayout: partnerManagementLayout,
-    createForm: createForm,
+    // rightContent: rightContent,
+    // leftContent: leftContent,
+    // dashboard: dashboard,
+    // detail: detailDrawer,
+    // inventoryDrawer: inventoryDrawer,
+    // accountSetting: accountSettingVue,
+    // userManagementLayout: userManagementLayout,
+    // partnerManagementLayout: partnerManagementLayout,
+    // createForm: createForm,
   },
   computed: {
     ...mapStores(userStore),

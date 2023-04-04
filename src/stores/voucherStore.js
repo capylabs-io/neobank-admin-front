@@ -4,32 +4,30 @@ import { Auth, Voucher } from "@/plugins/api.js";
 export const voucherStore = defineStore(
   "voucher",
   () => {
-    const loading = loadingController(); //store
-    const snackbar = snackBarController(); //store
-    const drawer = ref(false);
-    const drawerDetail = ref(false);
-    const cfDialog = ref(false);
-    const partnerDialog = ref(false);
-    const userDetail = ref(false);
-    const partnerDetail = ref(false);
+    // const drawer = ref(false);
+    // const drawerDetail = ref(false);
+    // const cfDialog = ref(false);
+    // const partnerDialog = ref(false);
+    // const userDetail = ref(false);
+    // const partnerDetail = ref(false);
 
-    const pageIndex = ref(1);
-    const index = ref(2);
-    const scrollY = ref(1);
-    const step = ref(1);
+    // const pageIndex = ref(1);
+    // const index = ref(2);
+    // const scrollY = ref(1);
+    // const step = ref(1);
 
-    const jwt = ref("");
-    const sortBy = ref("");
-    const voucherId = ref("");
+    // const jwt = ref("");
+    // const sortBy = ref("");
+    // const voucherId = ref("");
 
-    const vouchersPerPage = ref(10);
-    const voucherPage = ref(1);
+    // const vouchersPerPage = ref(10);
+    // const voucherPage = ref(1);
 
-    const cardData = ref({});
-    const voucherData = ref([]);
-    const voucherDataId = ref([]);
-    const voucherPurchased = ref([]);
-    const detailCard = ref({});
+    // const cardData = ref({});
+    // const voucherData = ref([]);
+    // const voucherDataId = ref([]);
+    // const voucherPurchased = ref([]);
+    // const detailCard = ref({});
     // async function fetchVoucher() {
     //   try {
     //     loading.increaseRequest();
@@ -130,36 +128,36 @@ export const voucherStore = defineStore(
 
     return {
       //computed
-      slicedVoucherStore,
-      filterVoucherStore,
-      totalVoucherPage,
+      // slicedVoucherStore,
+      // filterVoucherStore,
+      // totalVoucherPage,
       //states
-      drawer,
-      cardData,
-      index,
-      drawerDetail,
-      detailCard,
-      jwt,
-      pageIndex,
-      voucherData,
-      cfDialog,
-      voucherId,
-      scrollY,
-      voucherDataId,
-      voucherPurchased,
-      voucherPage,
-      vouchersPerPage,
-      sortBy,
-      userDetail,
-      partnerDetail,
-      partnerDialog,
-      step,
-      //action
-      fetchVoucher,
-      fetchUserVoucher,
-      purchaseVoucher,
-      checkIncludes,
-      setDetailStoreCard,
+      // drawer,
+      // cardData,
+      // index,
+      // drawerDetail,
+      // detailCard,
+      // jwt,
+      // pageIndex,
+      // voucherData,
+      // cfDialog,
+      // voucherId,
+      // scrollY,
+      // voucherDataId,
+      // voucherPurchased,
+      // voucherPage,
+      // vouchersPerPage,
+      // sortBy,
+      // userDetail,
+      // partnerDetail,
+      // partnerDialog,
+      // step,
+      // //action
+      // fetchVoucher,
+      // fetchUserVoucher,
+      // purchaseVoucher,
+      // checkIncludes,
+      // setDetailStoreCard,
     };
   },
   {

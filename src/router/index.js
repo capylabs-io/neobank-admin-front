@@ -23,7 +23,8 @@ const routes = [
       {
         path: "/campaign",
         name: "Campaign Management",
-        component: () => import("../views/campaign/pages/CampaignDashboard.vue"),
+        component: () =>
+          import("../views/campaign/pages/CampaignManagement.vue"),
       },
       {
         path: "/campaign/:id",
@@ -38,12 +39,23 @@ const routes = [
       {
         path: "/category",
         name: "Category Management",
-        component: () => import("../views/category/pages/CategoryDashboard.vue"),
+        component: () =>
+          import("../views/category/pages/CategoryManagement.vue"),
       },
       {
         path: "/account-setting",
-        name: "Account Setting",
-        component: () => import("../views/partner-account/pages/account-settings.vue"),
+        name: "Partner Account",
+        component: () => import("../views/partner/pages/PartnerDetail.vue"),
+      },
+      {
+        path: "/partner",
+        name: "Partner Management",
+        component: () => import("../views/partner/pages/PartnerManagement.vue"),
+      },
+      {
+        path: "/partner/:id",
+        name: "Partner Detail",
+        component: () => import("../views/partner/pages/PartnerDetail.vue"),
       },
     ],
   },

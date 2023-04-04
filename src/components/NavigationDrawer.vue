@@ -72,6 +72,34 @@
           </v-list-item>
           <v-list-item
             class="border-radius-8 py-0 px-2 mt-2"
+            to="/partner"
+            active-class="active-item"
+            dense
+            link
+          >
+            <v-list-item-icon class="mr-2">
+              <v-icon>mdi-account </v-icon>
+            </v-list-item-icon>
+            <v-list-item-title class="text-md"
+              >Partner Management</v-list-item-title
+            >
+          </v-list-item>
+          <v-list-item
+            class="border-radius-8 py-0 px-2 mt-2"
+            to="/user"
+            active-class="active-item"
+            dense
+            link
+          >
+            <v-list-item-icon class="mr-2">
+              <v-icon>mdi-account </v-icon>
+            </v-list-item-icon>
+            <v-list-item-title class="text-md"
+              >User Management</v-list-item-title
+            >
+          </v-list-item>
+          <v-list-item
+            class="border-radius-8 py-0 px-2 mt-2"
             to="/account-setting"
             active-class="active-item"
             dense

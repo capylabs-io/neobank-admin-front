@@ -2,8 +2,9 @@ import { defineStore } from "pinia";
 import { get } from "lodash-es";
 import loading from "@/plugins/loading";
 import alert from "@/plugins/alert";
-import { Partner, User, Common } from "@/plugins/api";
+import { Partner, User, Common, Maintainer } from "@/plugins/api";
 import moment from "moment";
+import router from "@/router";
 
 export const partnerStore = defineStore("partner", {
   state: () => ({
@@ -15,8 +16,45 @@ export const partnerStore = defineStore("partner", {
     changePasswordDialog: false,
     inputAvatar: null,
     brandInfoForm: false,
+
+    partners: [],
+    partnersPerPage: 10,
+    partnerPage: 1,
+    searchKey: "",
+    createPartnerDialog: false,
+    createPartnerStep: 1,
   }),
-  getters: {},
+  getters: {
+    filteredPartners() {
+      if (!this.partners || this.partners.length == 0) return [];
+      if (!this.searchKey) return this.partners;
+      return this.partners.filter(
+        (partner) =>
+          partner.brandName
+            .toLowerCase()
+            .includes(this.searchKey.trim().toLowerCase()) ||
+          partner.email
+            .toLowerCase()
+            .includes(this.searchKey.trim().toLowerCase())
+      );
+    },
+    slicedPartners() {
+      if (!this.partners || this.partners.length == 0) return [];
+      return this.filteredPartners.slice(
+        (this.partnerPage - 1) * this.partnersPerPage,
+        this.partnerPage * this.partnersPerPage
+      );
+    },
+    totalPartnerPage() {
+      if (!this.partners || this.partners.length == 0) return 1;
+      if (this.filteredPartners.length % this.partnersPerPage == 0)
+        return this.filteredPartners.length / this.partnersPerPage;
+      else
+        return (
+          Math.floor(this.filteredPartners.length / this.partnersPerPage) + 1
+        );
+    },
+  },
   actions: {
     changePartnerAvatar(image) {
       if (!image) return;
@@ -39,6 +77,21 @@ export const partnerStore = defineStore("partner", {
         loading.hide();
       }
     },
+    async fetchPartners() {
+      try {
+        loading.show();
+        const res = await Maintainer.fetchPartners();
+        if (!res) {
+          alert.error("Error occurred!", "Please try again later!");
+          return;
+        }
+        this.partners = get(res, "data", []);
+      } catch (error) {
+        alert.error("Error occurred!", error);
+      } finally {
+        loading.hide();
+      }
+    },
     async updateBrandInfo() {
       try {
         loading.show();
@@ -47,7 +100,10 @@ export const partnerStore = defineStore("partner", {
         if (this.inputAvatar) {
           const res = await this.uploadFile();
           if (!res) {
-            alert.error("Error occurred when uploading icon!", "Please try again later!");
+            alert.error(
+              "Error occurred when uploading icon!",
+              "Please try again later!"
+            );
             return;
           }
           uploadedAvatarUrl = res;
@@ -125,9 +181,46 @@ export const partnerStore = defineStore("partner", {
     async changePassword(currentPassword, newPassword, confirmPassword) {
       try {
         loading.show();
-        await User.changePassword(currentPassword, newPassword, confirmPassword);
+        await User.changePassword(
+          currentPassword,
+          newPassword,
+          confirmPassword
+        );
         alert.success("Change password successfully!");
         this.changePasswordDialog = false;
+      } catch (error) {
+        console.log("error", error);
+        alert.error("Error occurred!", error.message);
+      } finally {
+        loading.hide();
+      }
+    },
+    async createPartner() {
+      try {
+        loading.show();
+        if (!this.partner) return;
+        let uploadedAvatarUrl = this.partner.avatarUrl;
+        if (this.inputAvatar) {
+          const res = await this.uploadFile();
+          if (!res) {
+            alert.error(
+              "Error occurred when uploading icon!",
+              "Please try again later!"
+            );
+            return;
+          }
+          uploadedAvatarUrl = res;
+        }
+        await Maintainer.createPartner({
+          ...this.partner,
+          avatarUrl: uploadedAvatarUrl,
+          brandEmail: this.partner.email,
+          ...this.userMetadata,
+          email: this.partner.email,
+        });
+        alert.success("Create Partner successfully!");
+        this.createPartnerDialog = false;
+        await this.fetchPartners();
       } catch (error) {
         console.log("error", error);
         alert.error("Error occurred!", error.message);
