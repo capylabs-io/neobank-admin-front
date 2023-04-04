@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
-import { Auth, Voucher } from "@/plugins/api.js";
+import { Auth, User } from "@/plugins/api.js";
 import loading from "@/plugins/loading";
 import alert from "@/plugins/alert";
 export const userStore = defineStore(
@@ -49,6 +49,7 @@ export const userStore = defineStore(
       jwt.value = "";
       userData.value = null;
     }
+
     const isConnected = computed(() => jwt);
     return {
       //computed

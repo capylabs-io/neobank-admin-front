@@ -103,10 +103,14 @@ export const categoryStore = defineStore("category", {
     async createNewCategory() {
       try {
         loading.show();
-        const uploadedIconUrl = await this.uploadFile();
-        if (!uploadedIconUrl) {
-          alert.error("Error occurred when uploading icon!", "Please try again later!");
-          return;
+        let uploadedIconUrl = "";
+        if (this.categoryIcon) {
+          const res = await this.uploadFile();
+          if (!res) {
+            alert.error("Error occurred when uploading icon!", "Please try again later!");
+            return;
+          }
+          uploadedIconUrl = res;
         }
         const res = await Category.create({
           data: {

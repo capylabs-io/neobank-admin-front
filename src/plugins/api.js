@@ -6,21 +6,17 @@ import { userStore } from "@/stores/userStore";
 axios.defaults.baseURL = "https://neobank-dev-api.capylabs.io/api/";
 
 const USER_API = "/users/";
-const CATEGORY_API = "/campaign-categories";
-const CAMPAIGN_API = "/campaigns";
+const CATEGORY_API = "/campaign-categories/";
+const CAMPAIGN_API = "/campaigns/";
+const PARTNER_API = "/partners/";
 
 const APIHelper = (api) => ({
-  search: (params, option) =>
-    axios.get(api, { params: utils.filterObject(params) }, option),
-  count: (params, option) =>
-    axios.get(api + "count", { params: utils.filterObject(params) }, option),
-  fetch: (params, option) =>
-    axios.get(api, { params: utils.filterObject(params) }, option),
+  search: (params, option) => axios.get(api, { params: utils.filterObject(params) }, option),
+  count: (params, option) => axios.get(api + "count", { params: utils.filterObject(params) }, option),
+  fetch: (params, option) => axios.get(api, { params: utils.filterObject(params) }, option),
   fetchOne: (id, option) => axios.get(api + "/" + id, option),
-  create: (params, options) =>
-    axios.post(api, utils.filterObject(params), options),
-  update: (id, params, option) =>
-    axios.put(api + id, utils.filterObject(params), option),
+  create: (params, options) => axios.post(api, utils.filterObject(params), options),
+  update: (id, params, option) => axios.put(api + id, utils.filterObject(params), option),
   remove: (id, option) => axios.delete(api + id, option),
 });
 export const APIRespository = APIHelper;
@@ -42,18 +38,28 @@ export const Auth = {
     axios.post("auth/forgot-password", {
       email,
     }),
-  resetPassword: (resetPasswordData) =>
-    axios.post("auth/reset-password", resetPasswordData),
+  resetPassword: (resetPasswordData) => axios.post("auth/reset-password", resetPasswordData),
 };
 
 export const User = {
   ...APIHelper(USER_API),
-  changePassword: (currentPassword, newPassword, confirmNewPassword) =>
-    axios.post("users/change-password", {
-      currentPassword,
-      newPassword,
-      confirmNewPassword,
-    }),
+  changePassword: (currentPassword, newPassword, confirmNewPassword) => {
+    const user = userStore();
+    if (!user.isConnected) return;
+    return axios.post(
+      "auth/change-password",
+      {
+        currentPassword: currentPassword,
+        password: newPassword,
+        passwordConfirmation: confirmNewPassword,
+      },
+      {
+        headers: {
+          Authorization: "Bearer " + user.jwt,
+        },
+      }
+    );
+  },
   updateUserInfo: (model) => axios.put("users/edit/", model),
   updateUserEmail: (email, password) =>
     axios.post("users/edit-email", {
@@ -61,9 +67,24 @@ export const User = {
       password,
     }),
 };
+
+export const Partner = {
+  ...APIHelper(PARTNER_API),
+  fetchPartnerInfo: () => {
+    const user = userStore();
+    if (!user.isConnected) return;
+    return axios.get("users/me?populate=partner", {
+      headers: {
+        Authorization: "Bearer " + user.jwt,
+      },
+    });
+  },
+};
+
 export const Category = {
   ...APIHelper(CATEGORY_API),
 };
+
 export const Voucher = {
   fetchVouchers: (token) =>
     axios.get("vouchers?pagination[limit]=-1", {
@@ -125,8 +146,6 @@ export const Campaign = {
     return axios.get(`campaigns/${campaignId}?populate[0]=campaignCategory`);
   },
   fetchCampaignTransactions: (campaignId) => {
-    return axios.get(
-      `vouchers?populate[0]=user&filters[campaign][id]=${campaignId}`
-    );
+    return axios.get(`vouchers?populate[0]=user&filters[campaign][id]=${campaignId}`);
   },
 };

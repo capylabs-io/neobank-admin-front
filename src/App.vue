@@ -104,7 +104,7 @@ body {
 }
 .text-btn {
   font-style: normal;
-  font-weight: 500 !important;
+  font-weight: 700 !important;
   font-size: 14px;
   line-height: 20px;
 }
