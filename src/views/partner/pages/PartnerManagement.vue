@@ -1,8 +1,5 @@
 <!-- eslint-disable vue/no-deprecated-filter -->
 <template>
-  <!-- <div class="d-flex flex-column align-center"> -->
-  <!-- <div class="right-container d-flex flex-column pa-6 full-height"> -->
-
   <div>
     <CreatePartnerDialog />
     <div class="d-flex align-center justify-space-between">
@@ -22,7 +19,7 @@
           >Export CSV</v-btn
         >
       </div>
-      <div class="">
+      <div>
         <v-text-field
           v-model="partnerStore.searchKey"
           class="border-radius-6"

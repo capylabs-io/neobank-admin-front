@@ -6,11 +6,6 @@ import { userStore } from "../stores/userStore";
 Vue.use(VueRouter);
 const routes = [
   {
-    path: "/redeem",
-    name: "Redeem",
-    component: () => import("../views/redeem/pages/Redeem.vue"),
-  },
-  {
     path: "/login",
     name: "Login",
     component: () => import("../views/login/pages/login-admin.vue"),
@@ -41,6 +36,16 @@ const routes = [
         name: "Category Management",
         component: () =>
           import("../views/category/pages/CategoryManagement.vue"),
+      },
+      {
+        path: "/user-management",
+        name: "User Management",
+        component: () => import("../views/user/pages/UserManagement.vue"),
+      },
+      {
+        path: "/user-detail/:id",
+        name: "User Detail",
+        component: () => import("../views/user/pages/UserDetail.vue"),
       },
       {
         path: "/account-setting",

@@ -17,7 +17,7 @@ const APIHelper = (api) => ({
     axios.get(api + "count", { params: utils.filterObject(params) }, option),
   fetch: (params, option) =>
     axios.get(api, { params: utils.filterObject(params) }, option),
-  fetchOne: (id, option) => axios.get(api + "/" + id, option),
+  fetchOne: (id, option) => axios.get(api + id, option),
   create: (params, options) =>
     axios.post(api, utils.filterObject(params), options),
   update: (id, params, option) =>
@@ -108,12 +108,12 @@ export const Voucher = {
         },
       }
     ),
-  fetchUserVouchers: (token) =>
-    axios.get("user-vouchers", {
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-    }),
+  fetchUserVouchers: (userId) =>
+    axios.get(
+      "vouchers?populate[0]=campaign&populate[1]=campaignCategory&filters[user][id]=" +
+        userId,
+      {}
+    ),
 };
 
 export const Common = {
@@ -139,6 +139,15 @@ export const Maintainer = {
     const user = userStore();
     if (!user.isConnected) return;
     return axios.get("maintainer/partners", {
+      headers: {
+        Authorization: "Bearer " + user.jwt,
+      },
+    });
+  },
+  fetchUsers() {
+    const user = userStore();
+    if (!user.isConnected) return;
+    return axios.get("maintainer/users", {
       headers: {
         Authorization: "Bearer " + user.jwt,
       },

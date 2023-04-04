@@ -3,8 +3,6 @@ import { get } from "lodash-es";
 import loading from "@/plugins/loading";
 import alert from "@/plugins/alert";
 import { Partner, User, Common, Maintainer } from "@/plugins/api";
-import moment from "moment";
-import router from "@/router";
 
 export const partnerStore = defineStore("partner", {
   state: () => ({
