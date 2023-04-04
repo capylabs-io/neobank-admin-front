@@ -65,6 +65,7 @@ export const categoryStore = defineStore("category", {
             createdAt: get(category, "attributes.createdAt", moment.now()),
             name: get(category, "attributes.name", "Category Name"),
             icon: get(category, "attributes.iconUrl", ""),
+            status: get(category, "attributes.status", "active"),
           };
         });
         this.categories = mappedCategories;
@@ -126,6 +127,26 @@ export const categoryStore = defineStore("category", {
         this.createCategoryDialog = false;
       } catch (error) {
         alert.error("Error occurred!", error.message);
+      } finally {
+        loading.hide();
+      }
+    },
+    async toggleCategory(category) {
+      try {
+        loading.show();
+        if (!category || !category.id) return;
+        const res = await Category.update(category.id, {
+          data: {
+            status: category.status && category.status == "disabled" ? "active" : "disabled",
+          },
+        });
+        if (!res) {
+          alert.error("Error occurred!", "Please try again later!");
+          return;
+        }
+        await this.fetchCategories();
+        alert.success("Update category successfully!");
+      } catch (error) {
       } finally {
         loading.hide();
       }

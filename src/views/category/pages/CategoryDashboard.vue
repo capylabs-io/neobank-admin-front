@@ -53,9 +53,35 @@
             {{ item.createdAt | ddmmyyyyhhmmss }}
           </div>
         </template>
-        <template v-slot:[`item.action`]="{}">
-          <v-btn icon>
-            <v-icon color="neutral40">mdi-trash-can-outline</v-icon>
+        <template v-slot:[`item.status`]="{ item }">
+          <div
+            class="neutral50--text"
+            v-if="item.status && item.status == 'disabled'"
+          >
+            Disabled
+          </div>
+          <div class="success--text" v-else>Active</div>
+        </template>
+        <template v-slot:[`item.action`]="{ item }">
+          <v-btn
+            class="text-none text-btn"
+            color="success"
+            v-if="item.status && item.status == 'disabled'"
+            @click="onActiveClicked(item)"
+            depressed
+            small
+          >
+            Enable
+          </v-btn>
+          <v-btn
+            class="text-none text-btn"
+            color="error"
+            @click="onDisableClicked(item)"
+            depressed
+            small
+            v-else
+          >
+            Disable
           </v-btn>
         </template>
       </v-data-table>
@@ -116,9 +142,16 @@ export default {
           align: "center",
         },
         {
+          text: "Status",
+          value: "status",
+          align: "center",
+          sortable: false,
+        },
+        {
           text: "",
           value: "action",
           align: "end",
+          sortable: false,
         },
       ],
     };
@@ -126,6 +159,29 @@ export default {
   methods: {
     onCreateClicked() {
       this.categoryStore.toggleCreateDialog(true);
+    },
+    onActiveClicked(category) {
+      this.$dialog.confirm({
+        title: "Confirm Enable Category",
+        topContent: "If you enable category, users will be able to access it!",
+        okText: "Confirm",
+        cancelText: "Cancel",
+        done: async () => {
+          await this.categoryStore.toggleCategory(category);
+        },
+      });
+    },
+    onDisableClicked(category) {
+      this.$dialog.confirm({
+        title: "Confirm Disable Category",
+        topContent:
+          "<span class='error--text'>If you disable this category, users will no longer be able to access it!</span>",
+        okText: "Confirm",
+        cancelText: "Cancel",
+        done: async () => {
+          await this.categoryStore.toggleCategory(category);
+        },
+      });
     },
   },
 };

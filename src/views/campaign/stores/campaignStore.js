@@ -2,14 +2,17 @@ import { defineStore } from "pinia";
 import { get } from "lodash-es";
 import loading from "@/plugins/loading";
 import alert from "@/plugins/alert";
-import { Campaign, Maintainer, Category } from "@/plugins/api";
+import { Campaign, Maintainer, Category, Common } from "@/plugins/api";
 
 export const campaignStore = defineStore("campaign", {
   state: () => ({
+    isEditing: false,
+    campaignForm: false,
     campaign: {},
     campaigns: [],
     campaignsPerPage: 6,
     campaignPage: 1,
+    campaignInputAvatar: null,
     searchKey: "",
     categories: [],
     partners: [],
@@ -136,28 +139,19 @@ export const campaignStore = defineStore("campaign", {
       let filtered = this.sortedCampaigns;
       if (this.searchKey)
         filtered = filtered.filter((campaign) =>
-          campaign.title
-            .toLowerCase()
-            .includes(this.searchKey.trim().toLowerCase())
+          campaign.title.toLowerCase().includes(this.searchKey.trim().toLowerCase())
         );
       if (this.filterStatus && this.filterStatus != "all") {
-        filtered = filtered.filter(
-          (campaign) => campaign.status == this.filterStatus
-        );
+        filtered = filtered.filter((campaign) => campaign.status == this.filterStatus);
       }
       if (this.filterPartner && this.filterPartner.length > 0) {
         const filterIds = this.filterPartner.map((filter) => filter.id);
-        filtered = filtered.filter(
-          (campaign) =>
-            campaign.partner && filterIds.includes(campaign.partner.id)
-        );
+        filtered = filtered.filter((campaign) => campaign.partner && filterIds.includes(campaign.partner.id));
       }
       if (this.filterCategory && this.filterCategory.length > 0) {
         const filterIds = this.filterCategory.map((filter) => filter.id);
         filtered = filtered.filter(
-          (campaign) =>
-            campaign.campaignCategory &&
-            filterIds.includes(campaign.campaignCategory.id)
+          (campaign) => campaign.campaignCategory && filterIds.includes(campaign.campaignCategory.id)
         );
       }
       return filtered;
@@ -169,26 +163,16 @@ export const campaignStore = defineStore("campaign", {
       switch (this.sortBy) {
         default:
         case "createdAt desc":
-          sortedCampaigns.sort(
-            (a, b) =>
-              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-          );
+          sortedCampaigns.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
           break;
         case "createdAt asc":
-          sortedCampaigns.sort(
-            (a, b) =>
-              new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-          );
+          sortedCampaigns.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
           break;
         case "purchasedQuantity asc":
-          sortedCampaigns.sort(
-            (a, b) => a.purchasedQuantity - b.purchasedQuantity
-          );
+          sortedCampaigns.sort((a, b) => a.purchasedQuantity - b.purchasedQuantity);
           break;
         case "purchasedQuantity desc":
-          sortedCampaigns.sort(
-            (a, b) => b.purchasedQuantity - a.purchasedQuantity
-          );
+          sortedCampaigns.sort((a, b) => b.purchasedQuantity - a.purchasedQuantity);
           break;
         case "totalQuantity asc":
           sortedCampaigns.sort((a, b) => a.totalQuantity - b.totalQuantity);
@@ -197,16 +181,10 @@ export const campaignStore = defineStore("campaign", {
           sortedCampaigns.sort((a, b) => b.totalQuantity - a.totalQuantity);
           break;
         case "expiredDate desc":
-          sortedCampaigns.sort(
-            (a, b) =>
-              new Date(b.endDate).getTime() - new Date(a.endDate).getTime()
-          );
+          sortedCampaigns.sort((a, b) => new Date(b.endDate).getTime() - new Date(a.endDate).getTime());
           break;
         case "expiredDate asc":
-          sortedCampaigns.sort(
-            (a, b) =>
-              new Date(a.endDate).getTime() - new Date(b.endDate).getTime()
-          );
+          sortedCampaigns.sort((a, b) => new Date(a.endDate).getTime() - new Date(b.endDate).getTime());
           break;
       }
       return sortedCampaigns;
@@ -222,19 +200,14 @@ export const campaignStore = defineStore("campaign", {
       if (!this.campaigns || this.filteredCampaigns.length == 0) return 1;
       if (this.filteredCampaigns.length % this.campaignsPerPage == 0)
         return this.filteredCampaigns.length / this.campaignsPerPage;
-      else
-        return (
-          Math.floor(this.filteredCampaigns.length / this.campaignsPerPage) + 1
-        );
+      else return Math.floor(this.filteredCampaigns.length / this.campaignsPerPage) + 1;
     },
     filteredTransactions() {
       if (!this.transactions || this.transactions.length == 0) return [];
       if (!this.transactionSearchKey) return this.transactions;
       return this.transactions.filter(
         (transaction) =>
-          transaction.code
-            .toLowerCase()
-            .includes(this.transactionSearchKey.trim().toLowerCase()) ||
+          transaction.code.toLowerCase().includes(this.transactionSearchKey.trim().toLowerCase()) ||
           get(transaction.user, "data.attributes.username", "")
             .toLowerCase()
             .includes(this.transactionSearchKey.trim().toLowerCase())
@@ -251,15 +224,19 @@ export const campaignStore = defineStore("campaign", {
       if (!this.transactions || this.filteredTransactions.length == 0) return 1;
       if (this.filteredTransactions.length % this.transactionsPerPage == 0)
         return this.filteredTransactions.length / this.transactionsPerPage;
-      else
-        return (
-          Math.floor(
-            this.filteredTransactions.length / this.transactionsPerPage
-          ) + 1
-        );
+      else return Math.floor(this.filteredTransactions.length / this.transactionsPerPage) + 1;
     },
   },
   actions: {
+    changeCampaignThumbnail(image) {
+      if (!image) return;
+      this.campaignInputAvatar = image;
+    },
+    changeVoucherDuration(date) {
+      if (!this.campaign || !date || date.length < 2) return;
+      this.campaign.startDate = date[0];
+      this.campaign.endDate = date[1];
+    },
     removeFilter(removedFilter) {
       if (!removedFilter) return;
       if (removedFilter.filterType == "partner") {
@@ -318,10 +295,7 @@ export const campaignStore = defineStore("campaign", {
         loading.show();
         const res = await Category.fetch();
         if (!res) {
-          alert.error(
-            "Error occurred when fetching categories!",
-            "Please try again later!"
-          );
+          alert.error("Error occurred when fetching categories!", "Please try again later!");
           return;
         }
         const categories = get(res, "data.data", []);
@@ -345,10 +319,7 @@ export const campaignStore = defineStore("campaign", {
         loading.show();
         const res = await Maintainer.fetchPartnerList();
         if (!res) {
-          alert.error(
-            "Error occurred when fetching partners!",
-            "Please try again later!"
-          );
+          alert.error("Error occurred when fetching partners!", "Please try again later!");
           return;
         }
         const partners = get(res, "data", []);
@@ -376,7 +347,91 @@ export const campaignStore = defineStore("campaign", {
             ...transaction.attributes,
           };
         });
-        console.log("transactions", this.transactions);
+      } catch (error) {
+      } finally {
+        loading.hide();
+      }
+    },
+    async uploadFile() {
+      try {
+        loading.show();
+        if (!this.campaignInputAvatar) {
+          throw new Error("Please select category icon!");
+        }
+        const formData = new FormData();
+        formData.append("files", this.campaignInputAvatar);
+        const res = await Common.uploadFile(formData);
+        if (!res) {
+          alert.error("Error occurred!", "Please try again later!");
+          return;
+        }
+        const uploadedUrls = res.data.map((data) => data.url);
+        if (!uploadedUrls || uploadedUrls.length == 0) {
+          alert.error("Error occurred!", "Please try again later!");
+          return;
+        }
+        alert.success("Upload Image successfully!");
+        return uploadedUrls[0];
+      } catch (error) {
+        alert.error("Error occurred!", error.message);
+      } finally {
+        loading.hide();
+      }
+    },
+    async updateCampaign() {
+      try {
+        loading.show();
+        if (!this.campaign || !this.campaign.id) return;
+        let uploadedThumbnailUrl = this.campaign.thumbnailUrl;
+        if (this.campaignInputAvatar) {
+          const res = await this.uploadFile();
+          if (!res) {
+            alert.error("Error occurred when uploading icon!", "Please try again later!");
+            return;
+          }
+          uploadedThumbnailUrl = res;
+        }
+        const res = await Campaign.update(this.campaign.id, {
+          data: {
+            ...this.campaign,
+            thumbnailUrl: uploadedThumbnailUrl,
+          },
+        });
+        if (!res) {
+          alert.error("Error occurred!", "Please try again later!");
+          return;
+        }
+        const updatedCampaign = get(res, "data.data", {});
+        this.campaign = {
+          id: updatedCampaign.id,
+          ...updatedCampaign.attributes,
+        };
+        this.isEditing = false;
+        alert.success("Update Campaign Detail successfully!");
+      } catch (error) {
+      } finally {
+        loading.hide();
+      }
+    },
+    async disableCampaign() {
+      try {
+        loading.show();
+        if (!this.campaign || !this.campaign.id) return;
+        const res = await Campaign.update(this.campaign.id, {
+          data: {
+            status: "disabled",
+          },
+        });
+        if (!res) {
+          alert.error("Error occurred!", "Please try again later!");
+          return;
+        }
+        const updatedCampaign = get(res, "data.data", {});
+        this.campaign = {
+          id: updatedCampaign.id,
+          ...updatedCampaign.attributes,
+        };
+        alert.success("Disable campaign successfully!");
       } catch (error) {
       } finally {
         loading.hide();

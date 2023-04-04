@@ -3,7 +3,7 @@
   <div>
     <ChangePasswordDialog />
     <div>
-      <v-btn class="px-0 text-none primary--text" text
+      <v-btn class="px-0 text-none primary--text" @click="routerGoBack" text
         ><v-icon color="primary" small>mdi-chevron-double-left</v-icon>Get
         back</v-btn
       >
@@ -421,6 +421,9 @@ export default {
     },
   },
   methods: {
+    routerGoBack() {
+      this.$router.go(-1);
+    },
     onIconSelect(image) {
       if (image) {
         const imageFile = this.$refs.pictureInput.file;

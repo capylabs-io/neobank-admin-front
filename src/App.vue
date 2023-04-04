@@ -60,6 +60,9 @@ body {
 .neutral10-bg {
   background: var(--v-neutral10-base) !important;
 }
+.white-bg {
+  background: white !important;
+}
 .neutral30-border {
   border: 1px solid var(--v-neutral30-base) !important;
 }
@@ -226,6 +229,12 @@ body {
   min-width: 1px;
 }
 
+.theme--light.v-select.v-input--is-disabled .v-select__selections,
+.theme--light.v-input--is-disabled input,
+.theme--light.v-input--is-disabled textarea {
+  color: var(--v-neutral70-base) !important;
+}
+
 //Other
 .picture-inner {
   border: none !important;
@@ -238,5 +247,16 @@ body {
 .category-icon {
   max-width: 24px !important;
   max-height: 24px !important;
+}
+.upload-container {
+  position: relative;
+}
+.upload-text {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  margin: auto;
+  transform: translateY(-50%);
 }
 </style>
