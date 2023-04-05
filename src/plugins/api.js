@@ -11,40 +11,17 @@ const CAMPAIGN_API = "/campaigns/";
 const PARTNER_API = "/partners/";
 
 const APIHelper = (api) => ({
-  search: (params, option) =>
-    axios.get(api, { params: utils.filterObject(params) }, option),
-  count: (params, option) =>
-    axios.get(api + "count", { params: utils.filterObject(params) }, option),
-  fetch: (params, option) =>
-    axios.get(api, { params: utils.filterObject(params) }, option),
+  search: (params, option) => axios.get(api, { params: utils.filterObject(params) }, option),
+  count: (params, option) => axios.get(api + "count", { params: utils.filterObject(params) }, option),
+  fetch: (params, option) => axios.get(api, { params: utils.filterObject(params) }, option),
   fetchOne: (id, option) => axios.get(api + id, option),
-  create: (params, options) =>
-    axios.post(api, utils.filterObject(params), options),
-  update: (id, params, option) =>
-    axios.put(api + id, utils.filterObject(params), option),
+  create: (params, options) => axios.post(api, utils.filterObject(params), options),
+  update: (id, params, option) => axios.put(api + id, utils.filterObject(params), option),
   remove: (id, option) => axios.delete(api + id, option),
 });
 export const APIRespository = APIHelper;
 export const Auth = {
-  register: (userData) => axios.post("auth/local/register", userData),
-  resendRegisterLink: (email) =>
-    axios.post("auth/send-email-confirmation", {
-      email,
-    }),
-  verifyRegister: (confirmCode) =>
-    axios.get("auth/email-confirmation", {
-      params: {
-        confirmation: confirmCode,
-      },
-    }),
-  // signIn: (signInData) => axios.post("auth/local", signInData),
-  signIn: (signInData) => axios.post("/maintainer/auth", signInData),
-  forgetPassword: (email) =>
-    axios.post("auth/forgot-password", {
-      email,
-    }),
-  resetPassword: (resetPasswordData) =>
-    axios.post("auth/reset-password", resetPasswordData),
+  signIn: (signInData) => axios.post("/admin/auth", signInData),
 };
 
 export const User = {
@@ -109,11 +86,7 @@ export const Voucher = {
       }
     ),
   fetchUserVouchers: (userId) =>
-    axios.get(
-      "vouchers?populate[0]=campaign&populate[1]=campaignCategory&filters[user][id]=" +
-        userId,
-      {}
-    ),
+    axios.get("vouchers?populate[0]=campaign&populate[1]=campaignCategory&filters[user][id]=" + userId, {}),
 };
 
 export const Common = {
@@ -179,8 +152,6 @@ export const Campaign = {
     return axios.get(`campaigns/${campaignId}?populate[0]=campaignCategory`);
   },
   fetchCampaignTransactions: (campaignId) => {
-    return axios.get(
-      `vouchers?populate[0]=user&filters[campaign][id]=${campaignId}`
-    );
+    return axios.get(`vouchers?populate[0]=user&filters[campaign][id]=${campaignId}`);
   },
 };

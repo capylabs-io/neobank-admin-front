@@ -16,7 +16,7 @@ export const userManagerStore = defineStore("userManager", {
     transactionPage: 1,
     transactionSearchKey: "",
     showTransactionCampaign: false,
-    currentCampaign: {}
+    currentCampaign: {},
   }),
   getters: {
     filteredUsers() {
@@ -24,9 +24,7 @@ export const userManagerStore = defineStore("userManager", {
       if (!this.searchKey) return this.users;
       return this.users.filter(
         (user) =>
-          user.username
-            .toLowerCase()
-            .includes(this.searchKey.trim().toLowerCase()) ||
+          user.username.toLowerCase().includes(this.searchKey.trim().toLowerCase()) ||
           user.email.toLowerCase().includes(this.searchKey.trim().toLowerCase())
       );
     },
@@ -48,9 +46,7 @@ export const userManagerStore = defineStore("userManager", {
       if (!this.transactionSearchKey) return this.transactions;
       return this.transactions.filter(
         (transaction) =>
-          transaction.code
-            .toLowerCase()
-            .includes(this.transactionSearchKey.trim().toLowerCase()) ||
+          transaction.code.toLowerCase().includes(this.transactionSearchKey.trim().toLowerCase()) ||
           get(transaction.user, "data.attributes.username", "")
             .toLowerCase()
             .includes(this.transactionSearchKey.trim().toLowerCase())
@@ -67,12 +63,7 @@ export const userManagerStore = defineStore("userManager", {
       if (!this.transactions || this.filteredTransactions.length == 0) return 1;
       if (this.filteredTransactions.length % this.transactionsPerPage == 0)
         return this.filteredTransactions.length / this.transactionsPerPage;
-      else
-        return (
-          Math.floor(
-            this.filteredTransactions.length / this.transactionsPerPage
-          ) + 1
-        );
+      else return Math.floor(this.filteredTransactions.length / this.transactionsPerPage) + 1;
     },
   },
   actions: {
@@ -101,6 +92,27 @@ export const userManagerStore = defineStore("userManager", {
           return;
         }
         this.user = get(res, "data", {});
+      } catch (error) {
+        alert.error("Error occurred!", error);
+      } finally {
+        loading.hide();
+      }
+    },
+    async disableUser() {
+      if (!this.user) return;
+      try {
+        loading.show();
+        const res = await User.update(this.user.id, {
+          blocked: true,
+        });
+        if (!res) {
+          alert.error("Error occurred!", "Please try again later!");
+          return;
+        }
+        this.user = get(res, "data", {});
+        alert.success("Disable account successfully!");
+        await this.fetchUser(this.user.id);
+        await this.fetchUserVouchers(this.user.id);
       } catch (error) {
         alert.error("Error occurred!", error);
       } finally {

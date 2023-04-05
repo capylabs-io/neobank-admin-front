@@ -2,7 +2,7 @@
   <div>
     <div class="container">
       <v-row>
-        <v-col cols="4">
+        <v-col class="d-flex flex-column justify-center" cols="5">
           <v-card flat class="mx-auto form">
             <v-form
               ref="form"
@@ -20,27 +20,14 @@
                   />
                 </div>
                 <div class="text-left">
-                  <span
-                    :style="{
-                      fontSize: '18px',
-                      fontWeight: 700,
-                      lineHeight: '20px',
-                      letterSpacing: '0em',
-                    }"
+                  <span class="text-xl font-weight-bold text-uppercase"
                     >NeoBank</span
                   >
                 </div>
               </div>
-              <div class="d-flex flex-column mt-7 full-width">
-                <span
-                  class="text-left"
-                  :style="{ fontSize: '20px', fontWeight: '700' }"
-                  >Login</span
-                >
-                <div
-                  class="text-xl mt-sm-3 text-left"
-                  :style="{ fontSize: '14px', fontWeight: '500' }"
-                >
+              <div class="d-flex flex-column mt-8 full-width">
+                <span class="text-lg font-weight-bold">Login</span>
+                <div class="text-sm neutral70--text font-weight-bold mt-6">
                   Name
                 </div>
                 <v-text-field
@@ -48,25 +35,20 @@
                   type="text"
                   v-model="userStore.username"
                   :rules="rules.checkIdentifier"
-                  class="pa-0"
+                  class="pa-0 mt-1"
                   placeholder="Name"
                   dense
                 />
-                <div
-                  class="text-xl text-left"
-                  :style="{ fontSize: '14px', fontWeight: '500' }"
-                >
+                <div class="text-sm neutral70--text font-weight-bold mt-2">
                   Password
                 </div>
                 <v-text-field
                   height="36px"
                   v-model="userStore.password"
-                  :append-icon="
-                    userStore.isShowPass ? 'mdi-eye' : 'mdi-eye-off'
-                  "
-                  :type="userStore.isShowPass ? 'text' : 'password'"
+                  :append-icon="isShowPass ? 'mdi-eye' : 'mdi-eye-off'"
+                  :type="isShowPass ? 'text' : 'password'"
                   :rules="rules.password"
-                  @click:append="userStore.isShowPass = !userStore.isShowPass"
+                  @click:append="isShowPass = !isShowPass"
                   class="pa-0"
                   placeholder="Password"
                   dense
@@ -76,7 +58,10 @@
                 class="mt-7 full-width"
                 color="blue"
                 @click="submitForm"
-                ><span class="white--text text-capitalize">Login</span></v-btn
+                depressed
+                ><span class="white--text text-capitalize text-btn"
+                  >Login</span
+                ></v-btn
               >
               <div class="mt-3">
                 <span :style="{ fontSize: '12px' }">Troublewith login?</span>
@@ -93,7 +78,7 @@
             </v-form>
           </v-card>
         </v-col>
-        <v-col cols="8"
+        <v-col cols="7"
           ><div>
             <v-img
               height="97vh"
@@ -166,6 +151,7 @@ export default {
     return {
       rules: rules,
       isShow: true,
+      isShowPass: false,
     };
   },
   methods: {
@@ -189,7 +175,6 @@ export default {
 
 <style lang="scss" scoped>
 .form {
-  margin-top: 215px;
   width: 300px;
 }
 .img-wrap:before {

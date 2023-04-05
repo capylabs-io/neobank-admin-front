@@ -20,9 +20,17 @@
           />
         </div>
         <div class="ml-3">
-          <div class="font-weight-bold text-sm neutral100--text">Meta Inc.</div>
+          <div
+            class="font-weight-bold text-sm neutral100--text text-capitalize"
+          >
+            {{
+              userStore.isMaintainer
+                ? "Maintainer"
+                : userStore.userData.username
+            }}
+          </div>
           <div class="text-caption neutral70--text">
-            tung.bro.bro69@gmail.com
+            {{ userStore.userData.email }}
           </div>
         </div>
       </div>
@@ -32,7 +40,7 @@
         <v-list class="py-0">
           <v-list-item
             class="border-radius-8 py-0 px-2"
-            to="/dash-board-maintainer"
+            to="/dashboard"
             active-class="active-item"
             dense
             link
@@ -46,6 +54,7 @@
             class="border-radius-8 py-0 px-2 mt-2"
             to="/campaign"
             active-class="active-item"
+            v-if="userStore.isMaintainer || userStore.isPartner"
             dense
             link
           >
@@ -60,6 +69,7 @@
             class="border-radius-8 py-0 px-2 mt-2"
             to="/category"
             active-class="active-item"
+            v-if="userStore.isMaintainer"
             dense
             link
           >
@@ -74,6 +84,7 @@
             class="border-radius-8 py-0 px-2 mt-2"
             to="/partner"
             active-class="active-item"
+            v-if="userStore.isMaintainer"
             dense
             link
           >
@@ -88,6 +99,7 @@
             class="border-radius-8 py-0 px-2 mt-2"
             to="/user-management"
             active-class="active-item"
+            v-if="userStore.isMaintainer"
             dense
             link
           >
@@ -102,6 +114,7 @@
             class="border-radius-8 py-0 px-2 mt-2"
             to="/account-setting"
             active-class="active-item"
+            v-if="userStore.isPartner"
             dense
             link
           >
@@ -119,7 +132,7 @@
 
       <div class="px-6 pb-6">
         <v-btn
-          class="d-flex red60--text px-0 text-none mb-2"
+          class="d-flex red60--text px-0 text-none mb-2 text-btn"
           @click="onLogoutClicked"
           text
         >

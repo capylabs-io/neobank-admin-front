@@ -12,12 +12,20 @@
     <div class="d-flex align-center justify-space-between mt-4">
       <div class="text-lg font-weight-bold">Brand Information</div>
       <div class="d-flex align-center gap-8">
+        <v-btn
+          color="red"
+          class="text-none font-weight-bold px-0"
+          @click="onDisableClicked"
+          v-if="userStore.isMaintainer"
+          text
+          >Disable Account</v-btn
+        >
         <div class="neutral30-border border-radius-8 overflow-hidden">
           <v-btn
             color="white"
             class="text-none font-weight-bold px-2"
             @click="partnerStore.isEditingBrandInfo = true"
-            v-if="!partnerStore.isEditingBrandInfo"
+            v-if="!partnerStore.isEditingBrandInfo && userStore.isPartner"
             depressed
             >Edit Info</v-btn
           >
@@ -41,7 +49,7 @@
           <v-btn
             color="white"
             class="primary--text text-none font-weight-bold px-2"
-            :disabled="!partnerStore.brandInfoForm || !partnerStore.inputAvatar"
+            :disabled="!partnerStore.brandInfoForm && !partnerStore.inputAvatar"
             @click="partnerStore.updateBrandInfo"
             depressed
             >Save Change</v-btn
@@ -201,7 +209,9 @@
       <div class="d-flex align-center gap-8">
         <div
           class="neutral30-border border-radius-8 overflow-hidden"
-          v-if="!partnerStore.isEditingRepresentativeInfo"
+          v-if="
+            !partnerStore.isEditingRepresentativeInfo && userStore.isPartner
+          "
         >
           <v-btn
             color="white"
@@ -363,20 +373,22 @@
       </v-row>
     </v-card>
 
-    <div class="d-flex align-center justify-space-between mt-4">
-      <div class="text-lg font-weight-bold">Password</div>
+    <div v-if="userStore.isPartner">
+      <div class="d-flex align-center justify-space-between mt-4">
+        <div class="text-lg font-weight-bold">Password</div>
+      </div>
+      <v-row>
+        <v-col cols="12" md="5">
+          <v-btn
+            color="primary"
+            class="border-radius-8 text-none font-weight-bold mt-3"
+            @click="partnerStore.changePasswordDialog = true"
+            depressed
+            >Change Password</v-btn
+          >
+        </v-col>
+      </v-row>
     </div>
-    <v-row>
-      <v-col cols="12" md="5">
-        <v-btn
-          color="primary"
-          class="border-radius-8 text-none font-weight-bold mt-3"
-          @click="partnerStore.changePasswordDialog = true"
-          depressed
-          >Change Password</v-btn
-        >
-      </v-col>
-    </v-row>
   </div>
 </template>
 
@@ -402,6 +414,7 @@
 import PictureInput from "vue-picture-input";
 import { mapStores } from "pinia";
 import { partnerStore } from "../stores/partnerStore";
+import { userStore } from "@/stores/userStore";
 import { get } from "lodash";
 export default {
   data() {
@@ -412,6 +425,7 @@ export default {
   },
   computed: {
     ...mapStores(partnerStore),
+    ...mapStores(userStore),
     partnerAvatar() {
       return get(
         this.partnerStore,
@@ -432,9 +446,28 @@ export default {
         console.log("FileReader API not supported!");
       }
     },
+    onDisableClicked() {
+      this.$dialog.confirm({
+        title: "Confirm Disable Account",
+        topContent:
+          "<span class='error--text'>If you disable this account, users will no longer be able to signin!</span>",
+        okText: "Confirm",
+        cancelText: "Cancel",
+        done: async () => {
+          await this.partnerStore.disablePartner();
+        },
+      });
+    },
   },
   async created() {
-    await this.partnerStore.fetchPartnerInfo();
+    this.partnerStore.reset();
+    if (this.$route.path.includes("account-setting")) {
+      await this.partnerStore.fetchPartnerInfo();
+    } else {
+      const partnerId = this.$route.params.id;
+      if (!partnerId) this.$router.push("/dashboard");
+      await this.partnerStore.fetchPartner(partnerId);
+    }
   },
   components: {
     PictureInput,

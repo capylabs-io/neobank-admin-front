@@ -3,6 +3,7 @@ import { get } from "lodash-es";
 import loading from "@/plugins/loading";
 import alert from "@/plugins/alert";
 import { Partner, User, Common, Maintainer } from "@/plugins/api";
+import router from "@/router";
 
 export const partnerStore = defineStore("partner", {
   state: () => ({
@@ -28,12 +29,8 @@ export const partnerStore = defineStore("partner", {
       if (!this.searchKey) return this.partners;
       return this.partners.filter(
         (partner) =>
-          partner.brandName
-            .toLowerCase()
-            .includes(this.searchKey.trim().toLowerCase()) ||
-          partner.email
-            .toLowerCase()
-            .includes(this.searchKey.trim().toLowerCase())
+          partner.brandName.toLowerCase().includes(this.searchKey.trim().toLowerCase()) ||
+          partner.email.toLowerCase().includes(this.searchKey.trim().toLowerCase())
       );
     },
     slicedPartners() {
@@ -47,16 +44,42 @@ export const partnerStore = defineStore("partner", {
       if (!this.partners || this.partners.length == 0) return 1;
       if (this.filteredPartners.length % this.partnersPerPage == 0)
         return this.filteredPartners.length / this.partnersPerPage;
-      else
-        return (
-          Math.floor(this.filteredPartners.length / this.partnersPerPage) + 1
-        );
+      else return Math.floor(this.filteredPartners.length / this.partnersPerPage) + 1;
     },
   },
   actions: {
+    reset() {
+      this.partners = [];
+      this.partner = {};
+      this.user = {};
+      this.userMetadata = {};
+    },
     changePartnerAvatar(image) {
       if (!image) return;
       this.inputAvatar = image;
+    },
+    async disablePartner() {
+      if (!this.partner) return;
+      try {
+        loading.show();
+        console.log("this.user", this.user);
+        const res = await Partner.update(this.partner.id, {
+          data: {
+            isActive: false,
+          },
+        });
+        if (!res) {
+          alert.error("Error occurred!", "Please try again later!");
+          return;
+        }
+        this.partner = get(res, "data", {});
+        alert.success("Disable account successfully!");
+        router.go(-1);
+      } catch (error) {
+        alert.error("Error occurred!", error);
+      } finally {
+        loading.hide();
+      }
     },
     async fetchPartnerInfo() {
       try {
@@ -69,6 +92,37 @@ export const partnerStore = defineStore("partner", {
         this.user = get(res, "data", {});
         this.userMetadata = get(this.user, "userMetadata", {}) || {};
         this.partner = get(this.user, "partner", {});
+      } catch (error) {
+        alert.error("Error occurred!", error);
+      } finally {
+        loading.hide();
+      }
+    },
+    async fetchPartner(partnerId) {
+      try {
+        loading.show();
+        if (!partnerId) return;
+        const res = await Partner.fetchOne(partnerId, {
+          params: {
+            populate: ["users"],
+          },
+        });
+        if (!res) {
+          alert.error("Error occurred!", "Please try again later!");
+          return;
+        }
+        this.partner = get(res, "data.data", {});
+        this.partner = {
+          id: this.partner.id,
+          ...this.partner.attributes,
+        };
+        if (this.partner.users && this.partner.users.data && this.partner.users.data.length > 0)
+          this.user = this.partner.users.data[0];
+        this.user = {
+          id: this.user.id,
+          ...this.user.attributes,
+        };
+        this.userMetadata = this.user.userMetadata || {};
       } catch (error) {
         alert.error("Error occurred!", error);
       } finally {
@@ -98,10 +152,7 @@ export const partnerStore = defineStore("partner", {
         if (this.inputAvatar) {
           const res = await this.uploadFile();
           if (!res) {
-            alert.error(
-              "Error occurred when uploading icon!",
-              "Please try again later!"
-            );
+            alert.error("Error occurred when uploading icon!", "Please try again later!");
             return;
           }
           uploadedAvatarUrl = res;
@@ -179,11 +230,7 @@ export const partnerStore = defineStore("partner", {
     async changePassword(currentPassword, newPassword, confirmPassword) {
       try {
         loading.show();
-        await User.changePassword(
-          currentPassword,
-          newPassword,
-          confirmPassword
-        );
+        await User.changePassword(currentPassword, newPassword, confirmPassword);
         alert.success("Change password successfully!");
         this.changePasswordDialog = false;
       } catch (error) {
@@ -201,10 +248,7 @@ export const partnerStore = defineStore("partner", {
         if (this.inputAvatar) {
           const res = await this.uploadFile();
           if (!res) {
-            alert.error(
-              "Error occurred when uploading icon!",
-              "Please try again later!"
-            );
+            alert.error("Error occurred when uploading icon!", "Please try again later!");
             return;
           }
           uploadedAvatarUrl = res;

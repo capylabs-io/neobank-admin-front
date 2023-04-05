@@ -21,7 +21,7 @@
           class="mx-auto"
           max-height="36px"
           max-width="36px"
-          :src="userManagerStore.currentCampaign.category.iconUrl"
+          :src="categoryIcon"
           contain
         />
         <div class="font-weight-bold text-lg text-center mt-2">
@@ -72,11 +72,11 @@
           <v-img
             max-height="36px"
             max-width="36px"
-            :src="userManagerStore.currentCampaign.category.iconUrl"
+            :src="categoryIcon"
             contain
           />
           <div class="ml-2">
-            {{ userManagerStore.currentCampaign.category.name }}
+            {{ categoryName }}
           </div>
         </div>
         <div class="text-sm neutral70--text font-weight-bold mt-3">Status</div>
@@ -127,10 +127,24 @@
 <script>
 import { mapStores } from "pinia";
 import { userManagerStore } from "../stores/userManagerStore";
-
+import { get } from "lodash";
 export default {
   computed: {
     ...mapStores(userManagerStore),
+    categoryIcon() {
+      return get(
+        this.userManagerStore.currentCampaign,
+        "category.iconUrl",
+        require("@/assets/views/category/category-icon-example.png")
+      );
+    },
+    categoryName() {
+      return get(
+        this.userManagerStore.currentCampaign,
+        "category.name",
+        "Category Name"
+      );
+    },
   },
   methods: {
     goToCampaignDetail() {

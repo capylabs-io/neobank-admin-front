@@ -9,7 +9,6 @@
     </div>
     <div id="chart" class="d-flex justify-center mt-2 chart">
       <apexchart
-        :type="type"
         :width="width"
         :height="height"
         :options="options"
@@ -25,7 +24,12 @@ import { userStore } from "@/stores/userStore";
 import VueApexCharts from "vue-apexcharts";
 
 export default {
-  props: ["options", "width", "height"],
+  props: {
+    options: Object,
+    width: Number,
+    height: Number,
+    index: Number,
+  },
   components: {
     apexchart: VueApexCharts,
   },

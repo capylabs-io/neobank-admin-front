@@ -6,6 +6,7 @@
           class="select border-radius-6"
           placeholder="Filter by Partner"
           v-model="campaignStore.filterPartner"
+          v-if="userStore.isMaintainer"
           :items="campaignStore.partners"
           item-text="brandName"
           item-value="id"
@@ -98,7 +99,7 @@
           <v-chip color="primary" label>All </v-chip>
         </div>
       </div>
-      <div class="d-flex align-center">
+      <div class="d-flex align-center gap-16">
         <v-text-field
           v-model="campaignStore.searchKey"
           class="border-radius-6"
@@ -112,8 +113,9 @@
           clearable
         ></v-text-field>
         <v-btn
-          class="text-none text-btn ml-4"
+          class="text-none text-btn"
           color="primary"
+          v-if="userStore.isPartner"
           @click="goToCreateCampaign"
           depressed
         >
@@ -135,6 +137,12 @@
         <CampaignCard :campaign="campaign" />
       </v-col>
     </v-row>
+    <div
+      class="full-width mx-auto d-flex flex-column justify-center"
+      style="min-height: 320px"
+    >
+      <div class="text-dp-xs neutral70--text text-center">No Campaign yet!</div>
+    </div>
 
     <div class="d-flex align-center">
       <div class="neutral70--text text-sm font-weight-bold">
@@ -154,9 +162,12 @@
 <script>
 import { mapStores } from "pinia";
 import { campaignStore } from "../stores/campaignStore";
+import { userStore } from "@/stores/userStore";
+
 export default {
   computed: {
     ...mapStores(campaignStore),
+    ...mapStores(userStore),
   },
   methods: {
     goToCreateCampaign() {

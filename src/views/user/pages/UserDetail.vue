@@ -26,7 +26,7 @@
         <v-btn
           text
           class="text-left text-btn error--text"
-          @click="voucherStore.cfDialog = true"
+          @click="onDisableClicked"
         >
           <span class="text-capitalize">Disable account</span>
         </v-btn>
@@ -69,7 +69,7 @@
             type="text"
             background-color="neutral10"
             class="mt-1 border-radius-8"
-            value="Active"
+            :value="userManagerStore.user.blocked ? 'Disabled' : 'Active'"
             solo
             readonly
             dense
@@ -248,72 +248,6 @@ export default {
           align: "start",
         },
       ],
-      users: [
-        {
-          id: "1",
-          name: "Raise awareness of LangGomBatTrang",
-          price: "1000",
-          category: "food",
-          code: "67869fdfsdj20lkbv",
-          date: "10:10 Dec 12 2023",
-        },
-        {
-          id: "2",
-          name: "Heil Titler",
-          price: "500",
-          category: "movie",
-          code: "67869fdfsdj20lkbv",
-          date: "10:10 Dec 12 2023",
-        },
-        {
-          id: "3",
-          name: "Raise awareness of LangGomBatTrang",
-          price: "1000",
-          category: "food",
-          code: "67869fdfsdj20lkbv",
-          date: "10:10 Dec 12 2023",
-        },
-        {
-          id: "4",
-          name: "Heil Titler",
-          price: "500",
-          category: "movie",
-          code: "67869fdfsdj20lkbv",
-          date: "10:10 Dec 12 2023",
-        },
-        {
-          id: "5",
-          name: "Raise awareness of LangGomBatTrang",
-          price: "1000",
-          category: "food",
-          code: "67869fdfsdj20lkbv",
-          date: "10:10 Dec 12 2023",
-        },
-        {
-          id: "6",
-          name: "Heil Titler",
-          price: "500",
-          category: "service",
-          code: "67869fdfsdj20lkbv",
-          date: "10:10 Dec 12 2023",
-        },
-        {
-          id: "7",
-          name: "Raise awareness of LangGomBatTrang",
-          price: "1000",
-          category: "service",
-          code: "67869fdfsdj20lkbv",
-          date: "10:10 Dec 12 2023",
-        },
-        {
-          id: "8",
-          name: "Heil Titler",
-          price: "500",
-          category: "service",
-          code: "67869fdfsdj20lkbv",
-          date: "10:10 Dec 12 2023",
-        },
-      ],
     };
   },
   computed: {
@@ -336,6 +270,18 @@ export default {
       this.userManagerStore.currentCampaign = transaction.campaign;
       this.userManagerStore.currentCampaign.category = transaction.category;
       // this.voucherStore.drawerDetail = true;
+    },
+    onDisableClicked() {
+      this.$dialog.confirm({
+        title: "Confirm Disable Account",
+        topContent:
+          "<span class='error--text'>If you disable this account, users will no longer be able to signin!</span>",
+        okText: "Confirm",
+        cancelText: "Cancel",
+        done: async () => {
+          await this.userManagerStore.disableUser();
+        },
+      });
     },
     routerGoBack() {
       this.$router.go(-1);

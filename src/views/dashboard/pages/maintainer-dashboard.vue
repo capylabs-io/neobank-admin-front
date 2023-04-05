@@ -142,7 +142,6 @@
               class="mt-2"
               :headers="header1"
               :items="users"
-              :search="search"
               hide-default-footer
             >
               <template v-slot:[`item.number`]="{ item }">
@@ -169,7 +168,6 @@
               class="mt-2"
               :headers="header2"
               :items="users"
-              :search="search"
               hide-default-footer
             >
               <template v-slot:[`item.number`]="{ item }">

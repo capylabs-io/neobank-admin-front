@@ -11,7 +11,7 @@
       <div class="text-dp-xs font-weight-bold">Campaign Detail</div>
       <div class="d-flex align-center gap-8">
         <v-btn
-          class="border-radius-8 text-none error--text"
+          class="border-radius-8 text-none text-btn error--text"
           @click="onDisableClicked"
           elevation="0"
           text
@@ -20,7 +20,7 @@
         <v-btn
           class="white-bg neutral30-border text-none font-weight-bold px-2 border-radius-8"
           @click="campaignStore.isEditing = true"
-          v-if="!campaignStore.isEditing"
+          v-if="!campaignStore.isEditing && userStore.isPartner"
           depressed
           >Edit Info</v-btn
         >
@@ -104,6 +104,7 @@
 
 <script>
 import { campaignStore } from "../stores/campaignStore";
+import { userStore } from "@/stores/userStore";
 import { mapStores } from "pinia";
 import { get } from "lodash";
 import CampaignHelper from "@/helpers/campaign-helper";
@@ -144,6 +145,7 @@ export default {
   },
   computed: {
     ...mapStores(campaignStore),
+    ...mapStores(userStore),
   },
   methods: {
     routerGoBack() {

@@ -3,23 +3,29 @@ import { ref, computed } from "vue";
 import { Auth, User } from "@/plugins/api.js";
 import loading from "@/plugins/loading";
 import alert from "@/plugins/alert";
-export const userStore = defineStore(
-  "user",
-  () => {
-    const pageIndex = ref(1);
-    const index = ref(2);
-    const cfDialog = ref(false);
-    const scrollY = ref(1);
-    const jwt = ref("");
-    const rememberMe = ref(false);
-    const isShowPass = ref(false);
-    const sortBy = ref("");
-    const username = ref("");
-    const password = ref("");
-
-    const userData = ref({});
-    const adminDetail = ref(false);
-    async function signIn() {
+export const userStore = defineStore("user", {
+  state: () => ({
+    userData: {},
+    jwt: "",
+    rememberMe: false,
+    username: "",
+    password: "",
+    partner: {},
+    role: {},
+  }),
+  getters: {
+    isConnected() {
+      return !!this.userData && !!this.jwt;
+    },
+    isMaintainer() {
+      return this.role && this.role.type == "maintainer";
+    },
+    isPartner() {
+      return this.role && this.role.type == "partner";
+    },
+  },
+  actions: {
+    async signIn() {
       try {
         loading.show();
         const res = await Auth.signIn({
@@ -30,59 +36,43 @@ export const userStore = defineStore(
           alert.error(`Error occurred! Please try again later!`);
           return;
         }
+        const userInfo = res.data.user;
+        const jwt = res.data.jwt;
+        if (
+          !jwt ||
+          !userInfo ||
+          !userInfo.role ||
+          (userInfo.role.type != "maintainer" && userInfo.role.type != "partner")
+        ) {
+          alert.error(`Only Maintainer and Partner are allowed to signin!`);
+          return;
+        }
         alert.success("Login successfully!");
-        this.jwt = res.data.jwt;
-        this.userData = res.data.user;
+        this.jwt = jwt;
+        this.userData = userInfo;
+        this.role = this.userData.role;
+        this.partner = this.userData.partner;
         if (!this.rememberMe) {
           this.password = "";
         }
-        this.router.push("/");
+        this.router.push("/dashboard");
       } catch (error) {
         console.error(`Error: ${error}`);
         alert.error(error);
       } finally {
         loading.hide();
       }
-    }
-
-    function logout() {
-      jwt.value = "";
-      userData.value = null;
-    }
-
-    const isConnected = computed(() => jwt);
-    return {
-      //computed
-      isConnected,
-      //states
-      index,
-      username,
-      password,
-      jwt,
-      pageIndex,
-      isShowPass,
-      userData,
-      rememberMe,
-      cfDialog,
-      scrollY,
-      sortBy,
-      adminDetail,
-      //action
-      signIn,
-      logout,
-    };
+    },
+    logout() {
+      this.jwt = "";
+      this.userData = {};
+    },
   },
-  {
-    persist: [
-      {
-        paths: ["password", "rememberMe", "username"],
-        storage: localStorage,
-      },
-      {
-        paths: ["userData", "jwt"],
-        storage: sessionStorage,
-      },
-    ],
-  }
-);
+  persist: [
+    {
+      paths: ["password", "rememberMe", "username", "userData", "jwt", "partner", "role"],
+      storage: localStorage,
+    },
+  ],
+});
 /* eslint-enable */
