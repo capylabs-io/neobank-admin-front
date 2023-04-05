@@ -32,9 +32,7 @@ export default {
   components: {
     apexchart: VueApexCharts,
   },
-  props: {
-    series: Array,
-  },
+  props: ["series"],
   data() {
     return {
       chartOptions: {

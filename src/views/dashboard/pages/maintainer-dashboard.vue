@@ -280,9 +280,14 @@ export default {
         },
       ],
       pieSeries: [33, 20, 20, 20, 7],
+      // lineSeries: [
+      //   {
+      //     data: [],
+      //   },
+      // ],
       lineSeries: [
         {
-          data: [],
+          data: [25, 43, 32, 65, 85, 58, 27, 36, 1, 1, 1, 1],
         },
       ],
       header2: [
