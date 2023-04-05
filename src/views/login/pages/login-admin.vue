@@ -74,7 +74,6 @@
               </div>
               <v-btn
                 class="mt-7 full-width"
-                rounded="12"
                 color="blue"
                 @click="submitForm"
                 ><span class="white--text text-capitalize">Login</span></v-btn

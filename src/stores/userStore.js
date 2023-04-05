@@ -1,13 +1,11 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
-import { Auth, Voucher } from "@/plugins/api.js";
-import { snackBarController } from "@/components/snack-bar/snack-bar-controller.js";
-import { loadingController } from "@/components/global-loading/global-loading-controller.js";
+import { Auth, User } from "@/plugins/api.js";
+import loading from "@/plugins/loading";
+import alert from "@/plugins/alert";
 export const userStore = defineStore(
   "user",
   () => {
-    const loading = loadingController(); //store
-    const snackbar = snackBarController(); //store
     const pageIndex = ref(1);
     const index = ref(2);
     const cfDialog = ref(false);
@@ -23,35 +21,35 @@ export const userStore = defineStore(
     const adminDetail = ref(false);
     async function signIn() {
       try {
-        loading.increaseRequest();
+        loading.show();
         const res = await Auth.signIn({
           identifier: this.username,
           password: this.password,
         });
         if (!res) {
-          snackbar.commonError(`Error occurred! Please try again later!`);
+          alert.error(`Error occurred! Please try again later!`);
           return;
         }
-        snackbar.success("Login successfully!");
+        alert.success("Login successfully!");
         this.jwt = res.data.jwt;
         this.userData = res.data.user;
         if (!this.rememberMe) {
           this.password = "";
         }
-        this.router.push({
-          params: "vn",
-          name: "Redeem",
-        });
+        this.router.push("/");
       } catch (error) {
         console.error(`Error: ${error}`);
-        snackbar.commonError(error);
+        alert.error(error);
+      } finally {
+        loading.hide();
       }
     }
 
     function logout() {
       jwt.value = "";
-      userData.value = "";
+      userData.value = null;
     }
+
     const isConnected = computed(() => jwt);
     return {
       //computed

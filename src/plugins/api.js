@@ -1,10 +1,14 @@
 import axios from "axios";
 import utils from "@/plugins/utils";
+import { userStore } from "@/stores/userStore";
 
 // axios.defaults.baseURL = process.env.VUE_APP_API_ENDPOINT;
 axios.defaults.baseURL = "https://neobank-dev-api.capylabs.io/api/";
 
 const USER_API = "/users/";
+const CATEGORY_API = "/campaign-categories/";
+const CAMPAIGN_API = "/campaigns/";
+const PARTNER_API = "/partners/";
 
 const APIHelper = (api) => ({
   search: (params, option) =>
@@ -45,12 +49,23 @@ export const Auth = {
 
 export const User = {
   ...APIHelper(USER_API),
-  changePassword: (currentPassword, newPassword, confirmNewPassword) =>
-    axios.post("users/change-password", {
-      currentPassword,
-      newPassword,
-      confirmNewPassword,
-    }),
+  changePassword: (currentPassword, newPassword, confirmNewPassword) => {
+    const user = userStore();
+    if (!user.isConnected) return;
+    return axios.post(
+      "auth/change-password",
+      {
+        currentPassword: currentPassword,
+        password: newPassword,
+        passwordConfirmation: confirmNewPassword,
+      },
+      {
+        headers: {
+          Authorization: "Bearer " + user.jwt,
+        },
+      }
+    );
+  },
   updateUserInfo: (model) => axios.put("users/edit/", model),
   updateUserEmail: (email, password) =>
     axios.post("users/edit-email", {
@@ -58,6 +73,24 @@ export const User = {
       password,
     }),
 };
+
+export const Partner = {
+  ...APIHelper(PARTNER_API),
+  fetchPartnerInfo: () => {
+    const user = userStore();
+    if (!user.isConnected) return;
+    return axios.get("users/me?populate=partner", {
+      headers: {
+        Authorization: "Bearer " + user.jwt,
+      },
+    });
+  },
+};
+
+export const Category = {
+  ...APIHelper(CATEGORY_API),
+};
+
 export const Voucher = {
   fetchVouchers: (token) =>
     axios.get("vouchers?pagination[limit]=-1", {
@@ -75,14 +108,79 @@ export const Voucher = {
         },
       }
     ),
-  fetchUserVouchers: (token) =>
-    axios.get("user-vouchers", {
+  fetchUserVouchers: (userId) =>
+    axios.get(
+      "vouchers?populate[0]=campaign&populate[1]=campaignCategory&filters[user][id]=" +
+        userId,
+      {}
+    ),
+};
+
+export const Common = {
+  uploadFile: (file) =>
+    axios.post("upload", file, {
       headers: {
-        Authorization: "Bearer " + token,
+        "Content-Type": "multipart/form-data",
       },
     }),
 };
 
-export default {
-  Auth,
+export const Maintainer = {
+  fetchCampaigns: () => {
+    const user = userStore();
+    if (!user.isConnected) return;
+    return axios.get("maintainer/campaigns", {
+      headers: {
+        Authorization: "Bearer " + user.jwt,
+      },
+    });
+  },
+  fetchPartners() {
+    const user = userStore();
+    if (!user.isConnected) return;
+    return axios.get("maintainer/partners", {
+      headers: {
+        Authorization: "Bearer " + user.jwt,
+      },
+    });
+  },
+  fetchUsers() {
+    const user = userStore();
+    if (!user.isConnected) return;
+    return axios.get("maintainer/users", {
+      headers: {
+        Authorization: "Bearer " + user.jwt,
+      },
+    });
+  },
+  fetchPartnerList: () => {
+    const user = userStore();
+    if (!user.isConnected) return;
+    return axios.get("maintainer/partners", {
+      headers: {
+        Authorization: "Bearer " + user.jwt,
+      },
+    });
+  },
+  createPartner: (params) => {
+    const user = userStore();
+    if (!user.isConnected) return;
+    return axios.post("maintainer/partners", params, {
+      headers: {
+        Authorization: "Bearer " + user.jwt,
+      },
+    });
+  },
+};
+
+export const Campaign = {
+  ...APIHelper(CAMPAIGN_API),
+  fetchCampaignDetail: (campaignId) => {
+    return axios.get(`campaigns/${campaignId}?populate[0]=campaignCategory`);
+  },
+  fetchCampaignTransactions: (campaignId) => {
+    return axios.get(
+      `vouchers?populate[0]=user&filters[campaign][id]=${campaignId}`
+    );
+  },
 };
