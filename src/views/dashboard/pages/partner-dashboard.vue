@@ -154,7 +154,6 @@
               class="mt-2"
               :headers="header"
               :items="users"
-              :search="search"
               hide-default-footer
             >
               <template v-slot:[`item.number`]="{ item }">
