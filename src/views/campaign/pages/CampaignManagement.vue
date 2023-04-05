@@ -112,7 +112,7 @@
           hide-details
           clearable
         ></v-text-field>
-        <JsonExcel
+        <!-- <JsonExcel
           :data="exportedCampaigns"
           :fields="exportExcelFields"
           :before-generate="$loading.show()"
@@ -125,7 +125,7 @@
             depressed
             >Export Excel</v-btn
           >
-        </JsonExcel>
+        </JsonExcel> -->
         <v-btn
           class="text-none text-btn"
           color="primary"
@@ -178,14 +178,14 @@
 import { mapStores } from "pinia";
 import { campaignStore } from "../stores/campaignStore";
 import { userStore } from "@/stores/userStore";
-import JsonExcel from "vue-json-excel";
+// import JsonExcel from "vue-json-excel";
 import CampaignHelper from "@/helpers/campaign-helper";
 import moment from "moment";
 
 export default {
   components: {
     CampaignCard: () => import("../components/campaign-card.vue"),
-    JsonExcel,
+    // JsonExcel,
   },
   data() {
     return {
@@ -238,15 +238,15 @@ export default {
       exportedCampaigns: [],
     };
   },
-  watch: {
-    "campaignStore.filteredCampaigns": {
-      handler(campaigns) {
-        if (!campaigns && !campaigns.length == 0) return;
-        this.exportedCampaigns = campaigns;
-      },
-      immediate: true,
-    },
-  },
+  // watch: {
+  //   "campaignStore.filteredCampaigns": {
+  //     handler(campaigns) {
+  //       if (!campaigns && !campaigns.length == 0) return;
+  //       this.exportedCampaigns = campaigns;
+  //     },
+  //     immediate: true,
+  //   },
+  // },
   computed: {
     ...mapStores(campaignStore),
     ...mapStores(userStore),
