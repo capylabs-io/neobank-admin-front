@@ -11,7 +11,7 @@
   >
     <v-card class="pa-4" flat>
       <v-img
-        class="border-radius-12"
+        class="border-radius-12 elevation-1"
         :max-height="244"
         :src="userManagerStore.currentCampaign.thumbnailUrl"
         cover

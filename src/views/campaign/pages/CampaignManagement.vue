@@ -112,6 +112,20 @@
           hide-details
           clearable
         ></v-text-field>
+        <JsonExcel
+          :data="exportedCampaigns"
+          :fields="exportExcelFields"
+          :before-generate="$loading.show()"
+          :before-finish="$loading.hide()"
+          worksheet="Campaigns"
+          name="campaigns.xls"
+        >
+          <v-btn
+            class="white-bg neutral30-border text-none font-weight-bold px-2 border-radius-8"
+            depressed
+            >Export Excel</v-btn
+          >
+        </JsonExcel>
         <v-btn
           class="text-none text-btn"
           color="primary"
@@ -140,6 +154,7 @@
     <div
       class="full-width mx-auto d-flex flex-column justify-center"
       style="min-height: 320px"
+      v-if="!campaignStore.campaigns || campaignStore.campaigns.length == 0"
     >
       <div class="text-dp-xs neutral70--text text-center">No Campaign yet!</div>
     </div>
@@ -163,24 +178,88 @@
 import { mapStores } from "pinia";
 import { campaignStore } from "../stores/campaignStore";
 import { userStore } from "@/stores/userStore";
+import JsonExcel from "vue-json-excel";
+import CampaignHelper from "@/helpers/campaign-helper";
+import moment from "moment";
 
 export default {
+  components: {
+    CampaignCard: () => import("../components/campaign-card.vue"),
+    JsonExcel,
+  },
+  data() {
+    return {
+      exportExcelFields: {
+        Title: "title",
+        "Short Description": "shortDescription",
+        "Full Description": "fullDescription",
+        Status: {
+          field: "status",
+          callback: (value) => CampaignHelper.statusTitle(value),
+        },
+        Price: "price",
+        "Purchased Quantity": {
+          field: "purchasedQuantity",
+          callback: (value) => {
+            if (value) return value || 0;
+            return 0;
+          },
+        },
+        "Total Quantity": "totalQuantity",
+        "Start Date": {
+          field: "startDate",
+          callback: (value) => {
+            if (value) return moment(value).format("DD/MM/YYYY");
+            return "";
+          },
+        },
+        "End Date": {
+          field: "endDate",
+          callback: (value) => {
+            if (value) return moment(value).format("DD/MM/YYYY");
+            return "";
+          },
+        },
+        Publisher: {
+          field: "partner",
+          callback: (value) => {
+            if (value) return value.brandName || "Partner";
+            return "Partner";
+          },
+        },
+        Category: {
+          field: "campaignCategory",
+          callback: (value) => {
+            if (value) return value.name || "Category";
+            return "Category";
+          },
+        },
+      },
+      exportedCampaigns: [],
+    };
+  },
+  watch: {
+    "campaignStore.filteredCampaigns": {
+      handler(campaigns) {
+        if (!campaigns && !campaigns.length == 0) return;
+        this.exportedCampaigns = campaigns;
+      },
+      immediate: true,
+    },
+  },
   computed: {
     ...mapStores(campaignStore),
     ...mapStores(userStore),
-  },
-  methods: {
-    goToCreateCampaign() {
-      this.$router.push("/create-campaign");
-    },
-  },
-  components: {
-    CampaignCard: () => import("../components/campaign-card.vue"),
   },
   async created() {
     await this.campaignStore.fetchCampaigns();
     await this.campaignStore.fetchCategories();
     await this.campaignStore.fetchPartners();
+  },
+  methods: {
+    goToCreateCampaign() {
+      this.$router.push("/create-campaign");
+    },
   },
 };
 </script>

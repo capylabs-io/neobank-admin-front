@@ -57,6 +57,9 @@ body {
   font-weight: 400;
   color: var(--v-neutral100-base) !important;
 }
+.primary-bg {
+  background: var(--v-primary-base) !important;
+}
 .neutral10-bg {
   background: var(--v-neutral10-base) !important;
 }
@@ -305,5 +308,10 @@ body {
   right: 0;
   margin: auto;
   transform: translateY(-50%);
+}
+
+.token-icon {
+  border: 1px solid black;
+  border-radius: 40px;
 }
 </style>

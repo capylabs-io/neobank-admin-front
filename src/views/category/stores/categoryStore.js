@@ -125,6 +125,7 @@ export const categoryStore = defineStore("category", {
         }
         alert.success("Create new Category successfully!");
         this.createCategoryDialog = false;
+        await this.fetchCategories();
       } catch (error) {
         alert.error("Error occurred!", error.message);
       } finally {

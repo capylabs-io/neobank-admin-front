@@ -299,8 +299,4 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.token-icon {
-  border: 1px solid black;
-  border-radius: 40px;
-}
 </style>

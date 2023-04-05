@@ -10,12 +10,12 @@
     >
       <div>
         <v-img
-          class="campaign-card-img border-radius-8"
+          class="campaign-card-img border-radius-8 elevation-1"
           :src="campaign.thumbnailUrl"
           cover
         >
           <div
-            class="card-status white--text font-weight-bold text-capitalize elevation-6 px-2"
+            class="card-status white--text font-weight-bold text-capitalize elevation-2 px-2"
             :style="'background:' + getStatusColor"
           >
             {{ getStatusTitle }}
@@ -23,7 +23,7 @@
         </v-img>
       </div>
       <div class="mt-3">
-        <div class="text-md text-center font-weight-bold">
+        <div class="textlg text-center text-capitalize font-weight-bold">
           {{ campaign.title }}
         </div>
       </div>
@@ -59,10 +59,19 @@
         </v-col>
         <v-col cols="12" md="6" xs="12">
           <div class="d-flex align-center">
-            <v-img class="category-icon" :src="getCategoryIcon" cover></v-img>
             <span class="neutral70--text text-sm ml-1">Category</span>
           </div>
-          <div class="text-sm font-weight-bold">Movie</div>
+          <div class="d-flex align-center">
+            <v-img
+              max-width="16"
+              max-height="16"
+              :src="getCategoryIcon"
+              cover
+            ></v-img>
+            <div class="text-sm font-weight-bold ml-1">
+              {{ getCategoryName }}
+            </div>
+          </div>
         </v-col>
       </v-row>
       <v-row class="mt-0">
@@ -85,6 +94,22 @@
           </div>
         </v-col>
       </v-row>
+      <v-btn
+        class="d-flex align-center mt-6 justify-center mx-auto border-radius-6"
+        depressed
+        color="primary"
+      >
+        <v-img
+          class="token-icon"
+          max-height="15px"
+          max-width="15px"
+          :src="require(`@/assets/redeem/coin.webp`)"
+          contain
+        />
+        <div class="text-capitalize font-weight-bold text-md text-center ml-1">
+          {{ campaign.price || 0 }}
+        </div>
+      </v-btn>
     </v-card>
   </v-hover>
 </template>
@@ -92,14 +117,13 @@
 <script>
 import CampaignHelper from "@/helpers/campaign-helper";
 import { get } from "lodash";
+import moment from "moment";
+
 export default {
   props: {
-    campaign: Object,
-  },
-  methods: {
-    onCampaignCardClick() {
-      if (this.campaign && this.campaign.id)
-        this.$router.push(`/campaign/${this.campaign.id}`);
+    campaign: {
+      type: Object,
+      default: null,
     },
   },
   computed: {
@@ -132,6 +156,18 @@ export default {
         require("@/assets/views/category/category-icon-example.png")
       );
     },
+    getCategoryName() {
+      return get(this.campaign, "campaignCategory.name", "Category Name");
+    },
+  },
+  methods: {
+    onCampaignCardClick() {
+      if (this.campaign && this.campaign.id)
+        this.$router.push(`/campaign/${this.campaign.id}`);
+    },
+  },
+  data() {
+    return {};
   },
 };
 </script>
