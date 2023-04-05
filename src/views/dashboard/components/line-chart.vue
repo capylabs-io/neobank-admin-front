@@ -32,15 +32,11 @@ export default {
   components: {
     apexchart: VueApexCharts,
   },
-
+  props: {
+    series: Array,
+  },
   data() {
     return {
-      series: [
-        {
-          name: "Net Profit",
-          data: [25, 43, 32, 65, 85, 58, 27, 36, 1, 1, 1, 1],
-        },
-      ],
       chartOptions: {
         colors: ["#84ADFF"],
         chart: {
@@ -88,13 +84,13 @@ export default {
         fill: {
           opacity: 1,
         },
-        tooltip: {
-          y: {
-            formatter: function (val) {
-              return "+43";
-            },
-          },
-        },
+        // tooltip: {
+        //   y: {
+        //     formatter: function (val) {
+        //       return "+43";
+        //     },
+        //   },
+        // },
       },
     };
   },

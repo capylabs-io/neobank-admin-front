@@ -13,7 +13,14 @@
                 Total Campaign
               </div>
               <div
-                class="text-dp-sm font-weight-bold neutral100--texttext-left"
+                v-if="dashBoardStore.dashboard.totalCampaigns"
+                class="text-dp-sm font-weight-bold neutral100--text text-left"
+              >
+                {{ dashBoardStore.dashboard.totalCampaigns }}
+              </div>
+              <div
+                v-else
+                class="text-dp-sm font-weight-bold neutral100--text text-left"
               >
                 128
               </div>
@@ -29,7 +36,7 @@
             <v-icon small class="align-self-start">mdi-export</v-icon>
           </v-card>
         </v-col>
-        <v-col cols="12" xl="2"
+        <v-col cols="12" xl="3"
           ><v-card
             class="number-card pa-4 d-flex justify-space-between"
             rounded="12"
@@ -40,6 +47,13 @@
                 Total Categories
               </div>
               <div
+                v-if="dashBoardStore.dashboard.totalCategories"
+                class="text-dp-sm font-weight-bold neutral100--text text-left"
+              >
+                {{ dashBoardStore.dashboard.totalCategories }}
+              </div>
+              <div
+                v-else
                 class="text-dp-sm font-weight-bold neutral100--text text-left"
               >
                 5
@@ -53,7 +67,7 @@
             <v-icon small class="align-self-start">mdi-export</v-icon>
           </v-card>
         </v-col>
-        <v-col cols="12" xl="2"
+        <!-- <v-col cols="12" xl="2"
           ><v-card
             class="number-card pa-4 d-flex justify-space-between"
             rounded="12"
@@ -79,7 +93,7 @@
             </div>
             <v-icon small class="align-self-start">mdi-export</v-icon>
           </v-card>
-        </v-col>
+        </v-col> -->
         <v-col cols="12" xl="3"
           ><v-card
             class="number-card pa-4 d-flex justify-space-between"
@@ -89,6 +103,13 @@
             <div>
               <div class="text-left neutral70--text text-xs">Total Users</div>
               <div
+                v-if="dashBoardStore.dashboard.totalUsers"
+                class="text-dp-sm font-weight-bold neutral100--text text-left"
+              >
+                {{ dashBoardStore.dashboard.totalUsers }}
+              </div>
+              <div
+                v-else
                 class="text-dp-sm font-weight-bold neutral100--text text-left"
               >
                 2023
@@ -105,7 +126,7 @@
             <v-icon small class="align-self-start">mdi-export</v-icon>
           </v-card>
         </v-col>
-        <v-col cols="12" xl="2"
+        <v-col cols="12" xl="3"
           ><v-card
             class="number-card pa-4 d-flex justify-space-between"
             rounded="12"
@@ -114,6 +135,13 @@
             <div>
               <div class="text-left neutral70--text text-xs">Partners</div>
               <div
+                v-if="dashBoardStore.dashboard.totalPartners"
+                class="text-dp-sm font-weight-bold neutral100--text text-left"
+              >
+                {{ dashBoardStore.dashboard.totalPartners }}
+              </div>
+              <div
+                v-else
                 class="text-dp-sm font-weight-bold neutral100--text text-left"
               >
                 10
@@ -132,7 +160,7 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col cols="12" xl="5"
+        <v-col cols="6"
           ><v-card class="voucher-list-card pa-4" rounded="12" outlined>
             <div class="text-center neutral100-text text-xs">
               Most purchased Campaign
@@ -141,20 +169,26 @@
             <v-data-table
               class="mt-2"
               :headers="header1"
-              :items="users"
+              :items="dashBoardStore.dashboard.mostPurchasedCampaign"
               hide-default-footer
             >
-              <template v-slot:[`item.number`]="{ item }">
+              <template v-slot:[`item.total_quantity`]="{ item }">
                 <v-icon small class="mr-2" @click="editItem(item)">
                   mdi-account-multiple
                 </v-icon>
-                <span>{{ item.number }}</span>
+                <span>{{ item.total_quantity }}</span>
               </template>
             </v-data-table>
           </v-card></v-col
         >
-        <v-col cols="12" xl="7">
-          <pieChart :options="options" :width="600" :height="416" :index="1" />
+        <v-col cols="6">
+          <pieChart
+            :options="options"
+            :width="600"
+            :height="416"
+            :index="1"
+            :series="dashBoardStore.pieSeries"
+          />
         </v-col>
       </v-row>
       <v-row>
@@ -167,20 +201,20 @@
             <v-data-table
               class="mt-2"
               :headers="header2"
-              :items="users"
+              :items="dashBoardStore.dashboard.campaignByEachPartner"
               hide-default-footer
             >
-              <template v-slot:[`item.number`]="{ item }">
+              <template v-slot:[`item.campaigns.count`]="{ item }">
                 <v-icon small class="mr-2" @click="editItem(item)">
                   mdi-account-multiple
                 </v-icon>
-                <span>{{ item.number }}</span>
+                <span>{{ item.campaigns.count }}</span>
               </template>
             </v-data-table>
           </v-card>
         </v-col>
         <v-col cols="7">
-          <lineChart />
+          <lineChart :series="lineSeries" />
         </v-col>
       </v-row>
     </div>
@@ -190,6 +224,7 @@
 <script>
 import { mapStores } from "pinia";
 import { userStore } from "@/stores/userStore";
+import { dashBoardStore } from "@/views/dashboard/stores/dashBoardStore";
 import pieChart from "@/views/dashboard/components/pie-chart.vue";
 import lineChart from "@/views/dashboard/components/line-chart.vue";
 
@@ -198,7 +233,18 @@ export default {
     pieChart: pieChart,
     lineChart: lineChart,
   },
-
+  computed: {
+    ...mapStores(userStore),
+    ...mapStores(dashBoardStore),
+  },
+  async created() {
+    await this.dashBoardStore.fetchMaintainerDashBoard();
+    this.options.labels = this.dashBoardStore.pieLabels;
+    this.lineSeries[0].data = this.dashBoardStore.lineSeries;
+    console.log("Label", this.dashBoardStore.pieLabels);
+    console.log("optionslabel", this.options);
+    console.log("pieSeries", this.dashBoardStore.pieSeries);
+  },
   data() {
     return {
       type: "pie",
@@ -213,18 +259,30 @@ export default {
         },
         {
           text: "Brand",
-          value: "name",
+          value: "title",
           align: "center",
+          filterable: false,
+          sortable: false,
         },
         {
           text: "Quant.",
-          value: "number",
+          value: "total_quantity",
           align: "center",
+          filterable: false,
+          sortable: false,
         },
         {
           text: "%",
-          value: "percent",
+          value: "percentage",
           align: "center",
+          filterable: false,
+          sortable: false,
+        },
+      ],
+      pieSeries: [33, 20, 20, 20, 7],
+      lineSeries: [
+        {
+          data: [],
         },
       ],
       header2: [
@@ -238,13 +296,17 @@ export default {
         },
         {
           text: "Brand name",
-          value: "name",
+          value: "brandName",
           align: "center",
+          filterable: false,
+          sortable: false,
         },
         {
           text: "Quant.",
-          value: "number",
+          value: "campaigns.count",
           align: "center",
+          filterable: false,
+          sortable: false,
         },
       ],
       users: [
@@ -309,22 +371,21 @@ export default {
           height: 240,
           type: "pie",
         },
-        labels: [
-          "Beverage 20%",
-          "Cinema 20%",
-          "Shopping 20%",
-          "Telecom 20%",
-          "Others 20%",
-        ],
+        labels: [],
+        // labels: [
+        //   "Beverage 20%",
+        //   "Cinema 20%",
+        //   "Shopping 20%",
+        //   "Telecom 20%",
+        //   "Others 20%",
+        // ],
         legend: {
           position: "bottom",
         },
       },
     };
   },
-  computed: {
-    ...mapStores(userStore),
-  },
+
   watch: {
     group() {
       this.drawer = false;
@@ -338,11 +399,11 @@ export default {
   border-radius: 12px;
 }
 .chart-card {
-  height: max-content;
+  height: 100%;
   border-radius: 12px;
 }
 .voucher-list-card {
-  height: max-content;
+  height: 100%;
   border-radius: 12px;
 }
 

@@ -29,15 +29,14 @@ export default {
     width: Number,
     height: Number,
     index: Number,
+    series: Array,
   },
   components: {
     apexchart: VueApexCharts,
   },
 
   data() {
-    return {
-      series: [33, 20, 20, 20, 7],
-    };
+    return {};
   },
   computed: {
     ...mapStores(userStore),
