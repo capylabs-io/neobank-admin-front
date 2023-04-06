@@ -113,7 +113,7 @@
           clearable
         ></v-text-field>
         <JsonExcel
-          :data="exportedCampaigns"
+          :data="campaignStore.filteredCampaigns"
           :fields="exportExcelFields"
           :before-generate="showLoading"
           :before-finish="hideLoading"
