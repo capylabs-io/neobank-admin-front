@@ -160,7 +160,7 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col cols="6"
+        <v-col cols="5"
           ><v-card class="voucher-list-card pa-4" rounded="12" outlined>
             <div class="text-center neutral100-text text-xs">
               Most purchased Campaign
@@ -178,16 +178,20 @@
                 </v-icon>
                 <span>{{ item.total_quantity }}</span>
               </template>
+              <template v-slot:[`item.percentage`]="{ item }">
+                <span>{{ item.percentages }}</span>
+              </template>
             </v-data-table>
           </v-card></v-col
         >
-        <v-col cols="6">
+        <v-col cols="7">
           <pieChart
-            :options="options"
             :width="600"
             :height="416"
+            :options="options"
             :index="1"
             :series="dashBoardStore.pieSeries"
+            :labels="pieLabels"
           />
         </v-col>
       </v-row>
@@ -214,7 +218,10 @@
           </v-card>
         </v-col>
         <v-col cols="7">
-          <lineChart :series="lineSeries" />
+          <lineChart
+            :xAxis="dashBoardStore.lineCategory"
+            :series="lineSeries"
+          />
         </v-col>
       </v-row>
     </div>
@@ -236,14 +243,19 @@ export default {
   computed: {
     ...mapStores(userStore),
     ...mapStores(dashBoardStore),
+    pieLabels() {
+      return this.dashBoardStore.pieLabels;
+    },
+    columnSeries() {
+      return this.dashBoardStore.lineSeries;
+    },
   },
   async created() {
     await this.dashBoardStore.fetchMaintainerDashBoard();
-    this.options.labels = this.dashBoardStore.pieLabels;
-    this.lineSeries[0].data = this.dashBoardStore.lineSeries;
-    console.log("Label", this.dashBoardStore.pieLabels);
-    console.log("optionslabel", this.options);
-    console.log("pieSeries", this.dashBoardStore.pieSeries);
+    this.lineSeries.push({
+      name: "New Users",
+      data: this.columnSeries
+    });
   },
   data() {
     return {
@@ -279,17 +291,7 @@ export default {
           sortable: false,
         },
       ],
-      pieSeries: [33, 20, 20, 20, 7],
-      // lineSeries: [
-      //   {
-      //     data: [],
-      //   },
-      // ],
-      lineSeries: [
-        {
-          data: [25, 43, 32, 65, 85, 58, 27, 36, 1, 1, 1, 1],
-        },
-      ],
+
       header2: [
         {
           text: "No.",
@@ -314,76 +316,21 @@ export default {
           sortable: false,
         },
       ],
-      users: [
+      lineSeries: [
         {
-          id: "1",
-          name: "Grab",
-          number: "10000",
-          percent: "25%",
-        },
-        {
-          id: "2",
-          name: "Grab",
-          number: "10000",
-          percent: "20%",
-        },
-        {
-          id: "3",
-          name: "Grab",
-          number: "10000",
-          percent: "10%",
-        },
-        {
-          id: "4",
-          name: "Grab",
-          number: "10000",
-          percent: "10%",
-        },
-        {
-          id: "5",
-          name: "Grab",
-          number: "10000",
-          percent: "10%",
-        },
-        {
-          id: "6",
-          name: "Grab",
-          number: "10000",
-          percent: "10%",
-        },
-
-        {
-          id: "7",
-          name: "Grab",
-          number: "10000",
-          percent: "10%",
+          name: "month",
+          data: [],
+          // data: [25, 43, 32, 65, 85, 58, 27, 36, 1, 1, 1, 1],
         },
       ],
       options: {
-        // plotOptions: {
-        //   pie: {
-        //     dataLabels: {
-        //       offset: -36,
-        //     },
-        //   },
-        // },
         stroke: {
           show: false,
         },
         colors: ["#C1D6FF", "#A1C0FF", "#9592FE", "#726FF3", "#5752E3"],
         chart: {
-          width: 240,
-          height: 240,
           type: "pie",
         },
-        labels: [],
-        // labels: [
-        //   "Beverage 20%",
-        //   "Cinema 20%",
-        //   "Shopping 20%",
-        //   "Telecom 20%",
-        //   "Others 20%",
-        // ],
         legend: {
           position: "bottom",
         },

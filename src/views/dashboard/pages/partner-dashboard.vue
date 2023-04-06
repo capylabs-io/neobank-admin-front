@@ -203,7 +203,8 @@
             :width="600"
             :height="380"
             :index="1"
-            :series="pieSeries"
+            :series="dashBoardStore.pieSeries"
+            :labels="dashBoardStore.pieLabels"
           />
         </v-col>
       </v-row>
@@ -227,8 +228,6 @@ export default {
   },
   async created() {
     await this.dashBoardStore.fetchPartnerDashBoard();
-    console.log("partnerdb", this.dashBoardStore.partnerDashboard);
-    console.log("series", this.dashBoardStore.partnerPieSeries);
   },
   data() {
     return {
@@ -304,29 +303,13 @@ export default {
       pieSeries: [33, 20, 20, 20, 7],
 
       options: {
-        // plotOptions: {
-        //   pie: {
-        //     dataLabels: {
-        //       offset: -36,
-        //     },
-        //   },
-        // },
         stroke: {
           show: false,
         },
         colors: ["#C1D6FF", "#A1C0FF", "#9592FE", "#726FF3", "#5752E3"],
         chart: {
-          width: 240,
-          height: 240,
           type: "pie",
         },
-        labels: [
-          "Beverage 20%",
-          "Cinema 20%",
-          "Shopping 20%",
-          "Telecom 20%",
-          "Others 20%",
-        ],
       },
     };
   },

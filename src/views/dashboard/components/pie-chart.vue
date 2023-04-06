@@ -11,7 +11,7 @@
       <apexchart
         :width="width"
         :height="height"
-        :options="options"
+        :options="chartOptions"
         :series="series"
       ></apexchart>
     </div>
@@ -26,10 +26,11 @@ import VueApexCharts from "vue-apexcharts";
 export default {
   props: {
     options: Object,
+    index: Number,
     width: Number,
     height: Number,
-    index: Number,
     series: Array,
+    labels: Array,
   },
   components: {
     apexchart: VueApexCharts,
@@ -40,6 +41,12 @@ export default {
   },
   computed: {
     ...mapStores(userStore),
+    chartOptions() {
+      return {
+        ...this.options,
+        labels: this.labels,
+      };
+    },
   },
 };
 </script>
