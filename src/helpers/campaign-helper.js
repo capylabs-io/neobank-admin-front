@@ -22,6 +22,14 @@ export default {
         return "New Deal";
       case "outOfStock":
         return "Out of Stock";
+      case "active":
+        return "Active";
+      case "disabled":
+        return "Disabled";
+      case "expired":
+        return "Expired";
+      case "hot":
+        return "Hot";
       default:
         return status;
     }
