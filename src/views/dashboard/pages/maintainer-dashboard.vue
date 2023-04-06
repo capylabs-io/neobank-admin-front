@@ -24,14 +24,6 @@
               >
                 128
               </div>
-              <div
-                class="green60--text text-overline-1 d-flex align-center mt-3"
-              >
-                <v-icon small class="mr-2 chart-icon" color="green60"
-                  >mdi-chart-line</v-icon
-                >
-                +10
-              </div>
             </div>
             <v-icon small class="align-self-start">mdi-export</v-icon>
           </v-card>
@@ -57,11 +49,6 @@
                 class="text-dp-sm font-weight-bold neutral100--text text-left"
               >
                 5
-              </div>
-              <div
-                class="neutral70--text text-overline-1 d-flex align-center mt-3"
-              >
-                --
               </div>
             </div>
             <v-icon small class="align-self-start">mdi-export</v-icon>
@@ -114,14 +101,6 @@
               >
                 2023
               </div>
-              <div
-                class="green60--text text-overline-1 d-flex align-center mt-3"
-              >
-                <v-icon small class="mr-2 chart-icon" color="green60"
-                  >mdi-chart-line</v-icon
-                >
-                +100
-              </div>
             </div>
             <v-icon small class="align-self-start">mdi-export</v-icon>
           </v-card>
@@ -145,14 +124,6 @@
                 class="text-dp-sm font-weight-bold neutral100--text text-left"
               >
                 10
-              </div>
-              <div
-                class="green60--text text-overline-1 d-flex align-center mt-3"
-              >
-                <v-icon small class="mr-2 chart-icon" color="green60"
-                  >mdi-chart-line</v-icon
-                >
-                +2
               </div>
             </div>
             <v-icon small class="align-self-start">mdi-export</v-icon>
@@ -179,7 +150,7 @@
                 <span>{{ item.total_quantity }}</span>
               </template>
               <template v-slot:[`item.percentage`]="{ item }">
-                <span>{{ item.percentages }}</span>
+                <span>{{ Math.round(item.percentage * 100) / 100 }}</span>
               </template>
             </v-data-table>
           </v-card></v-col
@@ -254,7 +225,7 @@ export default {
     await this.dashBoardStore.fetchMaintainerDashBoard();
     this.lineSeries.push({
       name: "New Users",
-      data: this.columnSeries
+      data: this.columnSeries,
     });
   },
   data() {
@@ -272,21 +243,21 @@ export default {
         {
           text: "Brand",
           value: "title",
-          align: "center",
+          align: "left",
           filterable: false,
           sortable: false,
         },
         {
-          text: "Quant.",
+          text: "Total Quant.",
           value: "total_quantity",
-          align: "center",
+          align: "left",
           filterable: false,
           sortable: false,
         },
         {
-          text: "%",
+          text: "Percent(%)",
           value: "percentage",
-          align: "center",
+          align: "left",
           filterable: false,
           sortable: false,
         },
@@ -304,14 +275,14 @@ export default {
         {
           text: "Brand name",
           value: "brandName",
-          align: "center",
+          align: "left",
           filterable: false,
           sortable: false,
         },
         {
           text: "Quant.",
           value: "campaigns.count",
-          align: "center",
+          align: "left",
           filterable: false,
           sortable: false,
         },
@@ -327,7 +298,14 @@ export default {
         stroke: {
           show: false,
         },
-        colors: ["#C1D6FF", "#A1C0FF", "#9592FE", "#726FF3", "#5752E3"],
+        colors: [
+          "#FD0100",
+          "#F76915",
+          "#EEDE04",
+          "#A0D636",
+          "#2FA236",
+          "#333ED4",
+        ],
         chart: {
           type: "pie",
         },
