@@ -66,6 +66,7 @@ export const userStore = defineStore("user", {
     logout() {
       this.jwt = "";
       this.userData = {};
+      this.role = {};
     },
   },
   persist: [

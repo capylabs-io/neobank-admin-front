@@ -62,6 +62,15 @@ export const Partner = {
       },
     });
   },
+  fetchPartnerCampaigns: () => {
+    const user = userStore();
+    if (!user.isConnected) return;
+    return axios.get("partner/campaigns", {
+      headers: {
+        Authorization: "Bearer " + user.jwt,
+      },
+    });
+  },
 };
 
 export const Category = {
