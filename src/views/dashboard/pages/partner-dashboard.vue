@@ -37,14 +37,14 @@
               >
                 128
               </div>
-              <div
+              <!-- <div
                 class="green60--text text-overline-1 d-flex align-center mt-3"
               >
                 <v-icon small class="mr-2 chart-icon" color="green60"
                   >mdi-chart-line</v-icon
                 >
                 +10
-              </div>
+              </div> -->
             </div>
             <v-icon small class="align-self-start">mdi-export</v-icon>
           </v-card>
@@ -71,11 +71,11 @@
               >
                 5
               </div>
-              <div
+              <!-- <div
                 class="neutral70--text text-overline-1 d-flex align-center mt-3"
               >
                 --
-              </div>
+              </div> -->
             </div>
             <v-icon small class="align-self-start">mdi-export</v-icon>
           </v-card>
@@ -129,14 +129,14 @@
               >
                 2023
               </div>
-              <div
+              <!-- <div
                 class="green60--text text-overline-1 d-flex align-center mt-3"
               >
                 <v-icon small class="mr-2 chart-icon" color="green60"
                   >mdi-chart-line</v-icon
                 >
                 +100
-              </div>
+              </div> -->
             </div>
             <v-icon small class="align-self-start">mdi-export</v-icon>
           </v-card>
@@ -163,14 +163,14 @@
               >
                 10
               </div>
-              <div
+              <!-- <div
                 class="green60--text text-overline-1 d-flex align-center mt-3"
               >
                 <v-icon small class="mr-2 chart-icon" color="green60"
                   >mdi-chart-line</v-icon
                 >
                 +2
-              </div>
+              </div> -->
             </div>
             <v-icon small class="align-self-start">mdi-export</v-icon>
           </v-card>
@@ -198,7 +198,7 @@
           </v-card></v-col
         >
         <v-col cols="7">
-          <pieChart
+          <pieChart class="full-height"
             :options="options"
             :width="600"
             :height="380"
@@ -243,14 +243,14 @@ export default {
         {
           text: "Brand name",
           value: "title",
-          align: "center",
+          align: "left",
           filterable: false,
           sortable: false,
         },
         {
           text: "Quant.",
           value: "vouchers.count",
-          align: "center",
+          align: "left",
           filterable: false,
           sortable: false,
         },
@@ -306,7 +306,14 @@ export default {
         stroke: {
           show: false,
         },
-        colors: ["#C1D6FF", "#A1C0FF", "#9592FE", "#726FF3", "#5752E3"],
+        colors: [
+          "#FD0100",
+          "#F76915",
+          "#EEDE04",
+          "#A0D636",
+          "#2FA236",
+          "#333ED4",
+        ],
         chart: {
           type: "pie",
         },
