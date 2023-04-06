@@ -26,7 +26,14 @@
                 Total Campaign
               </div>
               <div
-                class="text-dp-sm font-weight-bold neutral100--texttext-left"
+                v-if="dashBoardStore.partnerDashboard.totalCampaigns"
+                class="text-dp-sm font-weight-bold neutral100--text text-left"
+              >
+                {{ dashBoardStore.partnerDashboard.totalCampaigns }}
+              </div>
+              <div
+                v-else
+                class="text-dp-sm font-weight-bold neutral100--text text-left"
               >
                 128
               </div>
@@ -42,7 +49,7 @@
             <v-icon small class="align-self-start">mdi-export</v-icon>
           </v-card>
         </v-col>
-        <v-col cols="12" xl="2"
+        <v-col cols="12" xl="3"
           ><v-card
             class="number-card pa-4 d-flex justify-space-between"
             rounded="12"
@@ -53,6 +60,13 @@
                 Total Categories
               </div>
               <div
+                v-if="dashBoardStore.partnerDashboard.totalCategories"
+                class="text-dp-sm font-weight-bold neutral100--text text-left"
+              >
+                {{ dashBoardStore.partnerDashboard.totalCategories }}
+              </div>
+              <div
+                v-else
                 class="text-dp-sm font-weight-bold neutral100--text text-left"
               >
                 5
@@ -66,7 +80,7 @@
             <v-icon small class="align-self-start">mdi-export</v-icon>
           </v-card>
         </v-col>
-        <v-col cols="12" xl="2"
+        <!-- <v-col cols="12" xl="2"
           ><v-card
             class="number-card pa-4 d-flex justify-space-between"
             rounded="12"
@@ -92,7 +106,7 @@
             </div>
             <v-icon small class="align-self-start">mdi-export</v-icon>
           </v-card>
-        </v-col>
+        </v-col> -->
         <v-col cols="12" xl="3"
           ><v-card
             class="number-card pa-4 d-flex justify-space-between"
@@ -100,8 +114,17 @@
             outlined
           >
             <div>
-              <div class="text-left neutral70--text text-xs">Total Users</div>
+              <div class="text-left neutral70--text text-xs">
+                Campaign Active
+              </div>
               <div
+                v-if="dashBoardStore.partnerDashboard.totalCampaignActive"
+                class="text-dp-sm font-weight-bold neutral100--text text-left"
+              >
+                {{ dashBoardStore.partnerDashboard.totalCampaignActive }}
+              </div>
+              <div
+                v-else
                 class="text-dp-sm font-weight-bold neutral100--text text-left"
               >
                 2023
@@ -118,15 +141,24 @@
             <v-icon small class="align-self-start">mdi-export</v-icon>
           </v-card>
         </v-col>
-        <v-col cols="12" xl="2"
+        <v-col cols="3"
           ><v-card
             class="number-card pa-4 d-flex justify-space-between"
             rounded="12"
             outlined
           >
             <div>
-              <div class="text-left neutral70--text text-xs">Partners</div>
+              <div class="text-left neutral70--text text-xs">
+                Total Purchase
+              </div>
               <div
+                v-if="dashBoardStore.partnerDashboard.totalPurchased"
+                class="text-dp-sm font-weight-bold neutral100--text text-left"
+              >
+                {{ dashBoardStore.partnerDashboard.totalPurchased }}
+              </div>
+              <div
+                v-else
                 class="text-dp-sm font-weight-bold neutral100--text text-left"
               >
                 10
@@ -153,20 +185,27 @@
             <v-data-table
               class="mt-2"
               :headers="header"
-              :items="users"
+              :items="dashBoardStore.partnerDashboard.mostPurchasedCampaign"
               hide-default-footer
             >
-              <template v-slot:[`item.number`]="{ item }">
+              <template v-slot:[`item.vouchers.count`]="{ item }">
                 <v-icon small class="mr-2" @click="editItem(item)">
                   mdi-account-multiple
                 </v-icon>
-                <span>{{ item.number }}</span>
+                <span>{{ item.vouchers.count }}</span>
               </template>
             </v-data-table>
           </v-card></v-col
         >
-        <v-col cols="12" xl="7">
-          <pieChart :options="options" :width="600" :height="380" :index="1" />
+        <v-col cols="7">
+          <pieChart
+            :options="options"
+            :width="600"
+            :height="380"
+            :index="1"
+            :series="dashBoardStore.pieSeries"
+            :labels="dashBoardStore.pieLabels"
+          />
         </v-col>
       </v-row>
     </div>
@@ -176,13 +215,20 @@
 <script>
 import { mapStores } from "pinia";
 import { userStore } from "@/stores/userStore";
+import { dashBoardStore } from "@/views/dashboard/stores/dashBoardStore";
 import pieChart from "@/views/dashboard/components/pie-chart.vue";
 
 export default {
   components: {
     pieChart: pieChart,
   },
-
+  computed: {
+    ...mapStores(userStore),
+    ...mapStores(dashBoardStore),
+  },
+  async created() {
+    await this.dashBoardStore.fetchPartnerDashBoard();
+  },
   data() {
     return {
       header: [
@@ -196,13 +242,17 @@ export default {
         },
         {
           text: "Brand name",
-          value: "name",
+          value: "title",
           align: "center",
+          filterable: false,
+          sortable: false,
         },
         {
           text: "Quant.",
-          value: "number",
+          value: "vouchers.count",
           align: "center",
+          filterable: false,
+          sortable: false,
         },
       ],
       users: [
@@ -250,36 +300,20 @@ export default {
           percent: "10%",
         },
       ],
+      pieSeries: [33, 20, 20, 20, 7],
+
       options: {
-        // plotOptions: {
-        //   pie: {
-        //     dataLabels: {
-        //       offset: -36,
-        //     },
-        //   },
-        // },
         stroke: {
           show: false,
         },
         colors: ["#C1D6FF", "#A1C0FF", "#9592FE", "#726FF3", "#5752E3"],
         chart: {
-          width: 240,
-          height: 240,
           type: "pie",
         },
-        labels: [
-          "Beverage 20%",
-          "Cinema 20%",
-          "Shopping 20%",
-          "Telecom 20%",
-          "Others 20%",
-        ],
       },
     };
   },
-  computed: {
-    ...mapStores(userStore),
-  },
+
   watch: {
     group() {
       this.drawer = false;
@@ -293,7 +327,7 @@ export default {
   border-radius: 12px;
 }
 .voucher-list-card {
-  height: max-content;
+  height: 100%;
   border-radius: 12px;
 }
 

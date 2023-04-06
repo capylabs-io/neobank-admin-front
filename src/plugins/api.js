@@ -11,12 +11,17 @@ const CAMPAIGN_API = "/campaigns/";
 const PARTNER_API = "/partners/";
 
 const APIHelper = (api) => ({
-  search: (params, option) => axios.get(api, { params: utils.filterObject(params) }, option),
-  count: (params, option) => axios.get(api + "count", { params: utils.filterObject(params) }, option),
-  fetch: (params, option) => axios.get(api, { params: utils.filterObject(params) }, option),
+  search: (params, option) =>
+    axios.get(api, { params: utils.filterObject(params) }, option),
+  count: (params, option) =>
+    axios.get(api + "count", { params: utils.filterObject(params) }, option),
+  fetch: (params, option) =>
+    axios.get(api, { params: utils.filterObject(params) }, option),
   fetchOne: (id, option) => axios.get(api + id, option),
-  create: (params, options) => axios.post(api, utils.filterObject(params), options),
-  update: (id, params, option) => axios.put(api + id, utils.filterObject(params), option),
+  create: (params, options) =>
+    axios.post(api, utils.filterObject(params), options),
+  update: (id, params, option) =>
+    axios.put(api + id, utils.filterObject(params), option),
   remove: (id, option) => axios.delete(api + id, option),
 });
 export const APIRespository = APIHelper;
@@ -71,6 +76,16 @@ export const Partner = {
       },
     });
   },
+  
+  fetchDashBoard: () => {
+    const user = userStore();
+    if (!user.isConnected) return;
+    return axios.get("partner/dashboard/metrics", {
+      headers: {
+        Authorization: "Bearer " + user.jwt,
+      },
+    });
+  },
 };
 
 export const Category = {
@@ -95,7 +110,11 @@ export const Voucher = {
       }
     ),
   fetchUserVouchers: (userId) =>
-    axios.get("vouchers?populate[0]=campaign&populate[1]=campaignCategory&filters[user][id]=" + userId, {}),
+    axios.get(
+      "vouchers?populate[0]=campaign&populate[1]=campaignCategory&filters[user][id]=" +
+        userId,
+      {}
+    ),
 };
 
 export const Common = {
@@ -108,6 +127,15 @@ export const Common = {
 };
 
 export const Maintainer = {
+  fetchDashBoard: () => {
+    const user = userStore();
+    if (!user.isConnected) return;
+    return axios.get("maintainer/dashboard/metrics", {
+      headers: {
+        Authorization: "Bearer " + user.jwt,
+      },
+    });
+  },
   fetchCampaigns: () => {
     const user = userStore();
     if (!user.isConnected) return;
@@ -161,6 +189,8 @@ export const Campaign = {
     return axios.get(`campaigns/${campaignId}?populate[0]=campaignCategory`);
   },
   fetchCampaignTransactions: (campaignId) => {
-    return axios.get(`vouchers?populate[0]=user&filters[campaign][id]=${campaignId}`);
+    return axios.get(
+      `vouchers?populate[0]=user&filters[campaign][id]=${campaignId}`
+    );
   },
 };

@@ -5,15 +5,16 @@
         New User thru time
         <v-icon small class="ml-2">mdi-export</v-icon>
       </div>
-      <div class="d-flex column-gap-5 left-filter-group">
+      <!-- <div class="d-flex column-gap-5 left-filter-group">
         <v-btn class="clothes text-caption text-capitalize" text> Week </v-btn>
         <v-btn class="voucher active text-caption text-capitalize" text>
           Month
         </v-btn>
-      </div>
+      </div> -->
     </div>
     <div id="chart" class="mt-2">
       <apexchart
+        ref="lineChart"
         type="bar"
         height="348"
         :options="chartOptions"
@@ -32,15 +33,27 @@ export default {
   components: {
     apexchart: VueApexCharts,
   },
-
+  props: {
+    xAxis: {
+      type: Array,
+      default: () => [],
+    },
+    series: {
+      type: Array,
+      default: () => [],
+    },
+  },
+  watch: {
+    xAxis(newVal) {
+      if (newVal)
+        this.chartOptions = {
+          ...this.chartOptions,
+          xaxis: { categories: newVal },
+        };
+    },
+  },
   data() {
     return {
-      series: [
-        {
-          name: "Net Profit",
-          data: [25, 43, 32, 65, 85, 58, 27, 36, 1, 1, 1, 1],
-        },
-      ],
       chartOptions: {
         colors: ["#84ADFF"],
         chart: {
@@ -56,12 +69,15 @@ export default {
         plotOptions: {
           bar: {
             horizontal: false,
-            columnWidth: "55%",
+            columnWidth: "30px",
             endingShape: "rounded",
           },
         },
         dataLabels: {
           enabled: false,
+        },
+        legend: {
+          show: false,
         },
         stroke: {
           show: true,
@@ -69,32 +85,19 @@ export default {
           colors: ["transparent"],
         },
         xaxis: {
-          categories: [
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Dec",
-          ],
+          categories: this.xAxis,
         },
-        yaxis: {},
+
         fill: {
           opacity: 1,
         },
-        tooltip: {
-          y: {
-            formatter: function (val) {
-              return "+43";
-            },
-          },
-        },
+        // tooltip: {
+        //   y: {
+        //     formatter: function (val) {
+        //       return "+43";
+        //     },
+        //   },
+        // },
       },
     };
   },
