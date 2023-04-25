@@ -151,6 +151,7 @@
 <script>
 import { mapStores } from "pinia";
 import { userStore } from "@/stores/userStore";
+import { get } from "lodash";
 export default {
   computed: {
     ...mapStores(userStore),
