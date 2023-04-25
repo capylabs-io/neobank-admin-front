@@ -29,13 +29,13 @@
                 v-if="dashBoardStore.partnerDashboard.totalCampaigns"
                 class="text-dp-sm font-weight-bold neutral100--text text-left"
               >
-                {{ dashBoardStore.partnerDashboard.totalCampaigns }}
+              {{ dashBoardStore.partnerDashboard.totalCampaigns}}
               </div>
               <div
                 v-else
                 class="text-dp-sm font-weight-bold neutral100--text text-left"
               >
-                128
+                0
               </div>
               <!-- <div
                 class="green60--text text-overline-1 d-flex align-center mt-3"
@@ -63,13 +63,13 @@
                 v-if="dashBoardStore.partnerDashboard.totalCategories"
                 class="text-dp-sm font-weight-bold neutral100--text text-left"
               >
-                {{ dashBoardStore.partnerDashboard.totalCategories }}
+                {{ dashBoardStore.partnerDashboard.totalCategories}}
               </div>
               <div
                 v-else
                 class="text-dp-sm font-weight-bold neutral100--text text-left"
               >
-                5
+                0
               </div>
               <!-- <div
                 class="neutral70--text text-overline-1 d-flex align-center mt-3"
@@ -127,7 +127,7 @@
                 v-else
                 class="text-dp-sm font-weight-bold neutral100--text text-left"
               >
-                2023
+                0
               </div>
               <!-- <div
                 class="green60--text text-overline-1 d-flex align-center mt-3"
@@ -161,7 +161,7 @@
                 v-else
                 class="text-dp-sm font-weight-bold neutral100--text text-left"
               >
-                10
+                0
               </div>
               <!-- <div
                 class="green60--text text-overline-1 d-flex align-center mt-3"
@@ -217,6 +217,7 @@ import { mapStores } from "pinia";
 import { userStore } from "@/stores/userStore";
 import { dashBoardStore } from "@/views/dashboard/stores/dashBoardStore";
 import pieChart from "@/views/dashboard/components/pie-chart.vue";
+import {get} from "lodash"
 
 export default {
   components: {
@@ -225,6 +226,9 @@ export default {
   computed: {
     ...mapStores(userStore),
     ...mapStores(dashBoardStore),
+    totalCampaigns(){
+      return get(this.dashBoardStore, "partnerDashboard.totalCampaigns", 0);
+    }
   },
   async created() {
     await this.dashBoardStore.fetchPartnerDashBoard();
