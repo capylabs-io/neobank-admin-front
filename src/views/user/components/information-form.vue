@@ -41,7 +41,8 @@
           readonly
           dense
           hide-details
-          flat />
+          flat
+        />
         <div class="text-xl mt-sm-3 text-left">Token owned</div>
         <v-text-field
           height="36px"
@@ -57,13 +58,17 @@
         >
           <template #prepend-inner>
             <div class="mr-2 pt-1">
-              <v-img
+              <div class="token-icon">P</div>
+              <!-- <v-img
                 width="15px"
                 height="15px"
                 :style="{ 'border-radius': '40px', border: '1px solid black' }"
                 :src="require(`@/assets/redeem/coin.webp`)"
-              /></div></template></v-text-field
-      ></v-col>
+              /> -->
+            </div>
+          </template></v-text-field
+        ></v-col
+      >
       <v-col cols="4"></v-col>
     </v-row>
   </v-card>

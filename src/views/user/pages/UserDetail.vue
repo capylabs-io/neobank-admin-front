@@ -74,7 +74,8 @@
             readonly
             dense
             hide-details
-            flat />
+            flat
+          />
           <div class="text-sm neutral70--text font-weight-bold mt-3">
             Token owned
           </div>
@@ -92,7 +93,8 @@
           >
             <template #prepend-inner>
               <div class="mr-2 pt-1">
-                <v-img
+                <div class="token-icon">P</div>
+                <!-- <v-img
                   width="15px"
                   height="15px"
                   :style="{
@@ -100,8 +102,11 @@
                     border: '1px solid black',
                   }"
                   :src="require(`@/assets/redeem/coin.webp`)"
-                /></div></template></v-text-field
-        ></v-col>
+                /> -->
+              </div></template
+            ></v-text-field
+          ></v-col
+        >
         <v-col cols="4"></v-col>
       </v-row>
     </div>
@@ -167,13 +172,14 @@
         </template>
         <template v-slot:[`item.price`]="{ item }">
           <div class="d-flex align-center">
-            <v-img
+            <div class="token-icon">P</div>
+            <!-- <v-img
               class="token-icon"
               max-height="15px"
               max-width="15px"
               :src="require(`@/assets/redeem/coin.webp`)"
               contain
-            />
+            /> -->
             <div class="text-capitalize text-center ml-1">
               {{ item.campaign && item.campaign ? item.campaign.price : 0 }}
             </div>
@@ -298,5 +304,4 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

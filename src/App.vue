@@ -311,7 +311,6 @@ body {
 }
 
 .token-icon {
-  border: 1px solid black;
-  border-radius: 40px;
+  font-size: 18px;
 }
 </style>

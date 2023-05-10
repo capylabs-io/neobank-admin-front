@@ -107,7 +107,8 @@
         >
           <template #prepend-inner>
             <div class="mr-2 pt-1">
-              <v-img
+              <div class="token-icon">P</div>
+              <!-- <v-img
                 width="15px"
                 height="15px"
                 :style="{
@@ -115,7 +116,7 @@
                   border: '1px solid black',
                 }"
                 :src="require(`@/assets/redeem/coin.webp`)"
-              />
+              /> -->
             </div>
           </template>
         </v-text-field>
