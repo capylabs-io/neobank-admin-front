@@ -124,10 +124,11 @@
                 dense
               >
                 <template v-slot:prepend-inner>
-                  <v-img
+                  <!-- <v-img
                     class="category-icon mr-1"
                     :src="require('@/assets/redeem/coin.webp')"
-                  ></v-img>
+                  ></v-img> -->
+                  <div class="token-icon category-icon mr-1">P</div>
                 </template>
               </v-text-field>
             </div>

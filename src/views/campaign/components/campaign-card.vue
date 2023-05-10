@@ -99,13 +99,14 @@
         depressed
         color="primary"
       >
-        <v-img
+        <div class="token-icon">P</div>
+        <!-- <v-img
           class="token-icon"
           max-height="15px"
           max-width="15px"
           :src="require(`@/assets/redeem/coin.webp`)"
           contain
-        />
+        /> -->
         <div class="text-capitalize font-weight-bold text-md text-center ml-1">
           {{ campaign.price || 0 }}
         </div>
