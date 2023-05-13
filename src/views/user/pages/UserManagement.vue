@@ -4,11 +4,11 @@
     <div class="d-flex mt-2 justify-space-between">
       <div class="d-flex align-center justify-space-between">
         <div class="d-flex align-center gap-8">
-          <v-btn
+          <!-- <v-btn
             class="white-bg neutral30-border text-none font-weight-bold px-3 border-radius-8"
             depressed
             >Export CSV</v-btn
-          >
+          > -->
         </div>
       </div>
 
@@ -47,12 +47,14 @@
           </div>
         </template>
         <template v-slot:[`item.status`]="{ item }">
-          <span
+          <span class="success--text" v-if="!item.blocked">Active </span>
+          <span class="error--text" v-else>Disable </span>
+          <!-- <span
             class="success--text"
-            v-if="!item.status || item.status != 'disabled'"
+            v-if="!item.b || item.status != 'Disabled'"
             >Active
           </span>
-          <span class="error--text" v-else>Disable </span>
+          <span class="error--text" v-else>Disable</span> -->
         </template>
         <template v-slot:[`item.voucher`]="{ item }">
           <div>

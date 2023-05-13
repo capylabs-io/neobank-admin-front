@@ -13,11 +13,11 @@
           <v-icon small>mdi-plus</v-icon>
           <span class="ml-1 text-capitalize">New Partner</span>
         </v-btn>
-        <v-btn
+        <!-- <v-btn
           class="white-bg neutral30-border text-none font-weight-bold px-3 border-radius-8"
           depressed
           >Export CSV</v-btn
-        >
+        > -->
       </div>
       <div>
         <v-text-field
