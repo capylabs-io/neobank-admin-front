@@ -12,8 +12,8 @@
         class="image"
         height="240"
         :src="
-          userStore.partner.attributes.bannerUrl
-            ? userStore.partner.attributes.bannerUrl
+          userStore.partner.bannerUrl
+            ? userStore.partner.bannerUrl
             : require('@/assets/views/dashboard/dashboard.webp')
         "
       ></v-img>

@@ -158,12 +158,12 @@ export const dashBoardStore = defineStore("dashBoard", {
           return;
         }
         const partner = get(res, "data.data", {});
-        user.partner = partner
-        // user.partner = 
-        // {
-        //   ...partner.attributes,
-        //   id: partner.id,
-        // };
+        user.partner = {
+          ...partner.attributes,
+          id: partner.id,
+        };
+        console.log("user-partner", user.partner);
+
         this.changeBannerDialog = false;
         alert.success("Update information successfully!", "");
       } catch (error) {

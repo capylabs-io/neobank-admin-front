@@ -1,7 +1,7 @@
 <template>
   <v-dialog
     v-model="dashBoardStore.changeBannerDialog"
-    max-width="460px"
+    max-width="600px"
     persistent
     absolute
   >
