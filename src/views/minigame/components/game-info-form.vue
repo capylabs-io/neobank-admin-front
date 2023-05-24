@@ -1,0 +1,59 @@
+<!-- eslint-disable vue/no-deprecated-filter -->
+<template>
+  <div>
+    <v-card class="neutral30-border border-radius-12 pa-4 mt-3" elevation="0">
+      <v-form>
+        <v-row>
+          <v-col cols="12" md="5">
+            <div>
+              <div class="neutral10-bg mt-1">
+                <v-img
+                  class="campaign-thumbnail border-radius-8"
+                  :src="require('@/assets/game-image.png')"
+                  cover
+                ></v-img>
+              </div>
+            </div>
+          </v-col>
+          <v-col class="d-flex flex-column" cols="12" md="7">
+            <div class="flex-grow-1 d-flex flex-column">
+              <div class="text-sm neutral70--text font-weight-bold">
+                Description
+              </div>
+              <v-textarea
+                :background-color="!gameStore.isEditing ? 'neutral10' : ''"
+                :outlined="gameStore.isEditing"
+                :disabled="!gameStore.isEditing"
+                class="border-radius-6 mt-1 flex-grow-1 d-flex flex-column"
+                placeholder="Description"
+                hide-details
+                no-resize
+                flat
+                solo
+                filled
+              ></v-textarea>
+            </div>
+          </v-col>
+        </v-row>
+      </v-form>
+    </v-card>
+  </div>
+</template>
+
+<script>
+import { mapStores } from "pinia";
+import { gameStore } from "../stores/gameStore";
+export default {
+  components: {},
+  computed: {
+    ...mapStores(gameStore),
+  },
+  methods: {},
+};
+</script>
+
+<style scoped>
+.campaign-thumbnail {
+  height: 268px;
+}
+</style>

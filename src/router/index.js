@@ -113,6 +113,15 @@ const routes = [
           requiresAuth: true,
         },
       },
+      {
+        path: "/config",
+        name: "Game Configuration Detail",
+        component: () =>
+          import("../views/minigame/pages/gameConfigDetail.vue"),
+        meta: {
+          requiresAuth: true,
+        },
+      },
     ],
   },
 ];

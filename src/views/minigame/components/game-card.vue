@@ -63,7 +63,8 @@ export default {
   computed: {},
   methods: {
     ongameCardClick() {
-      if (this.game && this.game.id) this.$router.push(`/game/${this.game.id}`);
+      // if (this.game && this.game.id) this.$router.push(`/game/${this.game.id}`);
+      this.$router.push('/config')
     },
   },
   data() {

@@ -32,8 +32,6 @@
 import { mapStores } from "pinia";
 import { gameStore } from "../stores/gameStore";
 import { userStore } from "@/stores/userStore";
-import CampaignHelper from "@/helpers/campaign-helper";
-import moment from "moment";
 
 export default {
   components: {
@@ -41,9 +39,9 @@ export default {
   },
   data() {
     return {
-      campaign:{
-        title:""
-      }
+      campaign: {
+        title: "",
+      },
     };
   },
   computed: {
@@ -53,11 +51,11 @@ export default {
       return this.gameStore.campaigns;
     },
   },
-  async created() {},
+  created() {},
   methods: {
-    goToCreateCampaign() {
-      this.$router.push("/create-campaign");
-    },
+    // goToCreateCampaign() {
+    //   this.$router.push("/create-campaign");
+    // },
     showLoading() {
       this.$loading.show();
     },

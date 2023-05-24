@@ -8,116 +8,88 @@
       >
     </div>
     <div class="d-flex justify-space-between">
-      <div class="text-dp-xs font-weight-bold">Game List</div>
+      <div class="text-dp-xs font-weight-bold">Game title</div>
+    </div>
+    <div>
+      <infoForm />
+    </div>
+    <div class="d-flex justify-space-between">
+      <div class="d-flex mt-10 align-center">
+        <div class="neutral70--text text-sm font-weight-bold">
+          Ball type quantities:
+        </div>
+        <v-text-field
+          class="border-radius-6 quantity-config ml-2"
+          placeholder="Ex: 10"
+          outlined
+          flat
+          solo
+          filled
+          type="number"
+          dense
+        >
+        </v-text-field>
+      </div>
       <div class="d-flex align-center gap-8">
         <v-btn
-          class="border-radius-8 text-none text-btn error--text"
-          @click="onDisableClicked"
-          elevation="0"
-          text
-          >Disable Campaign</v-btn
-        >
-        <v-btn
           class="white-bg neutral30-border text-none font-weight-bold px-2 border-radius-8"
-          @click="campaignStore.isEditing = true"
-          v-if="!campaignStore.isEditing && userStore.isPartner"
+          @click="gameStore.isEditing = true"
+          v-if="!gameStore.isEditing"
           depressed
           >Edit Info</v-btn
         >
         <v-btn
           class="white-bg neutral30-border text-none font-weight-bold px-2 border-radius-8"
-          @click="campaignStore.isEditing = false"
-          v-if="campaignStore.isEditing"
+          @click="gameStore.isEditing = false"
+          v-if="gameStore.isEditing"
           depressed
           >Cancel</v-btn
         >
         <v-btn
           class="text-none font-weight-bold px-2 border-radius-8"
           color="primary"
-          v-if="campaignStore.isEditing"
-          @click="campaignStore.updateCampaign"
+          v-if="gameStore.isEditing"
+          @click="gameStore.updateCampaign"
           depressed
           >Save Change</v-btn
         >
       </div>
     </div>
     <div>
-      <CampaignForm />
+      <v-row
+        ><v-col v-for="i in 5" :key="i" cols="12" xl="4" md="4">
+          <configForm />
+        </v-col>
+      </v-row>
     </div>
   </div>
 </template>
 
 <script>
-import { campaignStore } from "../stores/campaignStore";
-import { userStore } from "@/stores/userStore";
+import { gameStore } from "../stores/gameStore";
 import { mapStores } from "pinia";
-import { get } from "lodash";
 import CampaignHelper from "@/helpers/campaign-helper";
 
 export default {
   components: {
-    CampaignForm: () => import("../components/campaign-form.vue"),
+    infoForm: () => import(`@/views/minigame/components/game-info-form.vue`),
+    configForm: () => import(`@/views/minigame/components/config-form.vue`),
   },
   data() {
     return {
       campaignHelper: CampaignHelper,
       campaignId: 0,
-      headers: [
-        {
-          text: "No.",
-          value: "id",
-          align: "center",
-          sortable: false,
-        },
-        {
-          text: "User",
-          value: "user",
-          align: "start",
-        },
-        {
-          text: "Date",
-          value: "createdAt",
-          align: "center",
-        },
-        {
-          text: "Code",
-          value: "code",
-          align: "center",
-          sortable: false,
-        },
-      ],
     };
   },
   computed: {
-    ...mapStores(campaignStore),
-    ...mapStores(userStore),
+    ...mapStores(gameStore),
   },
   methods: {
     routerGoBack() {
       this.$router.go(-1);
     },
-    onDisableClicked() {
-      this.$dialog.confirm({
-        title: "Confirm Disable Campaign",
-        topContent:
-          "<span class='error--text'>If you disable this campaign, users will no longer be able to access it!</span>",
-        okText: "Confirm",
-        cancelText: "Cancel",
-        done: async () => {
-          await this.campaignStore.disableCampaign();
-        },
-      });
-    },
   },
-  async created() {
-    this.campaignId = this.$route.params.id;
-    if (!this.campaignId) this.$router.push("/");
-    await this.campaignStore.fetchCampaign(this.campaignId);
-    if (!this.campaignStore.campaign) this.$router.push("/");
-    await this.campaignStore.fetchCategories();
-    await this.campaignStore.fetchCampaignTransactions();
-    this.campaignStore.isEditing = false;
-  },
+  created() {},
 };
 </script>
 
@@ -125,10 +97,7 @@ export default {
 .info-field {
   background: var(--v-primary10-base) !important;
 }
-.search-field {
-  max-width: 240px;
-}
-.category-icon {
-  width: 16px !important;
+.quantity-config {
+  max-width: 200px;
 }
 </style>

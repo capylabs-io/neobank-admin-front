@@ -3,8 +3,9 @@
     <changeBannerDialog />
     <div class="full-width">
       <v-btn
+        color="primary"
         class="btn-image-change"
-        icon
+        depressed
         @click="dashBoardStore.changeBannerDialog = true"
         ><v-icon color="white" large>mdi-camera-outline</v-icon>
       </v-btn>
