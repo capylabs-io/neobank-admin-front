@@ -22,7 +22,8 @@ const routes = [
       {
         path: "/campaign",
         name: "Campaign Management",
-        component: () => import("../views/campaign/pages/CampaignManagement.vue"),
+        component: () =>
+          import("../views/campaign/pages/CampaignManagement.vue"),
         meta: {
           requiresAuth: true,
         },
@@ -47,7 +48,8 @@ const routes = [
       {
         path: "/category",
         name: "Category Management",
-        component: () => import("../views/category/pages/CategoryManagement.vue"),
+        component: () =>
+          import("../views/category/pages/CategoryManagement.vue"),
         meta: {
           requiresAuth: true,
         },
@@ -98,6 +100,15 @@ const routes = [
         path: "/dashboard",
         name: "Dashboard",
         component: () => import("../views/dashboard/pages/DashboardLayout.vue"),
+        meta: {
+          requiresAuth: true,
+        },
+      },
+      {
+        path: "/game",
+        name: "Game Configuration",
+        component: () =>
+          import("../views/minigame/pages/gameConfiguration.vue"),
         meta: {
           requiresAuth: true,
         },

@@ -13,10 +13,18 @@
       <v-divider></v-divider>
 
       <div class="d-flex align-center py-5 px-6">
-        <div class="avatar-img">
-          <v-img
+        <div class="avatar-img" v-if="!userStore.isMaintainer">
+          <!-- <v-img
             class="border-radius-8"
             :src="require(`@/assets/redeem/user-profile.webp`)"
+          /> -->
+          <v-img
+            class="border-radius-8"
+            :src="
+              userStore.partner.avatarUrl
+                ? userStore.partner.avatarUrl
+                : require(`@/assets/redeem/user-profile.webp`)
+            "
           />
         </div>
         <div class="ml-3">
@@ -123,6 +131,21 @@
             </v-list-item-icon>
             <v-list-item-title class="text-md"
               >Account Setting</v-list-item-title
+            >
+          </v-list-item>
+          <v-list-item
+            class="border-radius-8 py-0 px-2 mt-2"
+            to="/game"
+            active-class="active-item"
+            v-if="userStore.isMaintainer"
+            dense
+            link
+          >
+            <v-list-item-icon class="mr-2">
+              <v-icon>mdi-controller-classic </v-icon>
+            </v-list-item-icon>
+            <v-list-item-title class="text-md"
+              >Game Configuration</v-list-item-title
             >
           </v-list-item>
         </v-list>

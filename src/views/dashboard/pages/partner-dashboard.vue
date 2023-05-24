@@ -1,9 +1,21 @@
 <template>
   <div class="d-flex flex-column">
+    <changeBannerDialog />
     <div class="full-width">
+      <v-btn
+        class="btn-image-change"
+        icon
+        @click="dashBoardStore.changeBannerDialog = true"
+        ><v-icon color="white" large>mdi-camera-outline</v-icon>
+      </v-btn>
       <v-img
+        class="image"
         height="240"
-        :src="require('@/assets/views/dashboard/dashboard.webp')"
+        :src="
+          userStore.partner.attributes.bannerUrl
+            ? userStore.partner.attributes.bannerUrl
+            : require('@/assets/views/dashboard/dashboard.webp')
+        "
       ></v-img>
     </div>
     <div class="full-width card-container mt-4">
@@ -29,7 +41,7 @@
                 v-if="dashBoardStore.partnerDashboard.totalCampaigns"
                 class="text-dp-sm font-weight-bold neutral100--text text-left"
               >
-              {{ dashBoardStore.partnerDashboard.totalCampaigns}}
+                {{ dashBoardStore.partnerDashboard.totalCampaigns }}
               </div>
               <div
                 v-else
@@ -63,7 +75,7 @@
                 v-if="dashBoardStore.partnerDashboard.totalCategories"
                 class="text-dp-sm font-weight-bold neutral100--text text-left"
               >
-                {{ dashBoardStore.partnerDashboard.totalCategories}}
+                {{ dashBoardStore.partnerDashboard.totalCategories }}
               </div>
               <div
                 v-else
@@ -198,7 +210,8 @@
           </v-card></v-col
         >
         <v-col cols="7">
-          <pieChart class="full-height"
+          <pieChart
+            class="full-height"
             :options="options"
             :width="600"
             :height="380"
@@ -217,18 +230,19 @@ import { mapStores } from "pinia";
 import { userStore } from "@/stores/userStore";
 import { dashBoardStore } from "@/views/dashboard/stores/dashBoardStore";
 import pieChart from "@/views/dashboard/components/pie-chart.vue";
-import {get} from "lodash"
+import { get } from "lodash";
 
 export default {
   components: {
     pieChart: pieChart,
+    changeBannerDialog: () => import("../dialogs/change-banner-dialog.vue"),
   },
   computed: {
     ...mapStores(userStore),
     ...mapStores(dashBoardStore),
-    totalCampaigns(){
+    totalCampaigns() {
       return get(this.dashBoardStore, "partnerDashboard.totalCampaigns", 0);
-    }
+    },
   },
   async created() {
     await this.dashBoardStore.fetchPartnerDashBoard();
@@ -350,5 +364,14 @@ export default {
 .chart-icon {
   width: 11px;
   height: 9px;
+}
+.btn-image-change {
+  width: 50px;
+  height: 50px;
+  position: absolute !important;
+  z-index: 2;
+}
+.image {
+  z-index: 1;
 }
 </style>
