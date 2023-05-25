@@ -2,7 +2,7 @@
 <template>
   <v-hover v-slot="{ isHovering, props }">
     <v-card
-      class="game-card pa-3 border-radius-16 cursor-pointer"
+      class="game-card pa-3 border-radius-16 cursor-pointer full-height d-flex flex-column"
       :class="{ 'game-card-hover': isHovering }"
       elevation="0"
       v-bind="props"
@@ -11,7 +11,7 @@
       <div>
         <v-img
           class="game-card-img border-radius-8 elevation-1"
-          :src="require('@/assets/game-image.png')"
+          :src="getGameImage"
           cover
         >
         </v-img>
@@ -21,7 +21,7 @@
           {{ config.name }}
         </div>
       </div>
-      <div class="mt-2">
+      <div class="mt-2 flex-grow-1">
         <div class="d-flex align-center">
           <div class="text-sm neutral70--text">
             {{ config.description }}
@@ -68,16 +68,18 @@ export default {
     getGameImage() {
       return get(
         this.config,
-        "campaignCategory.iconUrl",
-        require("@/assets/views/category/category-icon-example.png")
+        "image",
+        require("@/assets/game-image.png")
       );
     },
   },
   methods: {
     ongameCardClick() {
-      // if (this.game && this.game.id) this.$router.push(`/game/${this.game.id}`);
-      if (this.config && this.config.id)
-        this.$router.push(`/game-configs/${this.config.id}`);
+      if (this.config.active) {
+        // if (this.game && this.game.id) this.$router.push(`/game/${this.game.id}`);
+        if (this.config && this.config.id)
+          this.$router.push(`/game-configs/${this.config.id}`);
+      }
     },
   },
   created() {},

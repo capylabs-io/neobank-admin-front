@@ -5,6 +5,7 @@ import alert from "@/plugins/alert";
 import { Game, Maintainer, Category, Common, Partner } from "@/plugins/api";
 import router from "@/router";
 import { userStore } from "@/stores/userStore";
+import { ConfigConsumer } from "antd/lib/config-provider";
 
 export const gameStore = defineStore("game", {
   state: () => ({
@@ -258,22 +259,22 @@ export const gameStore = defineStore("game", {
         const config = get(res, "data.data", null);
         if (!config && config.length == 0) return;
         this.Game = {
-          id: config[0].id,
-          ...config[0].attributes,
+          id: config.id,
+          ...config.attributes,
         };
         let fieldsConfig = [];
-        if (config[0].attributes.config) {
-          fieldsConfig = Object.keys(config[0].attributes.config).filter(
-            (key) => key == "balls"
-          );
-        }
-        console.log(
-          "key",
-          Object.keys(config[0].attributes.config).filter(
-            (key) => key == "balls"
-          )
-        );
-        this.dataConfig = config[0].attributes.data.balls;
+        // if (config.attributes.config) {
+        //   fieldsConfig = Object.keys(this.isConfigEditing.attributes.config).filter(
+        //     (key) => key == "balls"
+        //   );
+        // }
+        // console.log(
+        //   "key",
+        //   Object.keys(config[0].attributes.config).filter(
+        //     (key) => key == "balls"
+        //   )
+        // );
+        this.dataConfig = config.attributes.data.balls;
       } catch (error) {
       } finally {
         loading.hide();

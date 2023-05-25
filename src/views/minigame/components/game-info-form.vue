@@ -9,7 +9,7 @@
               <div class="neutral10-bg mt-1">
                 <v-img
                   class="campaign-thumbnail border-radius-8"
-                  :src="require('@/assets/game-image.png')"
+                  :src="getImage"
                   cover
                 ></v-img>
               </div>
@@ -18,11 +18,13 @@
           <v-col class="d-flex flex-column" cols="12" md="7">
             <div class="flex-grow-1 d-flex flex-column">
               <div class="text-sm neutral70--text font-weight-bold">
-                Description 
+                Description
               </div>
               <v-textarea
                 v-model="gameStore.Game.description"
-                :background-color="!gameStore.isConfigEditing ? 'neutral10' : ''"
+                :background-color="
+                  !gameStore.isConfigEditing ? 'neutral10' : ''
+                "
                 :outlined="gameStore.isConfigEditing"
                 :disabled="!gameStore.isConfigEditing"
                 class="border-radius-6 mt-1 flex-grow-1 d-flex flex-column"
@@ -44,10 +46,19 @@
 <script>
 import { mapStores } from "pinia";
 import { gameStore } from "../stores/gameStore";
+import { get } from "lodash";
+
 export default {
   components: {},
   computed: {
     ...mapStores(gameStore),
+    getImage() {
+      return get(
+        this.gameStore,
+        "Game.image",
+        require("@/assets/game-image.png")
+      );
+    },
   },
   methods: {},
 };

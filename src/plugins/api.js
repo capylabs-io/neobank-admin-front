@@ -125,12 +125,10 @@ export const Common = {
       },
     }),
   fetchGameConfigs: () => {
-    return axios.get("game-configs");
+    return axios.get("game-configs?sort[0]=id");
   },
   fetchGameConfig: (code) => {
-    return axios.get("game-configs", {
-      params: { code },
-    });
+    return axios.get(`game-configs/${code}`);
   },
   updateGameConfig: (code, options) => {
     return axios.put(`game-configs/${code}`, options);

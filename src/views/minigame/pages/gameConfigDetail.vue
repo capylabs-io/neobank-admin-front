@@ -19,7 +19,7 @@
           Ball type quantities:
         </div>
         <v-text-field
-          v-model="gameStore.Game.config.balls.quantity"
+          v-model="getQuantity"
           class="border-radius-6 quantity-config ml-2"
           placeholder="Ex: 10"
           outlined
@@ -91,6 +91,9 @@ export default {
   },
   computed: {
     ...mapStores(gameStore),
+    getQuantity() {
+      return get(this.gameStore, "Game.config.balls.quantity", "5");
+    },
   },
 
   async created() {
