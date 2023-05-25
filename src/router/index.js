@@ -105,7 +105,7 @@ const routes = [
         },
       },
       {
-        path: "/game",
+        path: "/game-configs",
         name: "Game Configuration",
         component: () =>
           import("../views/minigame/pages/gameConfiguration.vue"),
@@ -114,10 +114,9 @@ const routes = [
         },
       },
       {
-        path: "/config",
+        path: "/game-configs/:id",
         name: "Game Configuration Detail",
-        component: () =>
-          import("../views/minigame/pages/gameConfigDetail.vue"),
+        component: () => import("../views/minigame/pages/gameConfigDetail.vue"),
         meta: {
           requiresAuth: true,
         },

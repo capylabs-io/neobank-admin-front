@@ -19,6 +19,7 @@
           Ball type quantities:
         </div>
         <v-text-field
+          v-model="gameStore.Game.config.balls.quantity"
           class="border-radius-6 quantity-config ml-2"
           placeholder="Ex: 10"
           outlined
@@ -33,23 +34,23 @@
       <div class="d-flex align-center gap-8">
         <v-btn
           class="white-bg neutral30-border text-none font-weight-bold px-2 border-radius-8"
-          @click="gameStore.isEditing = true"
-          v-if="!gameStore.isEditing"
+          @click="gameStore.isConfigEditing = true"
+          v-if="!gameStore.isConfigEditing"
           depressed
           >Edit Info</v-btn
         >
         <v-btn
           class="white-bg neutral30-border text-none font-weight-bold px-2 border-radius-8"
-          @click="gameStore.isEditing = false"
-          v-if="gameStore.isEditing"
+          @click="gameStore.isConfigEditing = false"
+          v-if="gameStore.isConfigEditing"
           depressed
           >Cancel</v-btn
         >
         <v-btn
           class="text-none font-weight-bold px-2 border-radius-8"
           color="primary"
-          v-if="gameStore.isEditing"
-          @click="gameStore.updateCampaign"
+          v-if="gameStore.isConfigEditing"
+          @click="gameStore.updateGameConfig(gameId)"
           depressed
           >Save Change</v-btn
         >
@@ -57,8 +58,14 @@
     </div>
     <div>
       <v-row
-        ><v-col v-for="i in 5" :key="i" cols="12" xl="4" md="4">
-          <configForm />
+        ><v-col
+          v-for="ball in gameStore.dataConfig"
+          :key="ball.id"
+          cols="12"
+          xl="4"
+          md="4"
+        >
+          <configForm :ball="ball" />
         </v-col>
       </v-row>
     </div>
@@ -69,6 +76,7 @@
 import { gameStore } from "../stores/gameStore";
 import { mapStores } from "pinia";
 import CampaignHelper from "@/helpers/campaign-helper";
+import { get } from "lodash";
 
 export default {
   components: {
@@ -78,18 +86,24 @@ export default {
   data() {
     return {
       campaignHelper: CampaignHelper,
-      campaignId: 0,
+      gameId: 0,
     };
   },
   computed: {
     ...mapStores(gameStore),
+  },
+
+  async created() {
+    this.gameId = this.$route.params.id;
+    if (!this.gameId) this.$router.push("/");
+    await this.gameStore.fetchGameConfig(this.gameId);
+    this.gameStore.isConfigEditing = false;
   },
   methods: {
     routerGoBack() {
       this.$router.go(-1);
     },
   },
-  created() {},
 };
 </script>
 

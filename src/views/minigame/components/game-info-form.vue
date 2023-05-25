@@ -18,12 +18,13 @@
           <v-col class="d-flex flex-column" cols="12" md="7">
             <div class="flex-grow-1 d-flex flex-column">
               <div class="text-sm neutral70--text font-weight-bold">
-                Description
+                Description 
               </div>
               <v-textarea
-                :background-color="!gameStore.isEditing ? 'neutral10' : ''"
-                :outlined="gameStore.isEditing"
-                :disabled="!gameStore.isEditing"
+                v-model="gameStore.Game.description"
+                :background-color="!gameStore.isConfigEditing ? 'neutral10' : ''"
+                :outlined="gameStore.isConfigEditing"
+                :disabled="!gameStore.isConfigEditing"
                 class="border-radius-6 mt-1 flex-grow-1 d-flex flex-column"
                 placeholder="Description"
                 hide-details

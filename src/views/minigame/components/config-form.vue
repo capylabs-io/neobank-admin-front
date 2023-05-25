@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/no-mutating-props -->
 <!-- eslint-disable vue/no-deprecated-filter -->
 <template>
   <div>
@@ -8,9 +9,10 @@
             Reward Type
           </div>
           <v-select
+            v-model="ball.rewardType"
             :items="gameStore.rewardType"
             background-color="neutral10"
-            :disabled="!gameStore.isEditing"
+            :disabled="!gameStore.isConfigEditing"
             item-text="title"
             item-value="value"
             class="border-radius-6 mt-1"
@@ -23,9 +25,10 @@
         <div class="mt-2">
           <div class="text-sm neutral70--text font-weight-bold">Value</div>
           <v-text-field
-            :background-color="!gameStore.isEditing ? 'neutral10' : ''"
-            :outlined="gameStore.isEditing"
-            :disabled="!gameStore.isEditing"
+            v-model="ball.value"
+            :background-color="!gameStore.isConfigEditing ? 'neutral10' : ''"
+            :outlined="gameStore.isConfigEditing"
+            :disabled="!gameStore.isConfigEditing"
             class="border-radius-6 mt-1 flex-grow-1 d-flex flex-column"
             placeholder="100"
             type="number"
@@ -39,9 +42,10 @@
         <div class="mt-2">
           <div class="text-sm neutral70--text font-weight-bold">Quantity</div>
           <v-text-field
-            :background-color="!gameStore.isEditing ? 'neutral10' : ''"
-            :outlined="gameStore.isEditing"
-            :disabled="!gameStore.isEditing"
+            v-model="ball.quantity"
+            :background-color="!gameStore.isConfigEditing ? 'neutral10' : ''"
+            :outlined="gameStore.isConfigEditing"
+            :disabled="!gameStore.isConfigEditing"
             class="border-radius-6 mt-1 flex-grow-1 d-flex flex-column"
             placeholder="100"
             type="number"
@@ -61,6 +65,12 @@
 import { mapStores } from "pinia";
 import { gameStore } from "../stores/gameStore";
 export default {
+  props: {
+    ball: {
+      type: Object,
+      default: null,
+    },
+  },
   components: {},
   computed: {
     ...mapStores(gameStore),

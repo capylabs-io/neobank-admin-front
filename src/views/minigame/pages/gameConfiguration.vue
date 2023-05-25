@@ -1,8 +1,15 @@
 <template>
   <div class="full-height">
     <v-row class="mt-3">
-      <v-col cols="12" md="3" sm="6" xs="12" v-for="n in 4" :key="n">
-        <GameCard :game="game" />
+      <v-col
+        cols="12"
+        md="3"
+        sm="6"
+        xs="12"
+        v-for="game in gameStore.slicedGames"
+        :key="game.id"
+      >
+        <GameCard :config="game" />
       </v-col>
     </v-row>
     <!-- <div
@@ -15,13 +22,13 @@
     <v-spacer></v-spacer>
     <div class="d-flex align-center">
       <div class="neutral70--text text-sm font-weight-bold">
-        Total current games: {{ gameStore.campaigns.length }}
+        Total current games: {{ gameStore.Games.length }}
       </div>
       <v-spacer></v-spacer>
       <v-pagination
-        :length="gameStore.totalCampaignPage"
-        :total-visible="7"
-        v-model="gameStore.campaignPage"
+        :length="gameStore.totalGamePage"
+        :total-visible="5"
+        v-model="gameStore.GamePage"
         color="primary"
       ></v-pagination>
     </div>
@@ -51,7 +58,9 @@ export default {
       return this.gameStore.campaigns;
     },
   },
-  created() {},
+  async created() {
+    await this.gameStore.fetchGameConfigs();
+  },
   methods: {
     // goToCreateCampaign() {
     //   this.$router.push("/create-campaign");

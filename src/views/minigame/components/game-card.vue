@@ -18,13 +18,13 @@
       </div>
       <div class="mt-3">
         <div class="textlg text-center text-capitalize font-weight-bold">
-          balls
+          {{ config.name }}
         </div>
       </div>
       <div class="mt-2">
         <div class="d-flex align-center">
           <div class="text-sm neutral70--text">
-            Lorem ipsum dolor sit amet dolor amet consectetur amet consectetur.
+            {{ config.description }}
           </div>
         </div>
       </div>
@@ -35,14 +35,16 @@
             <v-icon small> mdi-account-outline</v-icon>
             <span class="neutral70--text text-sm ml-1">ID</span>
           </div>
-          <div class="text-sm font-weight-bold">#1311434</div>
+          <div class="text-sm font-weight-bold">#{{ config.id }}</div>
         </v-col>
         <v-col cols="12" md="6" xs="12">
           <div class="d-flex align-center">
             <v-icon small> mdi-calendar-outline</v-icon>
             <span class="neutral70--text text-sm ml-1">Last update</span>
           </div>
-          <div class="text-sm font-weight-bold">12 Aug 2023</div>
+          <div class="text-sm font-weight-bold">
+            {{ config.updatedAt | ddmmyyyy }}
+          </div>
         </v-col>
       </v-row>
     </v-card>
@@ -52,21 +54,33 @@
 <script>
 import { get } from "lodash";
 import moment from "moment";
-
+import { gameStore } from "../stores/gameStore";
+import { mapStores } from "pinia";
 export default {
   props: {
-    game: {
+    config: {
       type: Object,
       default: null,
     },
   },
-  computed: {},
+  computed: {
+    ...mapStores(gameStore),
+    getGameImage() {
+      return get(
+        this.config,
+        "campaignCategory.iconUrl",
+        require("@/assets/views/category/category-icon-example.png")
+      );
+    },
+  },
   methods: {
     ongameCardClick() {
       // if (this.game && this.game.id) this.$router.push(`/game/${this.game.id}`);
-      this.$router.push('/config')
+      if (this.config && this.config.id)
+        this.$router.push(`/game-configs/${this.config.id}`);
     },
   },
+  created() {},
   data() {
     return {};
   },

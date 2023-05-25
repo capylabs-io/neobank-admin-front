@@ -76,7 +76,7 @@ export const Partner = {
       },
     });
   },
-  
+
   fetchDashBoard: () => {
     const user = userStore();
     if (!user.isConnected) return;
@@ -124,6 +124,26 @@ export const Common = {
         "Content-Type": "multipart/form-data",
       },
     }),
+  fetchGameConfigs: () => {
+    return axios.get("game-configs");
+  },
+  fetchGameConfig: (code) => {
+    return axios.get("game-configs", {
+      params: { code },
+    });
+  },
+  updateGameConfig: (code, options) => {
+    return axios.put(`game-configs/${code}`, options);
+  },
+  // fetchGameConfig: () => {
+  //   const user = userStore();
+  //   if (!user.isConnected) return;
+  //   return axios.get("game-configs", {
+  //     headers: {
+  //       Authorization: "Bearer " + user.jwt,
+  //     },
+  //   });
+  // },
 };
 
 export const Maintainer = {

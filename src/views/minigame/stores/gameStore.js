@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import { get } from "lodash-es";
 import loading from "@/plugins/loading";
 import alert from "@/plugins/alert";
-import { Campaign, Maintainer, Category, Common, Partner } from "@/plugins/api";
+import { Game, Maintainer, Category, Common, Partner } from "@/plugins/api";
 import router from "@/router";
 import { userStore } from "@/stores/userStore";
 
@@ -12,25 +12,25 @@ export const gameStore = defineStore("game", {
     rewardType: [
       {
         title: "Point",
-        value: "1",
+        value: "Point",
       },
       {
         title: "Ticket",
-        value: "2",
+        value: "Ticket",
       },
       {
         title: "Voucher",
-        value: "3",
+        value: "Voucher",
       },
     ],
-    campaignForm: false,
-    campaign: {},
-    campaigns: [],
-    campaignsPerPage: 6,
-    campaignPage: 1,
-    campaignInputAvatar: null,
+    GameForm: false,
+    Game: {},
+    Games: [],
+    GamesPerPage: 6,
+    GamePage: 1,
+    GameInputAvatar: null,
     searchKey: "",
-    isEditing: false,
+    isConfigEditing: false,
     categories: [],
     partners: [],
     sortBy: "",
@@ -127,10 +127,7 @@ export const gameStore = defineStore("game", {
         value: "outOfStock",
       },
     ],
-    transactions: [],
-    transactionsPerPage: 10,
-    transactionPage: 1,
-    transactionSearchKey: "",
+    dataConfig: [],
   }),
   getters: {
     filters() {
@@ -151,143 +148,65 @@ export const gameStore = defineStore("game", {
         }),
       ];
     },
-    filteredCampaigns() {
-      if (!this.campaigns || this.campaigns.length == 0) return [];
-      let filtered = this.sortedCampaigns;
+    filteredGames() {
+      if (!this.Games || this.Games.length == 0) return [];
+      let filtered = this.sortedGames;
       if (this.searchKey)
-        filtered = filtered.filter((campaign) =>
-          campaign.title
-            .toLowerCase()
-            .includes(this.searchKey.trim().toLowerCase())
+        filtered = filtered.filter((Game) =>
+          Game.title.toLowerCase().includes(this.searchKey.trim().toLowerCase())
         );
-      if (this.filterStatus && this.filterStatus != "all") {
-        filtered = filtered.filter(
-          (campaign) => campaign.status == this.filterStatus
-        );
-      }
-      if (this.filterPartner && this.filterPartner.length > 0) {
-        const filterIds = this.filterPartner.map((filter) => filter.id);
-        filtered = filtered.filter(
-          (campaign) =>
-            campaign.partner && filterIds.includes(campaign.partner.id)
-        );
-      }
-      if (this.filterCategory && this.filterCategory.length > 0) {
-        const filterIds = this.filterCategory.map((filter) => filter.id);
-        filtered = filtered.filter(
-          (campaign) =>
-            campaign.campaignCategory &&
-            filterIds.includes(campaign.campaignCategory.id)
-        );
-      }
       return filtered;
     },
-    sortedCampaigns() {
-      if (!this.campaigns || this.campaigns.length == 0) return [];
-      let sortedCampaigns = this.campaigns;
-      if (!this.sortBy) return sortedCampaigns;
+    sortedGames() {
+      if (!this.Games || this.Games.length == 0) return [];
+      let sortedGames = this.Games;
+      if (!this.sortBy) return sortedGames;
       switch (this.sortBy) {
         default:
         case "createdAt desc":
-          sortedCampaigns.sort(
+          sortedGames.sort(
             (a, b) =>
               new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
           );
           break;
         case "createdAt asc":
-          sortedCampaigns.sort(
+          sortedGames.sort(
             (a, b) =>
               new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
           );
           break;
-        case "purchasedQuantity asc":
-          sortedCampaigns.sort(
-            (a, b) => a.purchasedQuantity - b.purchasedQuantity
-          );
+        case "name asc":
+          sortedGames.sort((a, b) => a.name - b.name);
           break;
-        case "purchasedQuantity desc":
-          sortedCampaigns.sort(
-            (a, b) => b.purchasedQuantity - a.purchasedQuantity
-          );
-          break;
-        case "totalQuantity asc":
-          sortedCampaigns.sort((a, b) => a.totalQuantity - b.totalQuantity);
-          break;
-        case "totalQuantity desc":
-          sortedCampaigns.sort((a, b) => b.totalQuantity - a.totalQuantity);
-          break;
-        case "expiredDate desc":
-          sortedCampaigns.sort(
-            (a, b) =>
-              new Date(b.endDate).getTime() - new Date(a.endDate).getTime()
-          );
-          break;
-        case "expiredDate asc":
-          sortedCampaigns.sort(
-            (a, b) =>
-              new Date(a.endDate).getTime() - new Date(b.endDate).getTime()
-          );
+        case "name desc":
+          sortedGames.sort((a, b) => b.name - a.name);
           break;
       }
-      return sortedCampaigns;
+      return sortedGames;
     },
-    slicedCampaigns() {
-      if (!this.campaigns || this.campaigns.length == 0) return [];
-      return this.filteredCampaigns.slice(
-        (this.campaignPage - 1) * this.campaignsPerPage,
-        this.campaignPage * this.campaignsPerPage
+    slicedGames() {
+      if (!this.Games || this.Games.length == 0) return [];
+      return this.filteredGames.slice(
+        (this.GamePage - 1) * this.GamesPerPage,
+        this.GamePage * this.GamesPerPage
       );
     },
-    totalCampaignPage() {
-      if (!this.campaigns || this.filteredCampaigns.length == 0) return 1;
-      if (this.filteredCampaigns.length % this.campaignsPerPage == 0)
-        return this.filteredCampaigns.length / this.campaignsPerPage;
-      else
-        return (
-          Math.floor(this.filteredCampaigns.length / this.campaignsPerPage) + 1
-        );
-    },
-    filteredTransactions() {
-      if (!this.transactions || this.transactions.length == 0) return [];
-      if (!this.transactionSearchKey) return this.transactions;
-      return this.transactions.filter(
-        (transaction) =>
-          transaction.code
-            .toLowerCase()
-            .includes(this.transactionSearchKey.trim().toLowerCase()) ||
-          get(transaction.user, "data.attributes.username", "")
-            .toLowerCase()
-            .includes(this.transactionSearchKey.trim().toLowerCase())
-      );
-    },
-    slicedTransactions() {
-      if (!this.transactions || this.transactions.length == 0) return [];
-      return this.filteredTransactions.slice(
-        (this.transactionPage - 1) * this.transactionsPerPage,
-        this.transactionPage * this.transactionsPerPage
-      );
-    },
-    totalTransactionPage() {
-      if (!this.transactions || this.filteredTransactions.length == 0) return 1;
-      if (this.filteredTransactions.length % this.transactionsPerPage == 0)
-        return this.filteredTransactions.length / this.transactionsPerPage;
-      else
-        return (
-          Math.floor(
-            this.filteredTransactions.length / this.transactionsPerPage
-          ) + 1
-        );
+    totalGamePage() {
+      if (!this.Games || this.filteredGames.length == 0) return 1;
+      if (this.filteredGames.length % this.GamesPerPage == 0)
+        return this.filteredGames.length / this.GamesPerPage;
+      else return Math.floor(this.filteredGames.length / this.GamesPerPage) + 1;
     },
   },
   actions: {
-    changeCampaignThumbnail(image) {
+    changeGameThumbnail(image) {
       if (!image) return;
-      this.campaignInputAvatar = image;
+      this.GameInputAvatar = image;
     },
     changeVoucherDuration(date) {
-      if (!this.campaign || !date || date.length < 2) return;
-      this.campaign.startDate = date[0];
-      this.campaign.endDate = date[1];
+      if (!this.Game || !date || date.length < 2) return;
+      this.Game.startDate = date[0];
+      this.Game.endDate = date[1];
     },
     removeFilter(removedFilter) {
       if (!removedFilter) return;
@@ -303,113 +222,83 @@ export const gameStore = defineStore("game", {
         this.filterCategory.splice(indexOfObject, 1);
       }
     },
-    async fetchCampaign(campaignId) {
+    async fetchGameConfigs() {
       try {
         loading.show();
-        const res = await Campaign.fetchCampaignDetail(campaignId);
+        const res = await Common.fetchGameConfigs();
         if (!res) {
           alert.error("Error occurred!", "Please try again later!");
           return;
         }
-        const campaign = get(res, "data.data", null);
-        this.campaign = {
-          id: campaign.id,
-          ...campaign.attributes,
-        };
-        if (this.campaign.campaignCategory)
-          this.campaign.campaignCategory = {
-            id: this.campaign.campaignCategory.data.id,
-            ...this.campaign.campaignCategory.data.attributes,
-          };
-      } catch (error) {
-      } finally {
-        loading.hide();
-      }
-    },
-    async fetchCampaigns() {
-      try {
-        loading.show();
-        const user = userStore();
-        let res = null;
-        console.log("user", user);
-        if (user.isMaintainer) res = await Maintainer.fetchCampaigns();
-        else if (user.isPartner) res = await Partner.fetchPartnerCampaigns();
-        if (!res) {
-          alert.error("Error occurred!", "Please try again later!");
-          return;
-        }
-        const campaigns = get(res, "data", []);
-        if (!campaigns && campaigns.length == 0) return;
-        this.campaigns = campaigns;
-      } catch (error) {
-      } finally {
-        loading.hide();
-      }
-    },
-    async fetchCategories() {
-      try {
-        loading.show();
-        const res = await Category.fetch();
-        if (!res) {
-          alert.error(
-            "Error occurred when fetching categories!",
-            "Please try again later!"
-          );
-          return;
-        }
-        const categories = get(res, "data.data", []);
-        if (!categories && categories.length == 0) return;
-        const mappedCategories = categories.map((category) => {
+        const config = get(res, "data.data", []);
+        console.log("config", config);
+        if (!config && config.length == 0) return;
+        const mappedConfig = config.map((config) => {
           return {
-            id: category.id,
-            name: get(category, "attributes.name", "Category Name"),
-            icon: get(category, "attributes.iconUrl", ""),
+            id: config.id,
+            ...config.attributes,
           };
         });
-        this.categories = mappedCategories;
+        this.Games = mappedConfig;
+        console.log("data fetch ", this.Games);
+      } catch (error) {
+      } finally {
+        loading.hide();
+      }
+    },
+    async fetchGameConfig(gameCode) {
+      try {
+        loading.show();
+        const res = await Common.fetchGameConfig(gameCode);
+        if (!res) {
+          alert.error("Error occurred!", "Please try again later!");
+          return;
+        }
+
+        const config = get(res, "data.data", null);
+        if (!config && config.length == 0) return;
+        this.Game = {
+          id: config[0].id,
+          ...config[0].attributes,
+        };
+        let fieldsConfig = [];
+        if (config[0].attributes.config) {
+          fieldsConfig = Object.keys(config[0].attributes.config).filter(
+            (key) => key == "balls"
+          );
+        }
+        console.log(
+          "key",
+          Object.keys(config[0].attributes.config).filter(
+            (key) => key == "balls"
+          )
+        );
+        this.dataConfig = config[0].attributes.data.balls;
+      } catch (error) {
+      } finally {
+        loading.hide();
+      }
+    },
+    async updateGameConfig(gameCode) {
+      try {
+        loading.show();
+        const res = await Common.updateGameConfig(gameCode, {
+          data: {
+            ...this.Game,
+            data: {
+              balls: this.dataConfig,
+            },
+          },
+        });
+        if (!res) {
+          alert.error("Error occurred!", "Please try again later!");
+          return;
+        }
+        this.isConfigEditing = false;
+        this.fetchGameConfig(gameCode);
+        alert.success("update successfully!");
       } catch (error) {
         alert.error("Error occurred!", error.message);
-      } finally {
-        loading.hide();
-      }
-    },
-    async fetchPartners() {
-      try {
-        loading.show();
-        const res = await Maintainer.fetchPartnerList();
-        if (!res) {
-          alert.error(
-            "Error occurred when fetching partners!",
-            "Please try again later!"
-          );
-          return;
-        }
-        const partners = get(res, "data", []);
-        if (!partners && partners.length == 0) return;
-        this.partners = partners;
-      } catch (error) {
-      } finally {
-        loading.hide();
-      }
-    },
-    async fetchCampaignTransactions() {
-      try {
-        loading.show();
-        if (!this.campaign || !this.campaign.id) return;
-        const res = await Campaign.fetchCampaignTransactions(this.campaign.id);
-        if (!res) {
-          alert.error("Error occurred!", "Please try again later!");
-          return;
-        }
-        const transactions = get(res, "data.data", []);
-        if (!transactions && transactions.length == 0) return;
-        this.transactions = transactions.map((transaction) => {
-          return {
-            id: transaction.id,
-            ...transaction.attributes,
-          };
-        });
-      } catch (error) {
       } finally {
         loading.hide();
       }
@@ -417,11 +306,11 @@ export const gameStore = defineStore("game", {
     async uploadFile() {
       try {
         loading.show();
-        if (!this.campaignInputAvatar) {
+        if (!this.GameInputAvatar) {
           throw new Error("Please select category icon!");
         }
         const formData = new FormData();
-        formData.append("files", this.campaignInputAvatar);
+        formData.append("files", this.GameInputAvatar);
         const res = await Common.uploadFile(formData);
         if (!res) {
           alert.error("Error occurred!", "Please try again later!");
@@ -436,111 +325,6 @@ export const gameStore = defineStore("game", {
         return uploadedUrls[0];
       } catch (error) {
         alert.error("Error occurred!", error.message);
-      } finally {
-        loading.hide();
-      }
-    },
-    async updateCampaign() {
-      try {
-        loading.show();
-        if (!this.campaign || !this.campaign.id) return;
-        let uploadedThumbnailUrl = this.campaign.thumbnailUrl;
-        if (this.campaignInputAvatar) {
-          const res = await this.uploadFile();
-          if (!res) {
-            alert.error(
-              "Error occurred when uploading icon!",
-              "Please try again later!"
-            );
-            return;
-          }
-          uploadedThumbnailUrl = res;
-        }
-        const res = await Campaign.update(this.campaign.id, {
-          data: {
-            ...this.campaign,
-            thumbnailUrl: uploadedThumbnailUrl,
-          },
-        });
-        if (!res) {
-          alert.error("Error occurred!", "Please try again later!");
-          return;
-        }
-        const updatedCampaign = get(res, "data.data", {});
-        this.campaign = {
-          id: updatedCampaign.id,
-          ...updatedCampaign.attributes,
-        };
-        this.isEditing = false;
-        alert.success("Update Campaign Detail successfully!");
-      } catch (error) {
-      } finally {
-        loading.hide();
-      }
-    },
-    async disableCampaign() {
-      try {
-        loading.show();
-        if (!this.campaign || !this.campaign.id) return;
-        const res = await Campaign.update(this.campaign.id, {
-          data: {
-            status: "disabled",
-          },
-        });
-        if (!res) {
-          alert.error("Error occurred!", "Please try again later!");
-          return;
-        }
-        const updatedCampaign = get(res, "data.data", {});
-        this.campaign = {
-          id: updatedCampaign.id,
-          ...updatedCampaign.attributes,
-        };
-        alert.success("Disable campaign successfully!");
-      } catch (error) {
-      } finally {
-        loading.hide();
-      }
-    },
-    async createCampaign() {
-      try {
-        loading.show();
-        const user = userStore();
-        let uploadedThumbnailUrl = "";
-        if (this.campaignInputAvatar) {
-          const res = await this.uploadFile();
-          if (!res) {
-            alert.error(
-              "Error occurred when uploading icon!",
-              "Please try again later!"
-            );
-            return;
-          }
-          uploadedThumbnailUrl = res;
-        }
-        console.log("this.campaign", this.campaign);
-        const res = await Campaign.create({
-          data: {
-            ...this.campaign,
-            thumbnailUrl: uploadedThumbnailUrl,
-            status: "active",
-            isActive: true,
-            campaignCategory: get(this.campaign, "campaignCategory.id", null),
-            partner: user.partner ? user.partner.id : {},
-          },
-        });
-        if (!res) {
-          alert.error("Error occurred!", "Please try again later!");
-          return;
-        }
-        const updatedCampaign = get(res, "data.data", {});
-        this.campaign = {
-          id: updatedCampaign.id,
-          ...updatedCampaign.attributes,
-        };
-        alert.success("Create campaign successfully!");
-        router.push("/campaign");
-      } catch (error) {
       } finally {
         loading.hide();
       }
