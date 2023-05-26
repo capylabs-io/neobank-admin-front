@@ -5,7 +5,6 @@ import alert from "@/plugins/alert";
 import { Game, Maintainer, Category, Common, Partner } from "@/plugins/api";
 import router from "@/router";
 import { userStore } from "@/stores/userStore";
-import { ConfigConsumer } from "antd/lib/config-provider";
 
 export const gameStore = defineStore("game", {
   state: () => ({
