@@ -7,6 +7,14 @@
           <v-col cols="12" md="5">
             <div>
               <div class="neutral10-bg mt-1">
+                <v-btn
+                  color="primary"
+                  class="btn-image-change"
+                  depressed
+                  :disabled="!gameStore.isConfigEditing"
+                  @click="gameStore.changeImageDialog = true"
+                  ><v-icon color="white" large>mdi-camera-outline</v-icon>
+                </v-btn>
                 <v-img
                   class="campaign-thumbnail border-radius-8"
                   :src="getImage"
@@ -67,5 +75,12 @@ export default {
 <style scoped>
 .campaign-thumbnail {
   height: 268px;
+  z-index: 1;
+}
+.btn-image-change {
+  width: 50px;
+  height: 50px;
+  position: absolute !important;
+  z-index: 2;
 }
 </style>

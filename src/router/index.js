@@ -11,6 +11,7 @@ const routes = [
     name: "Login",
     component: () => import("../views/login/pages/login-admin.vue"),
   },
+
   {
     path: "/",
     name: "MainLayout",
@@ -120,6 +121,11 @@ const routes = [
         meta: {
           requiresAuth: true,
         },
+      },
+      {
+        path: "/404",
+        name: "Page Not Found",
+        component: () => import("../views/notFoundPage.vue"),
       },
     ],
   },

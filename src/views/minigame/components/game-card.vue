@@ -6,8 +6,17 @@
       :class="{ 'game-card-hover': isHovering }"
       elevation="0"
       v-bind="props"
+      :disabled="!config.active"
       @click.stop="ongameCardClick"
     >
+      <v-btn
+        v-if="!config.active"
+        color="primary"
+        class="btn-image-change text-none font-weight-bold"
+        depressed
+      >
+        Coming soon
+      </v-btn>
       <div>
         <v-img
           class="game-card-img border-radius-8 elevation-1"
@@ -66,11 +75,7 @@ export default {
   computed: {
     ...mapStores(gameStore),
     getGameImage() {
-      return get(
-        this.config,
-        "image",
-        require("@/assets/game-image.png")
-      );
+      return get(this.config, "image", require("@/assets/game-image.png"));
     },
   },
   methods: {
@@ -107,5 +112,12 @@ export default {
 .category-icon {
   width: 14px;
   height: 14px;
+}
+
+.btn-image-change {
+  width: max-content;
+  height: 50px;
+  position: absolute !important;
+  z-index: 99 !important;
 }
 </style>

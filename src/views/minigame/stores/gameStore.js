@@ -9,6 +9,7 @@ import { userStore } from "@/stores/userStore";
 export const gameStore = defineStore("game", {
   state: () => ({
     isEditing: false,
+    changeImageDialog: false,
     rewardType: [
       {
         title: "Point",
@@ -199,10 +200,6 @@ export const gameStore = defineStore("game", {
     },
   },
   actions: {
-    changeGameThumbnail(image) {
-      if (!image) return;
-      this.GameInputAvatar = image;
-    },
     changeVoucherDuration(date) {
       if (!this.Game || !date || date.length < 2) return;
       this.Game.startDate = date[0];
@@ -282,6 +279,17 @@ export const gameStore = defineStore("game", {
     async updateGameConfig(gameCode) {
       try {
         loading.show();
+        if (this.GameInputAvatar) {
+          const res = await this.uploadFile();
+          if (!res) {
+            alert.error(
+              "Error occurred when uploading image!",
+              "Please try again later!"
+            );
+            return;
+          }
+          this.Game.image = res;
+        }
         const res = await Common.updateGameConfig(gameCode, {
           data: {
             ...this.Game,
@@ -303,11 +311,16 @@ export const gameStore = defineStore("game", {
         loading.hide();
       }
     },
+
+    changeImage(image) {
+      if (!image) return;
+      this.GameInputAvatar = image;
+    },
     async uploadFile() {
       try {
         loading.show();
         if (!this.GameInputAvatar) {
-          throw new Error("Please select category icon!");
+          throw new Error("Please select partner avatar!");
         }
         const formData = new FormData();
         formData.append("files", this.GameInputAvatar);

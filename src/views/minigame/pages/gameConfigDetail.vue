@@ -1,6 +1,7 @@
 <!-- eslint-disable vue/no-deprecated-filter -->
 <template>
   <div>
+    <changeImageDialog />
     <div>
       <v-btn class="px-0 text-none primary--text" @click="routerGoBack" text
         ><v-icon color="primary" small>mdi-chevron-double-left</v-icon>Get
@@ -8,7 +9,33 @@
       >
     </div>
     <div class="d-flex justify-space-between">
-      <div class="text-dp-xs font-weight-bold">Game title</div>
+      <div class="text-dp-xs font-weight-bold">
+        {{ gameStore.Game.name ? gameStore.Game.name : "Game title" }}
+      </div>
+    </div>
+    <div class="d-flex align-center gap-8 justify-end">
+      <v-btn
+        class="white-bg neutral30-border text-none font-weight-bold px-2 border-radius-8"
+        @click="gameStore.isConfigEditing = true"
+        v-if="!gameStore.isConfigEditing"
+        depressed
+        >Edit Info</v-btn
+      >
+      <v-btn
+        class="white-bg neutral30-border text-none font-weight-bold px-2 border-radius-8"
+        @click="gameStore.isConfigEditing = false"
+        v-if="gameStore.isConfigEditing"
+        depressed
+        >Cancel</v-btn
+      >
+      <v-btn
+        class="text-none font-weight-bold px-2 border-radius-8"
+        color="primary"
+        v-if="gameStore.isConfigEditing"
+        @click="gameStore.updateGameConfig(gameId)"
+        depressed
+        >Save Change</v-btn
+      >
     </div>
     <div>
       <infoForm />
@@ -31,30 +58,6 @@
           dense
         >
         </v-text-field>
-      </div>
-      <div class="d-flex align-center gap-8">
-        <v-btn
-          class="white-bg neutral30-border text-none font-weight-bold px-2 border-radius-8"
-          @click="gameStore.isConfigEditing = true"
-          v-if="!gameStore.isConfigEditing"
-          depressed
-          >Edit Info</v-btn
-        >
-        <v-btn
-          class="white-bg neutral30-border text-none font-weight-bold px-2 border-radius-8"
-          @click="gameStore.isConfigEditing = false"
-          v-if="gameStore.isConfigEditing"
-          depressed
-          >Cancel</v-btn
-        >
-        <v-btn
-          class="text-none font-weight-bold px-2 border-radius-8"
-          color="primary"
-          v-if="gameStore.isConfigEditing"
-          @click="gameStore.updateGameConfig(gameId)"
-          depressed
-          >Save Change</v-btn
-        >
       </div>
     </div>
     <div>
@@ -83,6 +86,8 @@ export default {
   components: {
     infoForm: () => import(`@/views/minigame/components/game-info-form.vue`),
     configForm: () => import(`@/views/minigame/components/config-form.vue`),
+    changeImageDialog: () =>
+      import(`@/views/minigame/dialogs/change-image-dialog.vue`),
   },
   data() {
     return {
@@ -98,10 +103,11 @@ export default {
   },
 
   async created() {
+    this.gameStore.changeImageDialog = false;
+    this.gameStore.isConfigEditing = false;
     this.gameId = this.$route.params.id;
     if (!this.gameId) this.$router.push("/");
     await this.gameStore.fetchGameConfig(this.gameId);
-    this.gameStore.isConfigEditing = false;
   },
   methods: {
     routerGoBack() {
