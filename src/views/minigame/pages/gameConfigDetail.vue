@@ -26,6 +26,7 @@
           flat
           solo
           filled
+          disabled
           type="number"
           dense
         >
